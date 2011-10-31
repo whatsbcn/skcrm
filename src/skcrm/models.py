@@ -1,108 +1,168 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-class ActionStates(models.Model):
+class ActionState(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=135, blank=True)
     class Meta:
         db_table = u'action_states'
+        ordering = ['name']
+    def __unicode__(self):
+        return self.name        
 
-class ActionTypes(models.Model):
+class ActionType(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=135, blank=True)
     class Meta:
         db_table = u'action_types'
+        ordering = ['name']
+    def __unicode__(self):
+        return self.name        
 
-class Countries(models.Model):
+class Country(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=135, blank=True)
     class Meta:
         db_table = u'countries'
+        ordering = ['name']
+    def __unicode__(self):
+        return self.name        
 
-class Regions(models.Model):
+class Region(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=135, blank=True)
     class Meta:
         db_table = u'regions'
+        ordering = ['name']
+    def __unicode__(self):
+        return self.name        
 
-class Cities(models.Model):
+class City(models.Model):
     id = models.IntegerField(primary_key=True)
+    region = models.ForeignKey(Region, null=True, blank=True)
     name = models.CharField(max_length=135, blank=True)
     class Meta:
         db_table = u'cities'
+        ordering = ['name']
+    def __unicode__(self):
+        return self.name        
 
-class ContactTreatments(models.Model):
+class ContactTreatment(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=96, blank=True)
     class Meta:
         db_table = u'contact_treatments'
+        ordering = ['name']
+    def __unicode__(self):
+        return self.name        
 
-class ContactTypes(models.Model):
+class ContactType(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=135, blank=True)
     class Meta:
         db_table = u'contact_types'
+        ordering = ['name']
+    def __unicode__(self):
+        return self.name        
 
-class Sectors(models.Model):
+class Sector(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(unique=True, max_length=135, blank=True)
     class Meta:
         db_table = u'sectors'
+        ordering = ['name']
+    def __unicode__(self):
+        return self.name
         
-class Contacts(models.Model):
+class Contact(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=768, blank=True)
     cognom1 = models.CharField(max_length=768, blank=True)
     cognom2 = models.CharField(max_length=768, blank=True)
     surname = models.CharField(max_length=768, blank=True)
     personal_assistant = models.ForeignKey('self', null=True, blank=True)
-    treatment = models.ForeignKey(ContactTreatments, null=True, blank=True)
+    treatment = models.ForeignKey(ContactTreatment, null=True, blank=True)
     address = models.CharField(max_length=768, blank=True)
     postal_code = models.CharField(max_length=96, blank=True)
-    city = models.ForeignKey(Cities, null=True, blank=True)
-    region = models.ForeignKey(Regions, null=True, blank=True)
-    country = models.ForeignKey(Countries, null=True, blank=True)
-    website = models.CharField(max_length=768, blank=True)
+    city = models.ForeignKey(City, null=True, blank=True)
+    region = models.ForeignKey(Region, null=True, blank=True)
+    country = models.ForeignKey(Country, null=True, blank=True)
+    website = models.URLField(max_length=768, blank=True)
     born_date = models.DateField(null=True, blank=True)
-    type = models.ForeignKey(ContactTypes, null=True, blank=True)
-    sectors = models.ManyToManyField(Sectors)
+    types = models.ManyToManyField(ContactType, db_table="rel_contacts_types")
+    sectors = models.ManyToManyField(Sector, db_table="rel_contacts_sectors")
     class Meta:
         db_table = u'contacts'
-
-class Actions(models.Model):
+        ordering = ['name']
+    def __unicode__(self):
+        return self.name + " " + self.cognom1 + " " + self.cognom2
+    def phones(self):
+        return Phone.objects.filter(contact=self)
+        
+class PhoneType(models.Model):
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(unique=True, max_length=144, blank=True)
+    class Meta:
+        db_table = u'contact_phone_types'
+    def __unicode__(self):
+        return self.name
+                
+class Phone(models.Model):
+    id = models.IntegerField(primary_key=True)
+    number = models.IntegerField()
+    type = models.ForeignKey(PhoneType, null=True, blank=True)
+    contact = models.ForeignKey(Contact, null=True, blank=True)                
+    class Meta:
+        db_table = u'contact_phones'
+    def __unicode__(self):
+        return unicode(self.number)         
+        
+class Action(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(unique=True, max_length=144, blank=True)
     description = models.TextField(blank=True)
-    type = models.ForeignKey(ActionTypes, null=True, blank=True)
-    state = models.ForeignKey(ActionStates, null=True, blank=True)
-    client = models.ForeignKey(Contacts, null=True, blank=True)
-    date = models.CharField(max_length=135, blank=True)
+    type = models.ForeignKey(ActionType, null=True, blank=True)
+    state = models.ForeignKey(ActionState, null=True, blank=True)
+    client = models.ForeignKey(Contact, null=True, blank=True)
+    date = models.DateTimeField(blank=True)
     user = models.ForeignKey(User, null=True, blank=True)
     class Meta:
         db_table = u'actions'
+        ordering = ['name']
+    def __unicode__(self):
+        return self.name        
 
-class ContactRelationTypes(models.Model):
+class ContactRelationType(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=135, blank=True)
     class Meta:
         db_table = u'contact_relation_types'
+        ordering = ['name']
+    def __unicode__(self):
+        return self.name        
 
 # MANY TO MANY RELATIONS
 
-class ContactActions(models.Model):
+class ContactAction(models.Model):
     id = models.IntegerField(primary_key=True)
-    contact = models.ForeignKey(Contacts, null=True, blank=True)
-    action = models.ForeignKey(Actions, null=True, blank=True)
+    contact = models.ForeignKey(Contact, null=True, blank=True)
+    action = models.ForeignKey(Action, null=True, blank=True)
+    state = models.IntegerField()
     value = models.CharField(max_length=192, blank=True)
     class Meta:
         db_table = u'contact_actions'
+    def __unicode__(self):
+        return self.action + " => " + self.contact        
 
-class ContactRelations(models.Model):
+class ContactRelation(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=135, blank=True)
-    contacte1 = models.ForeignKey(Contacts, null=True, db_column='contact_id1', blank=True, related_name='topic_content_type')
-    contacte2 = models.ForeignKey(Contacts, null=True, db_column='contact_id2', blank=True, related_name='topic_content_type2')
-    type = models.ForeignKey(ContactRelationTypes, null=True, blank=True)
+    contacte1 = models.ForeignKey(Contact, null=True, db_column='contact_id1', blank=True, related_name='topic_content_type')
+    contacte2 = models.ForeignKey(Contact, null=True, db_column='contact_id2', blank=True, related_name='topic_content_type2')
+    type = models.ForeignKey(ContactRelationType, null=True, blank=True)
     class Meta:
         db_table = u'contact_relations'
+        ordering = ['name']
+    def __unicode__(self):
+        return self.name    
 
