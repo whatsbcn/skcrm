@@ -13,9 +13,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'skcrm',                      # Or path to database file if using sqlite3.
-        'USER': 'skcrm',                      # Not used with sqlite3.
-        'PASSWORD': 'doh8auN5aene',                  # Not used with sqlite3.
-        'HOST': 'wekk.net',                      # Set to empty string for localhost. Not used with sqlite3.
+        'USER': 'root',                      # Not used with sqlite3.
+        #'PASSWORD': 'doh8auN5aene',                  # Not used with sqlite3.
+        'PASSWORD': 'pepito',                  # Not used with sqlite3.
+        'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '3306',                      # Set to empty string for default. Not used with sqlite3.
     }
 }
@@ -95,6 +96,7 @@ TEMPLATE_LOADERS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.transaction.TransactionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
