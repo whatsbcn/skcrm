@@ -6,6 +6,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
+    (r'^grappelli/', include('grappelli.urls')),
     # Examples:
     # url(r'^$', 'skcrm.views.home', name='home'),
     # url(r'^skcrm/', include('skcrm.foo.urls')),
