@@ -1,0 +1,74 @@
+Definició
+- Gestió de contactes
+  - Cerques: 
+    - en cas de permisos, poder triar si prensa, societat o ambdos.
+    - tots els directors i redactors dels sectors X, Y, Z)
+    - tots els periodistes que els interessa un tema i son de manresa
+    - Algun lloc ha de sortir la quantitat d'entrades trobades.
+  - Alta 
+  - Edició
+  - Relacionats amb sectors
+  - Relacionats amb temes
+  - Segons càrrec 
+  - Dades de contacte:
+    - res de dades tipus observacions
+    - horari de trucades amb desplegagle
+    - dirección de envios? para regalos.
+    - Relación?
+    - Empreses (carreg per cada una)
+  - Periodistes i contactes de societat relacionats a medis.
+- Gestió de clients amb diferents rols:
+  - Consulta de contactes de prensa
+  - Edició de contactes de prensa
+  - Consulta de contactes de societat
+  - Edició de contactes de societat
+  - Exportació de tots els resultats en csv (poden definir els camps)
+- Enviament de mail directament desde la web sense necessitar l'atòmic
+  - Preu afegit (enviament de molts mails!!)
+  - Posar qui ha de rebre els mails rebotats
+- Accions
+  - Tipus: invitació (poder apuntar qui confirma i qui no, intents, quantitat de confirmats i denegats, etc), nota de prensa
+  - Com: Exportació de excel, enviament de mailing
+  - Estat: Tancada, Oberta
+  - Crear una acció desde una busqueda
+  - Poder afegir o treure contactes
+  - Poder crear una acció desde 0
+  - Poder fer l'enviament de mail
+  - Poder marcar quins periodistes han fet una publicació o quins contactes han asistit (depenent el tipus d'acció)
+  - Associades a un client
+- Part de audit amb tots els canvis i consultes que es van fent.
+
+  
+- Noves funcionalitats: Calcul del clipping
+- Cada contacte ha de tenir un user i un pass per entrar al seu perfil i editar-lo així com dir que no vol rebre més info?.
+- Enviar mails amb els canvis que es fan 
+- Clientes: activos, inactivos,  potenciales
+- Part del toni.
+
+Dubtes
+- Parles de clients. Quan s'explota la informació dels clients? per a què es fa servir?
+- quan vols fer un mailing, a qui l'envies? A només periodistes o tb a empreses?
+
+
+
+
+
+
+
+
+
+
+VAIG PEL DOCUMENT AMB l'ESTRUCTURA DE LA BD.
+
+
+
+- categoria
+- actividad
+- cargo
+- medios de comunicación
+- permisos per accedir a societat o no 
+- a cada exportació posar per quin client es fa l'exportació de manera que quedi registrat quan s'ha contactat amb aquella persona.
+
+Dubtes: 
+- tothom ha de poder modificar la informació? (afegir provincies, canviar dades de la gent o no? Què ha de poder fer la gent?)
+- 
