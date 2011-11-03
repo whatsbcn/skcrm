@@ -4,26 +4,28 @@ from django.db import models
 from django.contrib.auth.models import User
      
 ACTION_STATE = (
-    ('1', 'Abierta'),
-    ('2', 'Cerrada'),
+    (1, 'Abierta'),
+    (2, 'Cerrada'),
 )
 
 ACTION_TYPE = (
-    ('1', 'Invitación'),
-    ('2', 'Nota de prensa'),
+    (1, '1. Invitación'),
+    (2, '2. Nota de prensa'),
 )
 
 ANSWER_TYPE = (
-    ('1', 'Confirmado'),
-    ('2', 'Pendiente'),
-    ('3', 'Rechazado'),
+    (1, '1. Pendiente'),               
+    (2, '2. Confirmado'),
+    (3, '3. Rechazado'),
 ) 
+
 class Country(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=45, blank=True)
     class Meta:
         db_table = u'countries'
         ordering = ['name']
+        verbose_name_plural = "Países"        
     def __unicode__(self):
         return self.name        
 
@@ -33,6 +35,7 @@ class Region(models.Model):
     class Meta:
         db_table = u'regions'
         ordering = ['name']
+        verbose_name_plural = "Regiones"
     def __unicode__(self):
         return self.name        
 
@@ -43,6 +46,7 @@ class City(models.Model):
     class Meta:
         db_table = u'cities'
         ordering = ['name']
+        unique_together = ('region', 'name',)
     def __unicode__(self):
         return self.name        
 
@@ -121,10 +125,10 @@ class Phone(models.Model):
         
 class Action(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(unique=True, max_length=144, blank=True)
+    name = models.CharField(max_length=256, blank=True)
     description = models.TextField(blank=True)
-    type = models.IntegerField(max_length=1, choices=ACTION_TYPE)
-    state = models.IntegerField(max_length=1, choices=ACTION_STATE)
+    type = models.IntegerField(max_length=1, choices=ACTION_TYPE, null=True, blank=True)
+    state = models.IntegerField(max_length=1, default=1, choices=ACTION_STATE, null=True, blank=True)
     client = models.ForeignKey(Contact, limit_choices_to = {'types__name__contains': "Cliente"}, null=True, blank=True)
     date = models.DateTimeField(blank=True)
     user = models.ForeignKey(User, null=True, blank=True)
@@ -133,7 +137,13 @@ class Action(models.Model):
         db_table = u'actions'
         ordering = ['name']
     def __unicode__(self):
-        return unicode(self.name)        
+        return unicode(self.name) + " / " + unicode(self.date) + " / " + unicode(self.client)
+    def countContacts(self):
+        return ContactAnswer.objects.filter(action=self).count()
+    def countContactsAnswer(self, a):
+        return ContactAnswer.objects.filter(action=self, answer=a).count()
+    def contactsReport(self):
+        return unicode(self.countContactsAnswer(2)+self.countContactsAnswer(3)) + "/" + unicode(self.countContacts())
 
 class ContactRelationType(models.Model):
     id = models.AutoField(primary_key=True)
@@ -147,27 +157,17 @@ class ContactRelationType(models.Model):
 # MANY TO MANY RELATIONS
 
 
-
 class ContactAnswer(models.Model):
     id = models.AutoField(primary_key=True)
     contact = models.ForeignKey(Contact, null=True, blank=True)
-    attempt = models.IntegerField()
-    answer = models.IntegerField(max_length=1, choices=ANSWER_TYPE)
-    class Meta:
-        db_table = u'contact_actions'
-    def __unicode__(self):
-        return self.action + " => " + self.contact   
-
-class ContactAction(models.Model):
-    id = models.AutoField(primary_key=True)
-    contact = models.ForeignKey(Contact, null=True, blank=True)
     action = models.ForeignKey(Action, null=True, blank=True)
-    state = models.IntegerField()
-    value = models.CharField(max_length=192, blank=True)
+    attempt = models.IntegerField(default=0)
+    answer = models.IntegerField(max_length=3, choices=ANSWER_TYPE, default=1)
     class Meta:
-        db_table = u'contact_actions'
+        db_table = u'contact_answer'
+        unique_together = ('contact', 'action',)
     def __unicode__(self):
-        return self.action + " => " + self.contact        
+        return "Answer: " + unicode(self.answer)         
 
 class ContactRelation(models.Model):
     id = models.AutoField(primary_key=True)

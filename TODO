@@ -72,3 +72,24 @@ VAIG PEL DOCUMENT AMB l'ESTRUCTURA DE LA BD.
 Dubtes: 
 - tothom ha de poder modificar la informació? (afegir provincies, canviar dades de la gent o no? Què ha de poder fer la gent?)
 - 
+
+
+    # 1a fase:
+    # TODO: mostrar tots els contactes d'aquest tipus i un contador
+    # TODO: posar els noms bons als models
+    # TODO: activar la búsqueda als sectors
+    # TODO: anar a accions després de crear-la
+    
+    # 2a fase:
+    # TODO: Exportar una acció a csv
+    # TODO: Enviar mailing d'una acció (titol i descripció de la pròpia acció
+    # TODO: Estat (enviada per correu)
+    # TODO: Mirar si una acció tancada es pot posar que sigui 'ro'
+    # TODO: Afegir formulari de busqueda avançada 
+    # TODO: Canviar dashboard per un de més normal
+    # TODO: Definir permisos per no veure els contactes de societat als usuaris depenent del grup    
+    
+    # 3a fase:
+    # TODO: Ensenyar-li a la Silvia
+    # TODO: Fer la part del toni
+    # TODO: Afegir audits on toqui
