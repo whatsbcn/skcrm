@@ -1,0 +1,23 @@
+{% extends "index.html" %}
+{% load render_table from django_tables2 %}
+
+
+{% block content %}
+<div id="content-main">	
+
+<a href="/">Atras</a></br>
+<h1>Búsqueda de personas</h1>
+
+<form method="post" action="">{% csrf_token %}
+{{ form.as_table }}
+<input type="submit" name="search" value="Buscar" />
+<input type="submit" name="add" value="Añadir" />
+</form>
+</br>
+<h1>Contactos encontrados</h1>
+{% render_table table %}
+</br>
+</div>
+{% endblock %}
+
+
