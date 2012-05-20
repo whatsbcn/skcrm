@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load render_table from django_tables2 %}
+
+{% block title %}Orbyce Comunicación CRM{% endblock %}
+
+{% block extrastyle %}{{ block.super }}
+<link rel="stylesheet" type="text/css" href="/static/admin/css/changelists.css" />
+<link rel="stylesheet" type="text/css" href="/static/media/css/base.css" />
+{% endblock %}
+
+
+
+
+{% block bodyclass %}change-list{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">Orbyce Comunicación S.L.</h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block breadcrumbs %}
+
+{% endblock %}
+
+
+{% block content %}
+<ul id="menu_indicadors">
+<li id="primer_indicador"><a href="">Empresas</a></li>
+<li><a href="/media/">Medios</a></li>
+<li><a href="/contacts/" class="current">Contactos</a></li>
+<li><a href="/actions/">Acciones</a></li>
+</ul>
+
+<form method="post" action="">{% csrf_token %}
+<table>
+{{ form.as_table }}
+</table>
+<input type="submit" name="search" value="Buscar" />
+</form>
+</br>
+<div id="changelist" class="module changelist-results">
+{% render_table contacts %}
+</div>
+
+{% endblock %}
+
+
