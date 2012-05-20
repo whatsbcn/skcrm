@@ -5,17 +5,24 @@
 {% block content %}
 <div id="content-main">	
 
-<a href="/">Atras</a></br>
+<a href="/">Atras</a></br></br>
 <h1>Búsqueda de personas</h1>
 
+
 <form method="post" action="">{% csrf_token %}
+<table>
 {{ form.as_table }}
+</table>
 <input type="submit" name="search" value="Buscar" />
 <input type="submit" name="add" value="Añadir" />
 </form>
-</br>
+
+
+</br></br>
 <h1>Contactos encontrados</h1>
+<div class="module changelist-results">
 {% render_table table %}
+</div>
 </br>
 </div>
 {% endblock %}

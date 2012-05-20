@@ -1734,10 +1734,10 @@ div.autocomplete-wrapper-m2m input:focus + a.related-lookup {
 tr.alt th, tr.alt td {
     background: #f4f4f4;
 }
-.row1 th, .row1 td {
+.row1 th, .row1 td, .odd th, .odd td {
     background: #f4f4f4;
 }
-.row2 th, .row2 td {
+.row2 th, .row2 td, .even th, .even td {
     background: #fff;
 }
 .selected th, .selected td {

@@ -4,8 +4,8 @@
 {% block title %}Orbyce Comunicación CRM{% endblock %}
 
 {% block extrastyle %}{{ block.super }}
-<link rel="stylesheet" type="text/css" href="{% load adminmedia %}{% admin_media_prefix %}css/dashboard.css" />
 <link rel="stylesheet" type="text/css" href="/static/admin/css/changelists.css" />
+<link rel="stylesheet" type="text/css" href="/static/media/css/base.css" />
 {% endblock %}
 
 
@@ -25,19 +25,27 @@
 
 
 {% block content %}
+
+<ul id="menu_indicadors">
+<li id="primer_indicador"><a href="/companies/">Empresas</a></li>
+<li><a href="/media/">Medios</a></li>
+<li><a href="/contacts/">Contactos</a></li>
+<li><a href="/actions/">Acciones</a></li>
+</ul>
+
 <div id="content-main">	
-<h1>Búsqueda de personas</h1>
+<a href="/admin/">Administrar CRM</a></br>
+<a href="/search/">Buscar contactos</a></br>
+<a href="/export/">Exportar contactos</a></br>
+<a href="/reset/">Resetear selección</a></br>
 
-<form method="post" action="">{% csrf_token %}
-{{ form.as_table }}
-<input type="submit" name="search" value="Buscar" />
-<input type="submit" name="add" value="Añadir" />
-</form>
-
-{% render_table table %}
 </br>
+</br>
+
 <h1>Personas seleccionadas</h1>
+<div class="module changelist-results">
 {% render_table selection %}
+</div>
 </br>
 </div>
 {% endblock %}
