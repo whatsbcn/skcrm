@@ -12,6 +12,7 @@ class PersonaTable(tables.Table):
     #medias = tables.Column(verbose_name='Medios')       
     phone  = tables.Column(verbose_name='Teléfono', accessor="phone_set")
     positions = tables.Column(verbose_name='Cargos', accessor="contactposition_set")
+    actions = tables.Column(verbose_name='Acciones', accessor="id")
 
     #twitter = tables.Column(verbose_name='Twiter')
     #facebook = tables.Column(verbose_name='Facebook')
@@ -34,7 +35,14 @@ class PersonaTable(tables.Table):
         for media in value.all():
             ret += media.name + "</br>"
         return mark_safe(ret)
+    
+    def render_actions(self, value):
+        ret = "<ul>"
+        ret += "<li class='change-link'><a href='/admin/skcrm/person/"+ str(value) + "/'></a></li>"
+        ret += "<li class='delete-link'><a href='/unselect/"+ str(value) + "/'></a></li>"
+        ret += "</ul>"
         
+        return mark_safe(ret)
     
     class Meta:
         attrs = {'cellspacing': '0'}

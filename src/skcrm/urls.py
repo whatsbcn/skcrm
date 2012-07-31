@@ -7,7 +7,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     (r'^admin/', include(admin.site.urls)),
     (r'^grappelli/', include('grappelli.urls')),
-    (r'^search/', 'skcrm.views.search'),
+    (r'^unselect/(\d+)/', 'skcrm.views.unselect'),
     (r'^reset/', 'skcrm.views.reset'),
     (r'^export/', 'skcrm.views.export'),
     (r'^contacts/', 'skcrm.views.contacts'),

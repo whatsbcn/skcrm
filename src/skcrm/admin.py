@@ -2,6 +2,7 @@
 from django.contrib import admin
 from models import *
 from datetime import datetime
+from django.http import HttpResponseRedirect
 
 #def create_action(modeladmin, request, queryset):
 #    new_action = Action(name="Autegenerada " + request.user.first_name + " " + request.user.last_name + " " + str(datetime.now()), state=1, 
@@ -62,6 +63,13 @@ class PersonAdmin(admin.ModelAdmin):
                     'address', 'website']
     #filter_horizontal  = ('sectors',)
     list_filter = ['types']
+    def response_add(self, request, obj, post_url_continue=None):
+        #obj.id <- Id de user
+        return HttpResponseRedirect("/contacts/")
+    
+    def response_change(self, request, obj, post_url_continue=None):
+        #obj.id <- Id de user
+        return HttpResponseRedirect("/contacts/" )
     #actions = [create_action]
 
 class SectorAdmin(admin.ModelAdmin):
@@ -71,8 +79,10 @@ class SectorAdmin(admin.ModelAdmin):
 class CompanyAdmin(admin.ModelAdmin):
     #list_display = ['address', 'city', 'NIF_CIF']
     inlines = [CompanyRelationInline]
+    search_fields = ['name']
     
-
+class MediaAdmin(admin.ModelAdmin):
+    search_fields = ['name']
 #class CompanyAdmin(admin.ModelAdmin):
 #    list_display = ['name', 'address', 'email', 'city', 'website', 'phones']
 #    inlines = [PhoneInline]
@@ -116,7 +126,7 @@ admin.site.register(Person, PersonAdmin)
 admin.site.register(Company, CompanyAdmin)
 #admin.site.register(Phone)
 #admin.site.register(Email)
-admin.site.register(Media)
+admin.site.register(Media, MediaAdmin)
 admin.site.register(ContactPosition)
 
 

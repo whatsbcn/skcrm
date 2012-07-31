@@ -42,7 +42,9 @@ class SearchForm(forms.Form):
     CIUTAT_CHOICES.extend([(c.id, c.name) for c in City.objects.all().distinct()])
     PROVINCIA_CHOICES = [('', '')]
     PROVINCIA_CHOICES.extend([(c.id, c.name) for c in Region.objects.all()])
-       
+
+    name = forms.CharField(required=False, label='Nombre o apellidos')   
+    company = forms.CharField(required=False, label='Empresa')       
     carrec = forms.IntegerField(required=False, widget=forms.Select(choices=CARREC_CHOICES))
     mailing = forms.BooleanField(required=False, label='Acceptar Mailing', widget=forms.Select(choices=MAILING_CHOICES))
     withmail = forms.BooleanField(required=False, label='Solo contactos con mail', widget=forms.Select(choices=MAIL_REQUERIDO))
