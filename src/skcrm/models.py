@@ -154,6 +154,7 @@ class PositionTypes(models.Model):
 class Sector(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(unique=True, max_length=45, blank=True)
+    parent = models.ForeignKey('self', null=True, blank=True, related_name='child')
     class Meta:
         db_table = u'sectors'
         ordering = ['name']
@@ -163,30 +164,33 @@ class Sector(models.Model):
 
 class Section(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(unique=True, max_length=45, blank=True)
+    name = models.CharField(unique=True, max_length=45, blank=False)
     parent = models.ForeignKey('self', null=True, blank=True, related_name='child')
     class Meta:
         db_table = u'section'
         ordering = ['name']
         verbose_name_plural = "Secciones"
     def __unicode__(self):
-        return self.name
+        if self.parent != None:
+            return self.parent.name + "__" + self.name
+        else:
+            return self.name
 
 class Contact(models.Model):
     id = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, verbose_name="Nombre")
     #email = models.EmailField(max_length=45, blank=True)
-    address = models.CharField(max_length=100, blank=True)
-    packets_address = models.CharField(max_length=100, blank=True)
-    postal_code = models.CharField(max_length=32, blank=True)
-    city = models.ForeignKey(City, null=True, blank=True)
-    region = models.ForeignKey(Region, null=True, blank=True)
-    country = models.ForeignKey(Country, null=True, blank=True)
-    website = models.URLField(max_length=100, blank=True)
-    mailing = models.BooleanField()
+    address = models.CharField(max_length=100, blank=True, verbose_name="Dirección")
+    packets_address = models.CharField(max_length=100, blank=True, verbose_name="Dirección para paquetes")
+    postal_code = models.CharField(max_length=32, blank=True, verbose_name="Código postal")
+    city = models.ForeignKey(City, null=True, blank=True, verbose_name="Ciudad")
+    region = models.ForeignKey(Region, null=True, blank=True, verbose_name="Comunidad autónoma")
+    country = models.ForeignKey(Country, null=True, blank=True, verbose_name="País")
+    website = models.URLField(max_length=100, blank=True, verbose_name="Página web")
+    mailing = models.BooleanField(verbose_name="Consiente que se le envien emails?")
     # Per els contactes que volem tenir però no voldrem convidar mai, ni enviar-lis coses
-    disabled = models.BooleanField()
-    NIF_CIF = models.CharField(max_length=45, blank=True)
+    disabled = models.BooleanField(verbose_name="Contacto desactivado?")
+    NIF_CIF = models.CharField(max_length=45, blank=True, verbose_name="NIF/CIF")
     class Meta:
         db_table = u'contacts'
         ordering = ['name']
@@ -202,7 +206,7 @@ class Person(Contact):
     treatment = models.ForeignKey(ContactTreatment, null=True, blank=True)
     born_date = models.DateField(null=True, blank=True)
     types = models.ManyToManyField(PersonType, db_table="rel_person_types", null=True, blank=True)
-    sections =  models.ManyToManyField(Section, db_table="rel_person_section", null=True, blank=True)
+    sections = models.ManyToManyField(Section, db_table="rel_person_section", null=True, blank=True)
     positions = models.ManyToManyField('Company', through='ContactPosition', null=True, blank=True)
     class Meta:
         db_table = u'person'
@@ -213,9 +217,9 @@ class Person(Contact):
 
 class Company(Contact):
     types = models.ManyToManyField(CompanyType, db_table="rel_company_types", null=True, blank=True)
-    context = models.ForeignKey(ContextType, null=True, blank=True)
-    is_group = models.BooleanField()
-    in_group = models.ForeignKey('Company', null=True, blank=True)
+    context = models.ForeignKey(ContextType, null=True, blank=True, verbose_name="Ámbito")
+    is_group = models.BooleanField(verbose_name="Es un grupo de empresas")
+    in_group = models.ForeignKey('Company', null=True, blank=True, limit_choices_to= {"is_group" : True})
     relations = models.ManyToManyField(Person, through='ContactPosition', null=True, blank=True)
     class Meta:
         db_table = u'company'
@@ -228,10 +232,12 @@ class Phone(models.Model):
     id = models.AutoField(primary_key=True)
     number = models.IntegerField()
     type = models.ForeignKey(PhoneType, null=True, blank=True)
-    contact = models.ForeignKey(Contact, null=True, blank=True)                
+    contact = models.ForeignKey(Contact, null=True, blank=True)
+    primary = models.BooleanField(verbose_name="Principal")                     
     class Meta:
         db_table = u'contact_phones'
         verbose_name_plural = "Teléfonos"
+        ordering = ['-primary']        
     def __unicode__(self):
         return unicode(self.number)         
                 
@@ -239,21 +245,24 @@ class Email(models.Model):
     id = models.AutoField(primary_key=True)
     email = models.EmailField(max_length=45, blank=True)
     type = models.ForeignKey(EmailType, null=True, blank=True)
-    contact = models.ForeignKey(Contact, null=True, blank=True)                
+    contact = models.ForeignKey(Contact, null=True, blank=True)
+    primary = models.BooleanField(verbose_name="Principal")                
     class Meta:
         db_table = u'contact_emails'
         verbose_name_plural = "Emails"
+        ordering = ['-primary']
     def __unicode__(self):
-        return unicode(self.number)         
+        return unicode(self.email)         
 
-class Media(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(unique=True, max_length=144, blank=True)
+class Media(Contact):
+    #id = models.AutoField(primary_key=True)
+    #name = models.CharField(unique=True, max_length=144, blank=True)
     type = models.ForeignKey(MediaType, null=True, blank=True)
     context = models.ForeignKey(ContextType, null=True, blank=True)
     sectors = models.ManyToManyField(Sector, db_table="rel_company_sectors", null=True, blank=True)
     ditribution = models.ForeignKey(DistributionType, null=True, blank=True)
     periodicity = models.ForeignKey(PeriodicityType, null=True, blank=True)
+    company = models.ForeignKey(Company, null=False, blank=False, limit_choices_to= {"is_group" : False})
     class Meta:
         db_table = u'media'
         verbose_name_plural = "Medios"

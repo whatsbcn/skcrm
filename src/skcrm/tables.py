@@ -9,7 +9,8 @@ class PersonaTable(tables.Table):
     name = tables.Column(verbose_name='Nombre', order_by=("name", "cognom1", "cognom2"))
     cognoms = tables.Column(verbose_name='Primer Apellido')
 
-    #medias = tables.Column(verbose_name='Medios')       
+    #medias = tables.Column(verbose_name='Medios') 
+    sections = tables.Column(verbose_name='secciones', accessor="sections")
     phone  = tables.Column(verbose_name='Teléfono', accessor="phone_set")
     positions = tables.Column(verbose_name='Cargos', accessor="contactposition_set")
     actions = tables.Column(verbose_name='Acciones', accessor="id")
@@ -18,6 +19,12 @@ class PersonaTable(tables.Table):
     #facebook = tables.Column(verbose_name='Facebook')
     
     #city = tables.Column(verbose_name='Ciudad')
+    def render_sections(self, value):
+        ret = ""
+        for section in value.all():
+            ret += str(section.name) + "</br>"
+        return mark_safe(ret)      
+    
     def render_phone(self, value):
         ret = ""
         for telf in value.all():
@@ -36,12 +43,13 @@ class PersonaTable(tables.Table):
             ret += media.name + "</br>"
         return mark_safe(ret)
     
+    
+    
     def render_actions(self, value):
         ret = "<ul>"
         ret += "<li class='change-link'><a href='/admin/skcrm/person/"+ str(value) + "/'></a></li>"
         ret += "<li class='delete-link'><a href='/unselect/"+ str(value) + "/'></a></li>"
         ret += "</ul>"
-        
         return mark_safe(ret)
     
     class Meta:

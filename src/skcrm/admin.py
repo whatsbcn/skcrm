@@ -45,44 +45,72 @@ class RelationInline(admin.TabularInline):
     
 class CompanyRelationInline(admin.TabularInline):
     model = ContactPosition
-    fields = ['person', 'type']
+    fields = ['person', 'type', 'company', 'media']
     extra = 0
-    
     
 class PhoneInline(admin.TabularInline):
     model = Phone
-    fields = ['number', 'type']
+    fields = ['number', 'type', 'primary']
     extra = 0
     verbose_name_plural = "Números de teléfono"
+    
+class EmailInline(admin.TabularInline):
+    model = Email
+    fields = ['email', 'type', 'primary']
+    extra = 0
+    verbose_name_plural = "Emails"    
     
 class PersonAdmin(admin.ModelAdmin):
     list_display = ['name', 'cognoms', 
                     'address', 'city', 'website']
-    inlines = [PhoneInline]
+    inlines = [CompanyRelationInline,PhoneInline,EmailInline]
     search_fields = ['name', 'cognom1', 'cognom2', 
                     'address', 'website']
     #filter_horizontal  = ('sectors',)
     list_filter = ['types']
     def response_add(self, request, obj, post_url_continue=None):
-        #obj.id <- Id de user
-        return HttpResponseRedirect("/contacts/")
-    
+        return HttpResponseRedirect("/contacts/")    
     def response_change(self, request, obj, post_url_continue=None):
-        #obj.id <- Id de user
         return HttpResponseRedirect("/contacts/" )
     #actions = [create_action]
 
 class SectorAdmin(admin.ModelAdmin):
-    fields = ['name']
+    fields = ['name', 'parent']
+    list_display = fields
+    list_filter = ['parent']
     search_fields = ['name']
-
+    def response_add(self, request, obj, post_url_continue=None):
+        return HttpResponseRedirect("/")    
+    def response_change(self, request, obj, post_url_continue=None):
+        return HttpResponseRedirect("/" )
+        
+class SectionAdmin(admin.ModelAdmin):
+    fields = ['name', 'parent']
+    list_display = fields
+    list_filter = ['parent']
+    search_fields = ['name']    
+    def response_add(self, request, obj, post_url_continue=None):
+        return HttpResponseRedirect("/")    
+    def response_change(self, request, obj, post_url_continue=None):
+        return HttpResponseRedirect("/" )
+    
 class CompanyAdmin(admin.ModelAdmin):
-    #list_display = ['address', 'city', 'NIF_CIF']
-    inlines = [CompanyRelationInline]
+    list_display = ['name', 'is_group']
+    inlines = [CompanyRelationInline,PhoneInline,EmailInline]
+    list_filter = ['is_group']
     search_fields = ['name']
+    def response_add(self, request, obj, post_url_continue=None):
+        return HttpResponseRedirect("/")    
+    def response_change(self, request, obj, post_url_continue=None):
+        return HttpResponseRedirect("/" )    
     
 class MediaAdmin(admin.ModelAdmin):
     search_fields = ['name']
+    inlines = [PhoneInline,EmailInline]
+    def response_add(self, request, obj, post_url_continue=None):
+        return HttpResponseRedirect("/")    
+    def response_change(self, request, obj, post_url_continue=None):
+        return HttpResponseRedirect("/" )    
 #class CompanyAdmin(admin.ModelAdmin):
 #    list_display = ['name', 'address', 'email', 'city', 'website', 'phones']
 #    inlines = [PhoneInline]
@@ -121,7 +149,7 @@ admin.site.register(PhoneType)
 admin.site.register(EmailType)
 admin.site.register(PositionTypes)
 admin.site.register(Sector, SectorAdmin)
-admin.site.register(Section)
+admin.site.register(Section, SectionAdmin)
 admin.site.register(Person, PersonAdmin)
 admin.site.register(Company, CompanyAdmin)
 #admin.site.register(Phone)

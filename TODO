@@ -41,15 +41,9 @@ Definició
     
 
 	# 0 fase:
-	# Afegir link per a què vagi cap a admin cada persona
-	# Afegir link per afegir que vagi cap a admin
-	# Intentar que al afegir o modificar es redirigeixi cap a /contacts/ altre cop
-	# Fer el mateix amb Empresas i Medios
-	# Millorar la part admin per a què puguin treballar amb ella i prou.
-	# Que al buscar apareguin les persones o coses de les categories o categories pares.
+	# Fer el mateix amb Empresas i Medios (que redirigeixi)
 	# Exportacions principalment per sector, seccio i medi
 	# exportació amb excel: mail, nom, cognoms, cargo, medi, telf, tema, seccio
-	# Exportació amb etiquetes. Potser un excel?
 	#
 	# 1a fase:
 	# Personal assistant només per societat i client.
@@ -92,9 +86,7 @@ Temes parlats reunió:
 - Accions:
   - Invitació (cartes/etiquetes, trucades) i control d'assistència
   - Mailing
-  - Exportar en excel
-  - Enviament de cremes
-  - Enviament de canastilles
+  - Enviament (cremes, canastilles, etc)
   - Enviar una invitació al facebook i contar els confirmats i introduir-los a l'aplicació.
   - Mostrar el telf i el mail al resum de l'acció.
   - Poder ordenar o filtrar segons si ha confirmat o no, buscar per nom, etc.
@@ -118,9 +110,7 @@ Temes parlats reunió:
   - Poder buscar per relació de contacte a empresa.
   - poder exportar a etiquetes i a mailing.
   - que un contacte que treballa a una empresa, heredi la direcció de l'empresa on treballa
-
-Relacions
-  - Llista tancada de càrrecs que pot tenir una persona.
+  - un periodista pot tenir un càrrec a una empresa i col·laborar a molts medis de comunicació 
 
 Global
   - Guardar-se totes les dades correctament tant si s'entra amb majuscules com amb minúscules: tot word més de 2chars, primera majuscula i altres minúscules.
@@ -128,7 +118,6 @@ Global
 Cerques:
   - tot el personal q treballi a editorals a bcn
   - Directius de TV, RADIO, DIARIS i PORTALS
-  - Directors generals del sector nautic de BCN i Valencia
 
 Dubtes:
 *******
