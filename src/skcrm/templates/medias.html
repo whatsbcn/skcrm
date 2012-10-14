@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load render_table from django_tables2 %}
+
+{% block title %}Orbyce Comunicación CRM{% endblock %}
+
+{% block extrastyle %}{{ block.super }}
+<link rel="stylesheet" type="text/css" href="/static/admin/css/changelists.css" />
+<link rel="stylesheet" type="text/css" href="/static/media/css/base.css" />
+{% endblock %}
+
+
+
+
+{% block bodyclass %}change-list{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">Orbyce Comunicación S.L.</h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block breadcrumbs %}
+
+{% endblock %}
+
+
+{% block content %}
+<ul id="menu_indicadors">
+<li id="primer_indicador"><a href="/companies/">Empresas</a></li>
+<li><a href="/sectors/">Sector de empresa/medio de com.</a></li>
+<li><a href="/medias/" class="current">Medios de comunicación</a></li>
+<li><a href="/contacts/">Contactos</a></li>
+<li><a href="/sections/">Secciones de contactos</a></li>
+<li><a href="/admin/">Administración</a></li>
+</ul>
+
+<h1>Búsqueda de medios de comunicación</h1>
+<form method="post" action="" id="searchform">{% csrf_token %}
+<table>
+{{ form.as_table }}
+</table>
+</form>
+<h1>Medios {{sector_name}}</h1>
+<div class="module changelist-results">
+{% render_table table %}
+</div>
+</br>
+</br>
+<h1></h1>
+<ul class="tools">
+<li>
+<a href="/admin/skcrm/media/add/" class="add-handler focus">Añadir medio</a>
+</li>
+</ul>
+{% endblock %}
+
+
