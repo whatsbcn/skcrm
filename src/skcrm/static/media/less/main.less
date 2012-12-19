@@ -1,0 +1,67 @@
+/*!
+ * CSS Per Planilles idi
+ *
+ *
+ * Combina plugins + main.css
+ */
+
+@import "timepicker.less";
+
+
+
+#logo-idi {
+    background-color: red
+}
+
+.calendari {
+    border-width: 0px;
+    border-spacing: 2px;
+    border-style: outset;
+    border-color: gray;
+    border-collapse: collapse;
+    background-color: white;
+
+}
+
+.calendari th {
+    border-width: 0px;
+    padding: 1px;
+    border-style: inset;
+    border-color: gray;
+    background-color: white;
+    width: 70px;
+}
+
+.calendari td {
+    border-width: 1px;
+    padding: 1px;
+    border-style: inset;
+    border-color: #ddd;
+    background-color: white;
+    width: 30px;
+    text-align: center;
+}
+
+.calendari td.noborder {
+    border-width: 0px;
+}
+
+.calendari td.calendari_weekend {
+    background-color: #ccc;    
+}
+
+.calendari td.calendari_festiu {
+    background-color: #DA4F49;
+}
+
+.calendari td a {
+    display: block;
+    text-decoration: none;
+    color: white;
+}
+
+
+
+.calendari td a:hover {
+    background-color: red;
+}

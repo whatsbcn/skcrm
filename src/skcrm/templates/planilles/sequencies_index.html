@@ -1,0 +1,36 @@
+{% extends "planilles/base.html" %}
+{% load url from future %}
+{% load sorting_tags %}
+{% block title %}Seqüencies{% endblock title %}
+
+{% block content %}
+
+{% autosort sequencies %}
+
+<h3>Seqüencies. <small>Escull una seqüencia per editar les seves propietats</small></h3>
+<table class="table table-striped table-condensed hover">  
+    <thead>  
+        <tr>
+            <th>{% anchor nom "Nom" %}</th>  
+            <th>Franges</th>
+        </tr>  
+    </thead>  
+    <tbody>
+        {% for sequencia in sequencies %}
+        <tr>
+            <td>
+                <a href="{% url 'sequencia' sequencia.id %}">{{ sequencia.nom }}</a>
+            </td>
+            <td>
+                Franges en ús
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="form-actions">
+    <div class="pull-right">
+        <a href="0" class="btn btn-primary save">Afegir Sequencia</a>
+    </div>
+</div>
+{% endblock content %}
