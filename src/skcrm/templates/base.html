@@ -1,83 +1,89 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" lang="{{ LANGUAGE_CODE }}" xml:lang="{{ LANGUAGE_CODE }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+{% extends "base_bootstrap.html" %}
 {% load url from future %}
-{% load adminmedia i18n grp_tags %}
-<head>
-    <title>{% block title %}{% endblock %}</title>
-    {% block blockbots %}
-        <meta name="robots" content="NONE,NOARCHIVE" />
-    {% endblock %}
-    <!-- STYLESHEETS -->
-    {% block stylesheets %}
-        <link href="{% admin_media_prefix %}css/base.css" rel="stylesheet" type="text/css" />
-        {% if LANGUAGE_BIDI %}<link href="{% block stylesheet_rtl %}{% admin_media_prefix %}css/rtl.css{% endblock %}" rel="stylesheet" type="text/css" />{% endif %}
-        <link href="{% admin_media_prefix %}jquery/ui/css/custom-theme/jquery-ui-1.8.custom.css" rel="stylesheet" type="text/css" media="screen" title="no title" charset="utf-8" />
-        <link href="{% admin_media_prefix %}css/jquery-ui-grappelli-extensions.css" rel="stylesheet" type="text/css" />
-    {% endblock %}
-    <!-- EXTRASTYLES -->
-    {% block extrastyle %}{% endblock %}
-    <!-- JAVASCRIPTS -->
-    {% block javascripts %}
-        <script type="text/javascript">
-            // GLOBALS
-            var grappelli = {},
-                // TODO: klemens: drop ADMIN_URL
-                ADMIN_URL = "{% url 'admin:index' %}",
-                MODEL_URL_ARRAY = {% get_content_types %},
-                DATE_FORMAT = "{% get_date_format %}",
-                TIME_FORMAT = "{% get_time_format %}",
-                DATETIME_FORMAT = "{% get_datetime_format %}";
-        </script>
-        <!-- jQuery, jQuery-UI -->
-        <script src="{% admin_media_prefix %}jquery/jquery-1.6.2.min.js" type="text/javascript"></script>
-        <script src="{% admin_media_prefix %}jquery/ui/js/jquery-ui-1.8.15.custom.min.js" type="text/javascript"></script>
-        <!-- Grappelli Main JS -->
-        <script src="{% admin_media_prefix %}js/grappelli/grappelli.js" type="text/javascript"></script>
-        <!-- Grappelli jQuery Plugins, Widgets -->
-        <script src="{% admin_media_prefix %}js/grappelli/jquery.grp_collapsible.js" type="text/javascript"></script>
-        <script src="{% admin_media_prefix %}js/grappelli/jquery.grp_collapsible_group.js" type="text/javascript"></script>
-        <script src="{% admin_media_prefix %}js/grappelli/jquery.grp_timepicker.js" type="text/javascript"></script>
-        <script src="{% admin_media_prefix %}js/grappelli/jquery.grp_related_fk.js" type="text/javascript"></script>
-        <script src="{% admin_media_prefix %}js/grappelli/jquery.grp_related_m2m.js" type="text/javascript"></script>
-        <script src="{% admin_media_prefix %}js/grappelli/jquery.grp_related_generic.js" type="text/javascript"></script>
-        <script src="{% admin_media_prefix %}js/grappelli/jquery.grp_autocomplete_fk.js" type="text/javascript"></script>
-        <script src="{% admin_media_prefix %}js/grappelli/jquery.grp_autocomplete_m2m.js" type="text/javascript"></script>
-        <script src="{% admin_media_prefix %}js/grappelli/jquery.grp_autocomplete_generic.js" type="text/javascript"></script>
-    {% endblock %}
-    <!-- EXTRAHEAD -->
-    {% block extrahead %}{% endblock %}
-</head>
-<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}">
-    <div id="container">
-        <!-- HEADER -->
-        {% if not is_popup %}
-            {% include "header.html" %}
-            <!-- BREADCRUMBS -->
-            {% block breadcrumbs %}
-                <div id="breadcrumbs"><a href="/">{% trans 'Home' %}</a>{% if title %} &rsaquo; {{ title }}{% endif %}</div>
-            {% endblock %}
-        {% endif %}
-        <!-- MESSAGES -->
-        {% if messages %}
-            <ul class="messagelist">
-                {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-        <!-- CONTENT -->
-        <div id="content" class="{% block content-class %}{% endblock %}">
-            {% block pretitle %}{% endblock %}
-            {% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
-            {% block object-tools %}{% endblock %}
-            {% block content %}
-                {{ content }}
-                {% block filters %}{% endblock %}
-            {% endblock %}
-            <br class="clear" />
+
+{% block header %}
+    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar">One </span>
+                <span class="icon-bar">Two </span>
+                <span class="icon-bar">Three </span>
+            </a>
+            <a class="brand" href="#">BD Orbyce</a>
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                    <li class="active"><a href="/">BD</a></li>
+                    <li><a href="{% url 'contactes' %}">Contactos</a></li>
+                    <li><a href="{% url 'mitjans' %}">Medios</a></li>
+                    <li><a href="{% url 'empreses' %}">Empresas</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Mantenimientos
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="nav-header">Medios / empresas</li>
+                                <li><a href="{% url 'sectors' %}">Sectores</a></li>
+                                <li><a href="#">Periodicidad</a></li>
+                                <li><a href="#">Tipo de medio</a></li>
+                                <li><a href="#">Tipo de empresa</a></li>
+                                <li><a href="#">Tipo de distribución</a></li>
+                                <li><a href="#">Ámbito</a></li>
+                            <li class="divider"></li>
+                            <li class="nav-header">Contactos</li>
+                                <li><a href="{% url 'seccions' %}">Secciones</a></li>
+                                <li><a href="#">Cargos</a></li>
+                                <li><a href="#">Relaciones laborales</a></li>
+                                <li><a href="#">Tipo</a></li>
+                            <li class="divider"></li>
+                            <li class="nav-header">Varios</li>                       
+                            <li><a href="#">Ciudades</a></li>
+                            <li><a href="#">Paises</a></li>
+                            <li><a href="#">Provincias</a></li>     
+                            <li><a href="#">Tipo de email</a></li>
+                            <li><a href="#">Tipo de teléfono</a></li>
+                            <li><a href="#">Tratos</a></li>
+                                
+                        </ul>
+                    </li>
+                </ul>
+                <!-- Menu d'usuari -->
+                <div class="pull-right">
+                <ul class="nav pull-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            {{ request.user.get_full_name }}
+                            <span class="badge badge-important">{{ request.user.get_full_name|random}}</span>
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="usuari/notificacions"><i class="icon-envelope"></i> Notificacions</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/"><i class="icon-home"></i> Portal IDI</a></li>
+                            <li><a href="/logout"><i class="icon-off"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                </div>
+            </div><!--/.nav-collapse -->
         </div>
-        <!-- FOOTER -->
-        {% block footer %}<div id="footer"></div>{% endblock %}
     </div>
-</body>
-</html>
+</div>
+{% endblock header %}
+
+{% block notificacions %}
+{% if notificacions %}
+    <div class="row">
+        <div class="alert alert-success span8">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>Molt bé</strong> Has apretat un botó sense errors
+        </div>
+    </div>
+{% endif %}
+{% endblock notificacions %}
+
+{% block content %}    
+{% endblock content %}
+
+

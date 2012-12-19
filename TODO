@@ -1,28 +1,74 @@
-Definició
-- Gestió de contactes
-  - Cerques: 
-    - en cas de permisos, mostrar contactes de societat
-    - tots els directors i redactors dels sectors X, Y, Z)
-    - tots els periodistes que els interessa un tema i son de manresa
-    - Algun lloc ha de sortir la quantitat d'entrades trobades.
-  - Alta 
-  - Edició
-  - Relacionats amb sectors
-  - Relacionats amb temes
-  - Segons càrrec 
-  - Periodistes i contactes de societat relacionats a medis.
-- Gestió de clients amb diferents rols:
-  - Consulta de contactes de prensa
-  - Edició de contactes de prensa
-  - Consulta de contactes de societat
-  - Edició de contactes de societat
-  - Exportació de tots els resultats en csv (poden definir els camps)
-- Enviament de mail directament desde la web sense necessitar l'atòmic
-  - Preu afegit (enviament de molts mails!!)
-  - Posar qui ha de rebre els mails rebotats
-- Accions
-  - Tipus: invitació (poder apuntar qui confirma i qui no, intents, quantitat de confirmats i denegats, etc), nota de prensa
-  - Com: Exportació de excel, enviament de mailing
+  Plantilles generals:
+  ====================
+  - En les taules mostrar la quantitat d'entrades mostrades (en el cas de cerca seran les trobades)
+  - Taules de cerca ordenables i maques altre cop
+  - Desplegables més petits
+  - Part de audit amb tots els canvis i consultes que es van fent.
+  - Que hi hagi un permís que sigui donar d'alta cada objecte i un altre que sigui consulta
+  
+
+  Contactes:
+  ==========
+  - Tot el formulari d'alta i modificació d'un contacte
+  - Alta o baixa de relacions laborals del contacte
+  - Seccions del contacte
+  - Tipus de contacte (Societat, Periodista, Clients, Proveidor). Segons això es veuran els contactes als usuaris
+  - A l'entrar les dades, les inicials del nom i de tot word de longitud més de 4 chars, sempre amb majúscula
+  - Personal assistant (que quedi clar qui és personal assistant de qui i qui te un personal assistant)
+  - Visió dels càrrecs => Mitja (càrrec)
+  - Exportació de la direcció postal com a últim camp
+  - Un contacte té N direccións de contacte igual que telefons o emails. Una personal, una professional per cada empresa amb què treballi
+  - Al càrrec posar-hi el mail, el telf i la direcció postal. Al contacte només les dades personals
+  - Pensar => Al fer exportar, que d'alguna manera l'usuari trii de cada contacte quina adreça vol fer servir.
+  - Que no deixi exportar si una persona té càrrecs duplicats.
+  - Alta d'usuari => Nom, cognom, mail, telf, rel_laboral
+  - Utilitzar mòdul audit (registrar qui fa què)
+  - A la cerca de contactes, canviar "solo contactos con mail" a un checkbox
+  - A la cerca de contactes, canviar "aceptar mailing" per un checkbox ("no quieres mail", mostrar solo los que si permiten mail)
+  - Al carrito, no tenir contactes sinó càrrecs. Treure els duplicats de càrrecs per exportar
+  - Pensar => Com permetre contactes de societat (crear els permisos pels usuaris i els tipus de contactes)
+  - A la cerca, poder triar quin tipus de contacte busques, societat o mitja 
+  - Exportacions principalment per sector, seccio i medi
+  - Exportació amb excel: mail, nom, cognoms, cargo, medi, telf, tema, seccio
+  - Pantalla per editar la categoria i la categoria pare.
+  - Permisos per poder treballar amb lo de societat. (si el contacte és de societat i el grup de l'usuari no te permisos, no veura totes les dades)
+  - Crear rols pels permisos: veure periodistes, veure societat, editar contactes
+
+
+  Empreses:
+  =========
+  - Tot el formulari d'alta i modificació
+  - A una empresa tipus grup, que li apareguin les empreses que són del grup.
+
+  Sectors i seccions:
+  ===================
+  - Manera àgil i intuitiva d'editar-les    
+  
+  Mitjans de comunicació:
+  =======================
+  - Tot el formulari d'alta i modificació
+  
+  Altres manteniments:
+  ====================
+  - Fer pantalles de manteniments senzilles
+  
+  Facturació:
+  ===========
+  - Parlar amb en Toni
+  - A cada exportació posar per quin client es fa l'exportació de manera que quedi registrat quan s'ha contactat amb aquella persona?
+  
+
+  Mailings:
+  =========
+  - Enviament de mails directament des de la web sense necessitar l'atomic
+  - Especificar adreça pels mails rebotats
+
+
+  Accions:
+  ========
+  - Accions tipus invitació (poder apuntar qui confirma i qui no, intents, quantitat de confirmats i denegats, etc)
+  - Exportació de excel
+  - Enviament de mailing
   - Estat: Tancada, Oberta
   - Crear una acció desde una busqueda
   - Poder afegir o treure contactes
@@ -30,62 +76,8 @@ Definició
   - Poder fer l'enviament de mail
   - Poder marcar quins periodistes han fet una publicació o quins contactes han asistit (depenent el tipus d'acció)
   - Associades a un client
-- Part de audit amb tots els canvis i consultes que es van fent.
-  
-- Noves funcionalitats: Calcul del clipping
-- Clientes: activos, inactivos, potenciales
-- Part del toni.
-- a cada exportació posar per quin client es fa l'exportació de manera que quedi registrat quan s'ha contactat amb aquella persona.
-- Estat accio (enviada per correu)
-- Mirar si una acció tancada es pot posar que sigui 'ro'
-    
-
-	# 0 fase:
-	# Fer el mateix amb Empresas i Medios (que redirigeixi)
-	# Exportacions principalment per sector, seccio i medi
-	# exportació amb excel: mail, nom, cognoms, cargo, medi, telf, tema, seccio
-	#
-	# 1a fase:
-	# Personal assistant només per societat i client.
-    # Pantalla per editar la categoria i la categoria pare.
-	# Permisos per poder treballar amb lo de societat. (si el contacte és de societat i el grup de l'usuari no te permisos, no veura totes les dades)
-	# Crear rols pels permisos: veure periodistes, veure societat, editar contactes
-	# Crear audit
-	#
-	# 2a fase:
-	# Enviar mailing list directament, definint el mail.
-	#
-    # 3a fase:
-    # TODO: Fer la part del toni
-
-Pantalles:
-**********
-- Persones (cerca simple, edició, afegir)
-- Empreses (cerca simple, edició, afegir)
-- Accions (cerca simple, edició, afegir)
-
-
-Feina per reaprofitar la interfície de admin:
-*********************************************
-- Contacte: 
-  => ajax entre country, region, etc - https://github.com/crucialfelix/django-ajax-selects
-  => Afegir una nova classe que no sigui inline.tabular, sino que sigui la q jo vulgui i permeti fer diferents coses (cercar)
-  => Al afegir un contacte similar, dongui un warning (similar mail, telf, o cognoms)
-- Action:
-  => Formulari de busqueda avançada de contactes per anar-los afegint o treient a l'acció.
-  => Inline per a poder confirmar, o reenviar.
-  => Mostrar un formulari depenent del tipus d'acció que sigui.
-  => Poder afegir un boto per enviar mailing quan toqui.
-  => Poder afegir un boto per generar les cartes/etiquetes/llistat de confirmació in situ/excel.
-
-https://github.com/alex/django-filter
-https://github.com/bradleyayers/django-tables2
-
-Temes parlats reunió:
-*********************
-- Accions:
+  - Mirar si una acció tancada es pot posar que sigui 'ro'
   - Invitació (cartes/etiquetes, trucades) i control d'assistència
-  - Mailing
   - Enviament (cremes, canastilles, etc)
   - Enviar una invitació al facebook i contar els confirmats i introduir-los a l'aplicació.
   - Mostrar el telf i el mail al resum de l'acció.
@@ -93,36 +85,20 @@ Temes parlats reunió:
   - Des d'acció poder modificar la fitxa d'un contacte.
   - Des d'acció, poder reenviar una acció per mail (per si diu que no l'ha rebut)
   - Al llistat d'accions, mostrar el tipus.
-
-- Empreses
-  - A una empresa tipus grup, que li apareguin les empreses que són del grup.
   
-- Clients:
-  - Invitacions, regals, etc
-  - Poder afegir el logo al perfil
-  - No deixar exportar-los
+  Altres:
+  =======
+  - Calcul del clipping
+  - Clientes: activos, inactivos, potenciales
 
-- Contactes:
-  - Personal assistant (que quedi clar qui és personal assistant de qui i qui te un personal assistant)
-  - Al donar d'alta un contacte, fer un avís si es detecta el mateix cognom
-  - Al donar d'alta un telf, fer un avis si es detecta duplicat
-  - Que hi hagi un permís que sigui donar d'alta un contacte.
-  - Poder buscar per relació de contacte a empresa.
-  - poder exportar a etiquetes i a mailing.
-  - que un contacte que treballa a una empresa, heredi la direcció de l'empresa on treballa
-  - un periodista pot tenir un càrrec a una empresa i col·laborar a molts medis de comunicació 
 
-Global
-  - Guardar-se totes les dades correctament tant si s'entra amb majuscules com amb minúscules: tot word més de 2chars, primera majuscula i altres minúscules.
+Contrib
+========
+https://github.com/crucialfelix/django-ajax-selects
+https://github.com/alex/django-filter
+https://github.com/bradleyayers/django-tables2
+
 
 Cerques:
   - tot el personal q treballi a editorals a bcn
   - Directius de TV, RADIO, DIARIS i PORTALS
-
-Dubtes:
-*******
-- tipus de direcció: postal, personal i laboral
-  => Quan vulguem treure les direccions, quina direcció treurem?
-  => Una direcció laboral opcional per cada empresa on treballi?
-  => Proveedores: actividad?, especialidad?
-  => Prensa: lance?

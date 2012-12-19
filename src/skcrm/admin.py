@@ -80,9 +80,11 @@ class SectorAdmin(admin.ModelAdmin):
     list_filter = ['parent']
     search_fields = ['name']
     def response_add(self, request, obj, post_url_continue=None):
-        return HttpResponseRedirect("/")    
+        return HttpResponseRedirect("/sectors/")
+    def response_delete(self, request, obj, post_url_continue=None):
+        return HttpResponseRedirect("/sectors/")    
     def response_change(self, request, obj, post_url_continue=None):
-        return HttpResponseRedirect("/" )
+        return HttpResponseRedirect("/sectors/" )
         
 class SectionAdmin(admin.ModelAdmin):
     fields = ['name', 'parent']

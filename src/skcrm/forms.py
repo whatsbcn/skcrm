@@ -33,7 +33,7 @@ MAIL_REQUERIDO = (
     (True, 'Sí'),
 )
 
-class SearchForm(forms.Form):
+class SearchContactForm(forms.Form):
     CARREC_CHOICES = [('', '')]
     CARREC_CHOICES.extend([(c.id, c.name) for c in PositionTypes.objects.all()])
     
@@ -52,7 +52,10 @@ class SearchForm(forms.Form):
         if s.parent == None:
             SECTION_CHOICES.extend([(s.id, s.name)])
             SECTION_CHOICES.extend([(c.id, "__" + c.name) for c in Section.objects.filter(parent__id=s.id)])
-    
+
+    TIPO_MEDIOS_CHOICES = [('', '')]
+    TIPO_MEDIOS_CHOICES.extend([(c.id, c.name) for c in MediaType.objects.all()])
+        
     #SECTION_CHOICES.extend([(c.id, c.name) 
     #SECTION_CHOICES.extend([(c.id, "--" + c.name) for c in Section.objects.all().order_by("name") if c.parent != None])
     
@@ -63,22 +66,23 @@ class SearchForm(forms.Form):
     carrec = forms.IntegerField(required=False, label='Cargo', widget=forms.Select(choices=CARREC_CHOICES))
     mailing = forms.BooleanField(required=False, label='Aceptar Mailing', widget=forms.Select(choices=MAILING_CHOICES))
     withmail = forms.BooleanField(required=False, label='Solo contactos con mail', widget=forms.Select(choices=MAIL_REQUERIDO))
-    sector = forms.IntegerField(required=False, label='Sector del medio de comunicacion del contacto', widget=forms.Select(choices=SECTOR_CHOICES))
+    sector = forms.IntegerField(required=False, label='Sector del medio de comunicación del contacto', widget=forms.Select(choices=SECTOR_CHOICES))
+    tipo_medio = forms.IntegerField(required=False, label='Tipo del medio de comunicación del contacto', widget=forms.Select(choices=TIPO_MEDIOS_CHOICES))
     ciutat = forms.IntegerField(required=False, label='Ciudad del contacto', widget=forms.Select(choices=CIUTAT_CHOICES))
     provincia = forms.IntegerField(required=False,  label='Provincia del contacto',widget=forms.Select(choices=PROVINCIA_CHOICES))
     section = forms.IntegerField(required=False, label='Sección donde se encuentra el contacto', widget=forms.Select(choices=SECTION_CHOICES))
 
-class SearchContactForm(forms.Form):
-    CARREC_CHOICES = [('', '')]
-    CARREC_CHOICES.extend([(c.id, c.name) for c in PositionTypes.objects.all()])
-    SECTOR_CHOICES = [('', '')]
-    SECTOR_CHOICES.extend([(c.id, c.name) for c in Sector.objects.all()])
-    
-    name = forms.CharField(required=False, label='Nombre y apellidos')   
-    company = forms.CharField(required=False, label='Empresa')
-    carrec = forms.IntegerField(required=False, widget=forms.Select(choices=CARREC_CHOICES), label='Cargo')
-    #sector = forms.IntegerField(required=False, widget=forms.Select(choices=SECTOR_CHOICES))
+class SearchSectorForm(forms.Form):
+    name = forms.CharField(required=False, label='Nombre')
 
+class SearchCompanyForm(forms.Form):
+    name = forms.CharField(required=False, label='Nombre')
+
+class SearchMediaForm(forms.Form):
+    name = forms.CharField(required=False, label='Nombre')
+    
+class SearchSectionForm(forms.Form):
+    name = forms.CharField(required=False, label='Nombre')    
 
 class AnyMesForm(forms.Form):
     mes = forms.IntegerField(required=True, widget=forms.Select(choices=MES_CHOICES))    

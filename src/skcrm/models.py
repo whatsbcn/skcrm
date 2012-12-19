@@ -161,6 +161,9 @@ class Sector(models.Model):
         verbose_name_plural = "Sectores"
     def __unicode__(self):
         return self.name
+    def number_of_childs(self):
+        s = Sector.objects.all().filter(parent=self)
+        return len(s)
 
 class Section(models.Model):
     id = models.AutoField(primary_key=True)
@@ -175,6 +178,9 @@ class Section(models.Model):
             return self.parent.name + "__" + self.name
         else:
             return self.name
+    def number_of_childs(self):
+        s = Section.objects.all().filter(parent=self)
+        return len(s)        
 
 class Contact(models.Model):
     id = models.AutoField(primary_key=True)

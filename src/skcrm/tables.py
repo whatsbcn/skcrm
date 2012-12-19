@@ -2,8 +2,52 @@
 import django_tables2 as tables
 from skcrm.models import Person 
 from django.utils.safestring import mark_safe
-      
-        
+from django_tables2.utils import A
+
+class SectionsTable(tables.Table):
+    name = tables.LinkColumn('skcrm.views.sections', args=[A('id')],verbose_name='Secciones')
+    number_of_childs = tables.Column(verbose_name='Cantidad de subsecciones', sortable=False)
+    actions = tables.Column(verbose_name='Acciones', accessor="id")
+
+    def render_actions(self, value):
+        ret = "<ul>"
+        ret += "<li class='change-link'><a href='/admin/skcrm/section/"+ str(value) + "/'></a></li>"
+        ret += "</ul>"
+        return mark_safe(ret)
+    
+class MediasTable(tables.Table):
+    name = tables.Column(verbose_name='Medios')
+    #number_of_childs = tables.Column(verbose_name='Cantidad de subsectores', sortable=False)
+    actions = tables.Column(verbose_name='Acciones', accessor="id")
+
+    def render_actions(self, value):
+        ret = "<ul>"
+        ret += "<li class='change-link'><a href='/admin/skcrm/media/"+ str(value) + "/'></a></li>"
+        ret += "</ul>"
+        return mark_safe(ret)
+
+class CompaniesTable(tables.Table):
+    name = tables.Column(verbose_name='Empresa')
+    #number_of_childs = tables.Column(verbose_name='Cantidad de subsectores', sortable=False)
+    actions = tables.Column(verbose_name='Acciones', accessor="id")
+
+    def render_actions(self, value):
+        ret = "<ul>"
+        ret += "<li class='change-link'><a href='/admin/skcrm/company/"+ str(value) + "/'></a></li>"
+        ret += "</ul>"
+        return mark_safe(ret)
+
+class SectorsTable(tables.Table):
+    name = tables.LinkColumn('skcrm.views.sectors', args=[A('id')], verbose_name='Sector')
+    number_of_childs = tables.Column(verbose_name='Cantidad de subsectores', sortable=False)
+    actions = tables.Column(verbose_name='Acciones', accessor="id")
+
+    def render_actions(self, value):
+        ret = "<ul>"
+        ret += "<li class='change-link'><a href='/admin/skcrm/sector/"+ str(value) + "/'></a></li>"
+        ret += "</ul>"
+        return mark_safe(ret)
+    
 class PersonaTable(tables.Table):
     #email = tables.EmailColumn(verbose_name='Email')
     name = tables.Column(verbose_name='Nombre', order_by=("name", "cognom1", "cognom2"))

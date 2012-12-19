@@ -1,43 +1,13 @@
 {% extends "base.html" %}
-{% load render_table from django_tables2 %}
+{% load url from future %}
 
-{% block title %}Orbyce Comunicación CRM{% endblock %}
-
-{% block extrastyle %}{{ block.super }}
-<link rel="stylesheet" type="text/css" href="/static/admin/css/changelists.css" />
-<link rel="stylesheet" type="text/css" href="/static/media/css/base.css" />
-{% endblock %}
-
-
-
-
-{% block bodyclass %}change-list{% endblock %}
-
-{% block branding %}
-<h1 id="site-name">Orbyce Comunicación S.L.</h1>
-{% endblock %}
-
-{% block nav-global %}{% endblock %}
-
-{% block breadcrumbs %}
-
-{% endblock %}
 
 
 {% block content %}
 
 
-<div id="content-main">	
-<ul id="menu_indicadors">
-<li id="primer_indicador"><a href="/admin/skcrm/company/">Empresas</a></li>
-<li><a href="/admin/skcrm/sector/">Sector de empresa/medio de com.</a></li>
-<li><a href="/admin/skcrm/media/">Medios de comunicación</a></li>
-<li><a href="/contacts/">Contactos</a></li>
-<li><a href="/admin/skcrm/section/">Secciones de contactos</a></li>
-<li><a href="/admin/">Administración</a></li>
-</ul>
-</div>
 
-{% endblock %}
+{% endblock content %}
+
 
 

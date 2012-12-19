@@ -1,57 +1,62 @@
 {% extends "base.html" %}
-{% load render_table from django_tables2 %}
+{% load url from future %}
+{% load django_tables2 %}
 
-{% block title %}Orbyce Comunicación CRM{% endblock %}
-
-{% block extrastyle %}{{ block.super }}
-<link rel="stylesheet" type="text/css" href="/static/admin/css/changelists.css" />
-<link rel="stylesheet" type="text/css" href="/static/media/css/base.css" />
-{% endblock %}
-
-
-
-
-{% block bodyclass %}change-list{% endblock %}
-
-{% block branding %}
-<h1 id="site-name">Orbyce Comunicación S.L.</h1>
-{% endblock %}
-
-{% block nav-global %}{% endblock %}
-
-{% block breadcrumbs %}
-
-{% endblock %}
 
 
 {% block content %}
-<ul id="menu_indicadors">
-<li id="primer_indicador"><a href="">Empresas</a></li>
-<li><a href="/admin/skcrm/sector/">Sector de empresa/medio de com.</a></li>
-<li><a href="/admin/skcrm/media/">Medios de comunicación</a></li>
-<li><a href="/contacts/" class="current">Contactos</a></li>
-<li><a href="/admin/skcrm/section/">Secciones de contactos</a></li>
-<li><a href="/actions/">Acciones</a></li>
-</ul>
 
-<form method="post" action="">{% csrf_token %}
+<script type="text/javascript">
+function submitsearchform()
+{
+  var el = document.createElement("input");
+  el.setAttribute("type", "hidden");
+  el.setAttribute("name", "add");
+  el.setAttribute("value", "add");
+  document.getElementById('searchform').appendChild(el);
+  document.getElementById('searchform').submit();
+}
+</script>
+
+
+
+<h1>Búsqueda de personas</h1>
+<form method="post" action="" id="searchform">{% csrf_token %}
 <table>
 {{ form.as_table }}
 </table>
-<input type="submit" name="search" value="Buscar" />
+<input type="submit" name="button" value="Buscar" />
 </form>
-</br>
-<div id="changelist" class="module changelist-results">
-{% render_table contacts %}
-</div>
 
+<h1></h1>
+<ul class="tools">
+<li><a href="/admin/skcrm/person/add/" class="add-handler focus">Añadir contacto</a></li>
+</ul>
+
+<h1>Contactos encontrados</h1>
+<div class="module changelist-results">
+{% render_table table %}
+</div>
+</br>
+</div>
 </br>
 <h1></h1>
 <ul class="tools">
-<li>
-<a href="/admin/skcrm/person/add/" class="add-handler focus">Añadir contacto</a>
-</li>
+<li><a href="javascript: submitsearchform()" class="select-handler focus">Seleccionar contactos</a></li>
 </ul>
+
+<h1>Personas seleccionadas</h1>
+
+<div class="module changelist-results">
+{% render_table selection %}
+</div>
+</br>
+<h1></h1>
+<ul class="tools">
+<li><a href="/reset/" class="reset-handler focus">Resetear selección</a></li>
+<li><a href="/export/" class="reset-handler focus">Exportar selección</a></li>
+</ul>
+
 {% endblock %}
 
 

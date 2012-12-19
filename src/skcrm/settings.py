@@ -92,6 +92,7 @@ SECRET_KEY = 'cjc%3m7e5^cg8x((qu^=%3$d%**$lspw#1b)%zk89@r&7zs82u'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
+
 #     'django.template.loaders.eggs.Loader',
 )
 
@@ -160,6 +161,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
                                'django.core.context_processors.media',
                                'django.core.context_processors.request',
                                'django.contrib.auth.context_processors.auth',
+                               'django.core.context_processors.static',
                                )
 
 LOGIN_URL = "/admin/"
+
+
+EMAIL_HOST = "mail.wekk.net"

@@ -10,12 +10,13 @@ table {
     border-spacing: none;
 }
 td, th {
-    vertical-align: top;
+    /* vertical-align: top; */
     padding: 10px 10px 9px;
     font-size: 11px;
     line-height: 15px;
 }
 th {
+	vertical-align: middle;
     text-align: left;
     font-size: 12px;
     font-weight: bold;
@@ -26,7 +27,7 @@ th {
 
 thead th,
 tfoot td {
-    padding: 5px 10px;
+    padding: 3px 10px;
     font-size: 11px;
     line-height: 12px;
     font-weight: normal;

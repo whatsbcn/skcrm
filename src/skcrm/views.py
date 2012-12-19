@@ -3,8 +3,8 @@
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
-from skcrm.models import Person
-from skcrm.tables import PersonaTable
+from skcrm.models import Person, Sector
+from skcrm.tables import PersonaTable, SectorsTable, CompaniesTable, SectionsTable, MediasTable
 from skcrm.forms import *
 from django.http import HttpResponseRedirect, HttpResponse
 from django.db.models import Q
@@ -13,16 +13,103 @@ from django.db.models import Q
 def index(request):        
 
     selection = PersonaTable([])
-
+    
         
     return render_to_response('index.html', 
                               {'selection':selection}, 
+                              context_instance=RequestContext(request)) 
+@login_required
+def sections(request, section_id=None):    
+    s = Section.objects.all()
+    
+    # The form has been used
+    search = SearchSectionForm()
+    if request.method == 'POST':
+        search = SearchSectionForm(request.POST, request.FILES)
+        if search.is_valid():
+            name = search.cleaned_data['name']
+            s = s.filter(name__icontains=name)    
+                
+    # We are selecting a sector
+    if section_id:
+        s = s.filter(parent__id=section_id)
+        sector_name = Section.objects.get(id=section_id).name
+    else:
+        s = s.filter(parent=None)           
+    table = SectionsTable(s, order_by=request.GET.get('sort'))
+    table.paginate(page=request.GET.get('page', 1), per_page=25)
+        
+    return render_to_response('sections.html', 
+                              {'form':search, 'table':table}, 
+                              context_instance=RequestContext(request)) 
+@login_required
+def medias(request, media_id=None):    
+    m = Media.objects.all()
+    
+    # The form has been used
+    search = SearchMediaForm()
+    if request.method == 'POST':
+        search = SearchMediaForm(request.POST, request.FILES)
+        if search.is_valid():
+            name = search.cleaned_data['name']
+            m = m.filter(name__icontains=name)        
+            
+    table = MediasTable(m, order_by=request.GET.get('sort'))
+    table.paginate(page=request.GET.get('page', 1), per_page=25)
+        
+    return render_to_response('medias.html', 
+                              {'form':search, 'table':table}, 
+                              context_instance=RequestContext(request)) 
+
+@login_required
+def companies(request, company_id=None):    
+    c = Company.objects.all()
+    
+    # The form has been used
+    search = SearchCompanyForm()
+    if request.method == 'POST':
+        search = SearchCompanyForm(request.POST, request.FILES)
+        if search.is_valid():
+            name = search.cleaned_data['name']
+            c = c.filter(name__icontains=name)        
+            
+    table = CompaniesTable(c, order_by=request.GET.get('sort'))
+    table.paginate(page=request.GET.get('page', 1), per_page=25)
+        
+    return render_to_response('companies.html', 
+                              {'form':search, 'table':table}, 
+                              context_instance=RequestContext(request)) 
+
+@login_required
+def sectors(request, sector_id=None):    
+    sector_name = ""
+    s = Sector.objects.all()
+    
+    # The form has been used
+    search = SearchSectorForm()
+    if request.method == 'POST':
+        search = SearchSectorForm(request.POST, request.FILES)
+        if search.is_valid():
+            name = search.cleaned_data['name']
+            s = s.filter(name__icontains=name)        
+            
+    # We are selecting a sector
+    if sector_id:
+        s = s.filter(parent__id=sector_id)
+        sector_name = Sector.objects.get(id=sector_id).name
+    else:
+        s = s.filter(parent=None)
+    table = SectorsTable(s, order_by=request.GET.get('sort'))
+    table.paginate(page=request.GET.get('page', 1), per_page=25)
+        
+    return render_to_response('sectors.html', 
+                              {'form':search, 'sector_name': sector_name, 'table':table}, 
                               context_instance=RequestContext(request)) 
 
 @login_required
 def contacts(request):  
     if request.method == 'POST':
-        search = SearchForm(request.POST, request.FILES)
+        search = SearchContactForm(request.POST, request.FILES)
         if search.is_valid():
             # Filter people
             found_people = Person.objects.select_related().all()
@@ -36,6 +123,8 @@ def contacts(request):
             if search.cleaned_data['sector']:
                 found_people = found_people.filter(Q(contactposition__media__sectors__id=search.cleaned_data['sector'])|
                                                    Q(contactposition__media__sectors__parent__id=search.cleaned_data['sector']))
+            if search.cleaned_data['tipo_medio']:
+                found_people = found_people.filter(contactposition__media__type__id=search.cleaned_data['tipo_medio'])
             if search.cleaned_data['section']:
                 found_people = found_people.filter(Q(sections__id=search.cleaned_data['section'])|
                                                    Q(sections__parent__id=search.cleaned_data['section']))                
@@ -68,17 +157,17 @@ def contacts(request):
             people = PersonaTable([])
 
     else:
-        search = SearchForm()
+        search = SearchContactForm()
         people = PersonaTable([])
         
     # Mostrem la gent seleccionada    
-    search = SearchForm(request.POST, request.FILES)
+    search = SearchContactForm(request.POST, request.FILES)
     if 'selected_people' in request.session:
         selection = PersonaTable(request.session['selected_people'], order_by=request.GET.get('sort'))
     else:
         selection = PersonaTable([])
         
-    return render_to_response('search.html', 
+    return render_to_response('contacts.html', 
                               {'form':search, 'table':people, 'selection':selection}, 
                               context_instance=RequestContext(request)) 
 
@@ -94,8 +183,12 @@ def reset(request):
 @login_required
 #TODO: it doesn't work
 def unselect(request, pk):      
-    try:  
-        del request.session['selected_people']
+    try:
+        for person in request.session['selected_people']:
+            if person.id == int(pk):
+                aa = "aa"
+                #request.session['selected_people'].remove(person)
+                #request.session['selected_people'] = request.session['selected_people'].remove(person)
     except:
         pass
         
@@ -105,7 +198,7 @@ def unselect(request, pk):
 @login_required
 def export(request):            
     import xlwt
-    export_fields = ["Email", "Nombre", "Apellidos", u"Teléfonos", "Cargos", "Secciones"]
+    export_fields = ["Email", "Nombre", "Apellidos", u"Teléfonos", u"Dirección postal", "Cargos", "Secciones"]
     
     response = HttpResponse(mimetype="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=export.xls'
@@ -143,12 +236,18 @@ def export(request):
             ws.write(i, 3, list)
         except:
             pass
-
+        
+        try:
+            list = contact.address + ", (" + contact.postal_code + " " + contact.city.name + ")"  
+            ws.write(i, 4, list)
+        except:
+            pass
+        
         try:
             list = ""
             for position in contact.contactposition_set.all():
                 list = list + position.type.name + " (" + position.media.name + "), "
-            ws.write(i, 4, list)
+            ws.write(i, 5, list)
         except:
             pass
 
@@ -156,7 +255,7 @@ def export(request):
             list = ""
             for section in contact.sections.all():
                 list = list + section.name + ", "
-            ws.write(i, 5, list)
+            ws.write(i, 6, list)
         except:
             pass        
         i += 1
