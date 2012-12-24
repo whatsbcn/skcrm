@@ -1,0 +1,122 @@
+{% extends "planilles/base.html" %}
+{% load url from future %}
+{% load sorting_tags %}
+
+{% block title %}Agrupacions de Categories{% endblock title %}
+
+{% block notificacions %}
+    {% if form.errors %}
+    <div class="row">
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>Error.</strong> Hi ha camps amb valors incorrectes.
+        </div>
+    </div>
+    {% endif %}
+{% endblock notificacions %}
+
+{% block content %}
+<h3><a href="{% url 'grups_categoria'  %}">Grups de Categories</a> &raquo; 
+    <span class="muted">
+    {% if grup_cat_id == '0' %}
+        Nou Grup 
+    {% else %}
+        Editar Grup
+    {% endif %}
+    </span>
+</h3>
+
+<form action="/planilles/grups_categoria/{{ grup_cat_id }}/" method="post" class="form-horizontal" name="form_grup">
+    {% csrf_token %}
+    <div class="control-group {% if form.nom.errors %} error {% endif %}">
+        <label class="control-label" for="id_nom">Nom</label>
+        <div class="controls">
+            <input type="text" name="nom" id="id_nom" class="input-xxlarge" placeholder="Nom" value="{{ form.nom.value }}">
+            {% if form.nom.errors %}
+                <span class="help-inline">
+                    {% for error in form.nom.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+                </span>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <div class="pull-right">
+            {% if grup_cat_id != '0' %}
+                {# <a href="delete/" class="btn btn-danger" type="button">Esborrar Calendari</a> #}
+                <a href="#modal-esborrar" role="button" class="btn btn-danger" data-toggle="modal">Esborrar Grup</a>
+            {% endif %}
+            <button class="btn btn-primary" type="submit">Desar canvis</button>
+        </div>
+    </div>
+</form>
+
+<!-- Modal d'esborrat -->
+<div id="modal-esborrar" class="modal hide " tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Esborrar Grup de Categories<br />"<i>{{ form.nom.value }}</i>"?</h3>
+    </div>
+    <div class="modal-body">
+        <p>Segur que vols esborrar aquest Grup de Categories?</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Tancar</button>
+        <a href="delete/" class="btn btn-danger" type="button">Esborrar</a>
+    </div>
+</div>
+
+
+{% if grup_cat_id != '0' %}
+<h4>Categories associades a aquest grup:</h4>  
+
+
+{% if cats_in %}
+{% autosort cats_in %}
+<table class="table table-striped table-condensed table-hover table-bordered">
+    <thead>  
+        <tr>
+            <th style="width:250px">{% anchor descripcio "Categoria" %}</th>  
+            <th style="width:10px"></th>
+        </tr>  
+    </thead>  
+    <tbody>
+    {% for categoria in cats_in %}
+        <tr>
+            <td>{{ categoria.descripcio }}</td>
+            <td><a href="{{ categoria.id }}/delete" class="text-error"><i class="icon-trash"></i></a></td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endif %}
+
+<div class="form-actions">
+    <form class="form-inline" name="form_dia"  action="save/" method="post">
+        {% csrf_token %}
+        <div class="pull-right">
+            <!--<a href="0" class="btn btn-primary">Afegir dia (form)</a>-->
+            <button class="btn btn-primary" type="submit">Afegir categoria</button>
+        </div>
+        <label>Categoria</label>
+        <select name ="f_categories" class="input-large">
+            {% for categoria in cats_out %}
+
+            <option value="{{ categoria.id }}"
+            {% if categoria in cats_in %}
+                disabled="disabled"
+            {% endif %}
+            >{{ categoria.descripcio }}</option>    
+            {% endfor %}
+        </select>  
+    </form>
+</div>
+{% endif %}
+
+
+
+
+{% endblock content %}
+

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load url from future %}
+
+
+
+{% block content %}
+
+<form method="post" action="">{% csrf_token %}
+<table>
+{{ form.as_table }}
+</table>
+<input type="submit" name="search" value="Buscar" />
+</form>
+</br>
+<div id="changelist" class="module changelist-results">
+{% render_table contacts %}
+</div>
+
+</br>
+<h1></h1>
+<ul class="tools">
+<li>
+<a href="/admin/skcrm/person/add/" class="add-handler focus">Añadir contacto</a>
+</li>
+</ul>
+{% endblock %}
+
+

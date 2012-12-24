@@ -1,0 +1,162 @@
+{% extends "planilles/base.html" %}
+{% load url from future %}
+{% load sorting_tags %}
+
+{% block title %}Grups{% endblock title %}
+
+{% block notificacions %}
+    {% if form.errors %}
+    <div class="row">
+        <div class="alert alert-error">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <strong>Error.</strong> Hi ha camps amb valors incorrectes.
+        </div>
+    </div>
+    {% endif %}
+{% endblock notificacions %}
+
+{% block content %}
+<h3><a href="{% url 'grups'  %}">Grups</a> &raquo; 
+    <span class="muted">
+    {% if grup_id == '0' %}
+        Nou Grup 
+    {% else %}
+        Editar Grup
+    {% endif %}
+    </span>
+</h3>
+
+<form action="/planilles/grups/{{ grup_id }}/" method="post" class="form-horizontal" name="form_grup">
+    {% csrf_token %}
+    <div class="control-group {% if form.nom.errors %} error {% endif %}">
+        <label class="control-label" for="id_nom">Nom</label>
+        <div class="controls">
+            <input type="text" name="nom" id="id_nom" class="input-big" placeholder="Nom" value="{{ form.nom.value }}">
+            {% if form.nom.errors %}
+                <span class="help-inline">
+                    {% for error in form.nom.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+                </span>
+            {% endif %}
+        </div>
+    </div>
+    <div class="control-group {% if form.unitat.errors %} error {% endif %}">
+        <label class="control-label" for="id_unitat">Unitat</label>
+        <div class="controls">
+            {{ form.unitat }}
+            {% if form.unitat.errors %}
+                <span class="help-inline">
+                    {% for error in form.unitat.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+                </span>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <div class="control-group {% if form.calendari.errors %} error {% endif %}">
+        <label class="control-label" for="id_unitat">Calendari</label>
+        <div class="controls">
+            {{ form.calendari }}
+            {% if form.calendari.errors %}
+                <span class="help-inline">
+                    {% for error in form.calendari.errors %}
+                        {{ error }}&nbsp;
+                    {% endfor %}
+                </span>
+            {% endif %}
+
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <div class="pull-right">
+            {% if grup_id != '0' %}
+                <a href="#calendari-planilla" role="button" class="btn" data-toggle="collapse">Desplegar Calendari</a>
+                <a href="#modal-esborrar" role="button" class="btn btn-danger" data-toggle="modal">Esborrar Grup</a>
+            {% endif %}
+            <button class="btn btn-primary" type="submit">Desar canvis</button>
+        </div>
+    </div>
+</form>
+
+<div id="calendari-planilla" class="collapse">
+    <br />
+    <table class="calendari">
+        {% for month in dies_list %}
+        <tr>
+            <th>
+                {% if forloop.counter > 1 %}
+                   Mes {{ forloop.counter }}
+                {% else %}
+                    &nbsp;
+                {% endif %}
+            </th>
+            {% for day in month %}
+                {% if forloop.parentloop.counter == 1 %}
+                <td class="noborder">
+                    {{ forloop.counter }}
+                </td>
+                {% else %}
+                <td 
+                    {% if not forloop.parentloop.counter0 %} 
+                        class="noborder"
+                    {% endif %}
+                    {% if day == 'W'%}
+                        class="calendari_weekend"
+                    {% endif %}
+                    {% if day == 'F'%}
+                        class="calendari_festiu"
+                    {% endif %}
+                    >
+                    {% if day %}
+                        {% if day == 'F' %}
+                            <a href="#" 
+                               id="dia_{{ forloop.parentloop.counter }}_{{ forloop.counter }}"
+                               rel="tooltip" title="Dia de Festa">FN</a>
+                        {% endif %}
+                    {% else %}
+                        &nbsp;
+                    {% endif %}
+                </td>
+                {% endif %}
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+<!-- Modal d'esborrat -->
+<div id="modal-esborrar" class="modal hide " tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Esborrar grup <br />"<i>{{ form.nom.value }}</i>"?</h3>
+    </div>
+    <div class="modal-body">
+        <p>Segur que vols esborrar aquest Grup?</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Tancar</button>
+        <a href="delete/" class="btn btn-danger" type="button">Esborrar</a>
+    </div>
+</div>
+{% endblock content %}
+
+
+{% block localjs %}
+<script type="text/javascript">
+    {% for month in dies_list %}
+        {% for day in month %}
+                {% if day %}
+                    $('#dia_{{ forloop.parentloop.counter }}_{{ forloop.counter }}').
+                        tooltip({
+                            'selector': '',
+                            'placement': 'top'
+                        });
+                {% endif%}
+        {% endfor %}
+    {% endfor %}
+    </script>
+{% endblock localjs %}

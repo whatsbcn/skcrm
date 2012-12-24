@@ -1,0 +1,113 @@
+{% extends "base_bootstrap.html" %}
+{% load url from future %}
+{% load i18n %}
+
+{% block header %}
+    <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar">One </span>
+                <span class="icon-bar">Two </span>
+                <span class="icon-bar">Three </span>
+            </a>
+            <a class="brand" href="/"><strong>DB</strong>Orbyce</a>    
+            <div class="nav-collapse collapse">
+                <ul class="nav">
+                <!--  el menu 2 és el d'usuari -->
+             	<!-- 	<li><a href="{% url 'contactes' %}">Contactos</a></li>  -->
+                <!--     <li><a href="{% url 'mitjans' %}">Medios</a></li>  -->
+                    <li><a href="{% url 'company_list' %}">Empresas</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Gastos
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="nav-header">Registros</li>
+                                <li><a href="{% url 'expense_list' %}">Gastos</a></li>
+                            <li class="divider"></li>
+                            <li class="nav-header">Listados</li>
+                                <li><a href="{% url 'r_gastos_por_ot' %}">Gastos por OT</a></li>
+                                <li><a href="{% url 'r_gastos_por_proveedor' %}">Gastos por proveedor</a></li>
+                        </ul>
+                    </li>                    
+                 <!--    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Mantenimientos
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="nav-header">Medios / empresas</li>
+                                <li><a href="{% url 'sectors' %}">Sectores</a></li>
+                                <li><a href="#">Periodicidad</a></li>
+                                <li><a href="#">Tipo de medio</a></li>
+                                <li><a href="#">Tipo de empresa</a></li>
+                                <li><a href="#">Tipo de distribución</a></li>
+                                <li><a href="#">Ámbito</a></li>
+                            <li class="divider"></li>
+                            <li class="nav-header">Contactos</li>
+                                <li><a href="{% url 'seccions' %}">Secciones</a></li>
+                                <li><a href="#">Cargos</a></li>
+                                <li><a href="#">Relaciones laborales</a></li>
+                                <li><a href="#">Tipo</a></li>
+                            <li class="divider"></li>
+                            <li class="nav-header">Varios</li>                       
+                            <li><a href="#">Ciudades</a></li>
+                            <li><a href="#">Paises</a></li>
+                            <li><a href="#">Provincias</a></li>     
+                            <li><a href="#">Tipo de email</a></li>
+                            <li><a href="#">Tipo de teléfono</a></li>
+                            <li><a href="#">Tratos</a></li>
+                        </ul>
+                    </li>-->
+                    {# MENU DE NO USER #}
+                    {% if  request.user.get_profile.permis_menu != 'USER' %}
+                    {# PLANILLES - Planilles #}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            {% trans "Planilles" %}
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="nav-header">{% trans "General" %}</li>
+
+                        </ul>
+                    </li>
+                    {% endif %}
+                </ul>
+                <!-- Menu d'usuari -->
+                <div class="pull-right">
+                <ul class="nav pull-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            {{ request.user.get_full_name }}
+                            {# <span class="badge badge-important"></span> #}
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="disabled"><a href="usuari/notificacions"><i class="icon-envelope"></i> Notificacions</a></li>
+                            <li class="divider"></li>
+                            <li><a href="http://orbycesl.box.com/"><i class="icon-home"></i> Box.com</a></li>
+                            <li><a href="{% url 'logout' %}"><i class="icon-off"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                </div>
+            </div><!--/.nav-collapse -->
+        </div>
+    </div>
+</div>
+
+<div>
+{# {{request.user.groups.all}}#}</div>
+{% endblock header %}
+
+{% block notificacions %}
+    {% include 'common/missatge_header.html' %}
+{% endblock notificacions %}
+
+{% block content %}    
+{% endblock content %}
+
+

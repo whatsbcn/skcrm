@@ -1,0 +1,41 @@
+{% extends "planilles/base.html" %}
+{% load url from future %}
+{% load sorting_tags %}
+
+{% block title %}Agrupacions de Categories{% endblock title %}
+
+{% block content %}
+
+{% autosort grups_categories %}
+
+<h3>Grups de categories:</h3>
+<table class="table table-striped table-condensed hover">  
+    <thead>  
+        <tr>
+            <th>{% anchor nom "Grup" %}</th>  
+            <th>Categories</th>
+        </tr>  
+    </thead>  
+    <tbody>
+        {% for gc in grups_categories %}
+        <tr>
+            <td>
+                <a href="{% url 'grup_categoria' gc.id %} ">{{ gc.nom }}</a>
+            </td>
+            <td>
+                {% for categoria in gc.metacategoriaprofesional_set.all %}
+                    <div>{{ categoria.descripcio }}</div>
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<div class="form-actions">
+    <div class="pull-right">
+        <a href="0" class="btn btn-primary save">Afegir Grup</a>
+
+    </div>
+</div>
+
+{% endblock content %}

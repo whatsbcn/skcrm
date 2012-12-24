@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load url from future %}
+{% load render_table from django_tables2 %}
+
+
+{% block content %}
+
+{% if header_data|length == 0 %}
+<h3>Parámetros para la búsqueda</h3>
+<form method="post" action="" id="searchform">{% csrf_token %}
+<table>
+{{ form.as_table }}
+</table>
+<button type="submit" class="btn">Buscar</button>
+</form>
+
+{% else %}
+
+<h3>{{title}}</h3>
+<div class="row">
+<div class="span6">
+<table class="table table-condensed table-bordered">
+{% for row in header_data %}
+<tr>
+<td><strong>{{row.0}}</strong></td><td>{{row.1}}</td>
+</tr>
+{% endfor %}
+</table>
+</div>
+</div>
+
+
+{% autoescape off %}
+{% render_table detail_table %}
+{% endautoescape %}
+
+<div class="row">
+<div class="span3">
+<table class="table table-condensed table-bordered">
+{% if resume_data|length != 0 %}
+<tr>
+<td style="text-align: right"><strong>IVA</strong></td>
+<td style="text-align: right"><strong>Base</strong></td>
+</tr>
+{% endif %}
+
+{% for row in resume_data %}
+<tr>
+<td style="text-align: right">{{row.iva}}%</td><td style="text-align: right">{{row.base}} €</td>
+</tr>
+<tr>
+</tr>
+{% endfor %}
+<td style="text-align: right"><strong>TOTAL</strong></td><td style="text-align: right"><strong>{{total}} €</strong></td>
+</table>
+</div>
+</div>
+
+
+{% endif %}
+
+
+{% endblock %}
+
+
+{% block localjs %}
+    <script type="text/javascript">
+        $('#id_fecha_inicio').datepicker({weekStart: 1, format: 'yyyy-mm-dd'});
+        $('#id_fecha_final').datepicker({weekStart: 1, format: 'yyyy-mm-dd'});
+    </script>
+{% endblock localjs %}

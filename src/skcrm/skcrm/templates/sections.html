@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load url from future %}
+{% load django_tables2 %}
+
+
+{% block content %}
+
+<h1>Búsqueda de secciones</h1>
+<form method="post" action="" id="searchform">{% csrf_token %}
+<table>
+{{ form.as_table }}
+</table>
+</form>
+<h1>Secciones {{sector_name}}</h1>
+<div class="module changelist-results">
+{% render_table table %}
+</div>
+</br>
+</br>
+<h1></h1>
+<ul class="tools">
+<li>
+<a href="/admin/skcrm/section/add/" class="add-handler focus">Añadir seccion</a>
+</li>
+</ul>
+{% endblock %}
+
+

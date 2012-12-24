@@ -1,0 +1,22 @@
+{% load i18n %}
+
+{% if form.errors %}
+<div class="row span9 offset1">
+    <div class="alert alert-error">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong>Error</strong> 
+        Hay campos con valores incorrectos
+    </div>
+</div>
+{% endif %}
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="row span9 offset1">
+            <div class="alert alert-{{ message.tags|lower }}">
+                <button type="button" class="close" data-dismiss="alert">×</button>
+                {{ message }}
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}
