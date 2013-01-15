@@ -65,7 +65,6 @@
 
 {% block localjs %}
     <script type="text/javascript">
-        $('#id_fecha_inicio').datepicker({weekStart: 1, format: 'yyyy-mm-dd'});
-        $('#id_fecha_final').datepicker({weekStart: 1, format: 'yyyy-mm-dd'});
+        $('.datepicker').datepicker({weekStart: 1, format: 'yyyy-mm-dd'});
     </script>
 {% endblock localjs %}

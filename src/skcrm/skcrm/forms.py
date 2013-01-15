@@ -4,6 +4,9 @@ from django.forms import ModelForm, Textarea, Select
 from skcrm.models import *
 #from autocomplete_light_registry import AutocompleteOt
 import autocomplete_light
+from skcrm.models import EXPENSE_STATE
+
+EXPENSE_STATE_AND_EMPTY = [('','')] + EXPENSE_STATE
 
 MES_CHOICES = (
     ('1', 'Gener'),
@@ -97,18 +100,21 @@ class GastosPorOtrForm(forms.Form):
                                   widget=autocomplete_light.ChoiceWidget('OtAutocomplete'), required=False)    
     def __init__(self, *args, **kwargs):
         super(GastosPorOtrForm, self).__init__(*args, **kwargs)
-        self.fields['fecha_inicio'].widget.attrs.update({'class': "input-small"})
-        self.fields['fecha_final'].widget.attrs.update({'class': "input-small"})    
+        self.fields['fecha_inicio'].widget.attrs.update({'class': "input-small datepicker"})
+        self.fields['fecha_final'].widget.attrs.update({'class': "input-small datepicker"})    
 
 class GastosPorProveedorForm(forms.Form):
     fecha_inicio = forms.DateField(required=True, label="Fecha inicio")
     fecha_final = forms.DateField(required=True, label="Fecha final")
     proveedor = forms.ModelChoiceField(Company.objects.all().filter(types=1),
-                                  widget=autocomplete_light.ChoiceWidget('CompanyProviderAutocomplete'), required=False)     
+                                  widget=autocomplete_light.ChoiceWidget('CompanyAutocomplete'), required=False)
+    estado = forms.ChoiceField(choices=EXPENSE_STATE_AND_EMPTY, required=False)
+         
     def __init__(self, *args, **kwargs):
         super(GastosPorProveedorForm, self).__init__(*args, **kwargs)
-        self.fields['fecha_inicio'].widget.attrs.update({'class': "input-small"})
-        self.fields['fecha_final'].widget.attrs.update({'class': "input-small"})    
+        self.fields['fecha_inicio'].widget.attrs.update({'class': "input-small datepicker"})
+        self.fields['fecha_final'].widget.attrs.update({'class': "input-small datepicker"})
+        self.fields['estado'].widget.attrs.update({'class': "input-medium"})    
 
 
 class AnyMesForm(forms.Form):
@@ -136,7 +142,11 @@ class ExpenseForm(ModelForm):
     class Meta:
         widgets = autocomplete_light.get_widgets_dict(Expense)        
         model = Expense   
-
+    def __init__(self, *args, **kwargs):
+        super(ExpenseForm, self).__init__(*args, **kwargs)
+        self.fields['date'].widget.attrs.update({'class': "input-small datepicker"})
+        self.fields['payment_date'].widget.attrs.update({'class': "input-small datepicker"})
+        self.fields['state'].widget.attrs.update({'class': "input-medium"})  
 
 class ExpenseItemForm(ModelForm):
     class Meta:        

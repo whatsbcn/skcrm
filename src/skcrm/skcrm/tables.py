@@ -51,20 +51,57 @@ class OtTable(tables.Table):
         attrs = {"class": "table table-bordered"}
 
 class ExpenseTable(tables.Table):
-    total = tables.Column(verbose_name='Total')
+    total = tables.Column(verbose_name='Total Fac.')
     actions = tables.TemplateColumn("<a href='/expense/edit/{{ record.id }}'><i class='icon-pencil'></i>&nbsp;</a>", verbose_name="Acciones")
+    
     class Meta:
         model = Expense
         attrs = {"class": "table table-bordered"}
+        exclude = ('payment_date', 'irpf')
+        
+    def render_payment_date(self, value):
+        if not value:
+            return ""
+        else:
+            return value
+
+    def render_doc_num(self, value):
+        if not value:
+            return ""
+        else:
+            return value
 
 class ExpenseDetailTable(tables.Table):
-    total = tables.Column(verbose_name='Total')
+    iva_percent = tables.Column(verbose_name='% IVA')
+    iva = tables.Column(verbose_name='IVA')
+    base = tables.Column(verbose_name='Base')
+    total = tables.Column(verbose_name='Total Fac.')
+    
     class Meta:
         model = Expense
         attrs = {"class": "table table-bordered"}
+        exclude = ('payment_date',)
+        
+    def render_payment_date(self, value):
+        if not value:
+            return ""
+        else:
+            return value
+
+    def render_doc_num(self, value):
+        if not value:
+            return ""
+        else:
+            return value    
+        
+    def render_iva_percent(self, value):
+        ret = ""
+        for item in value:
+            ret += str(item) + "% </br>"
+        return ret
 
 class ExpenseItemTable(tables.Table):
-    total = tables.Column(verbose_name='Total')
+    total = tables.Column(verbose_name='Total Fac.')
     actions = tables.TemplateColumn("<a href='/expense/{{ record.expense.id }}/del_item/{{ record.id }}'><i class='icon-trash'></i>&nbsp;</a>", verbose_name="Acciones")
     
     class Meta:
@@ -83,7 +120,7 @@ class ExpenseItemDetailTable(tables.Table):
     class Meta:
         model = ExpenseItem
         exclude = ('ot', 'id')
-        sequence = ('expense', 'doc_num', 'date', 'concept_type', 'iva', 'base', 'description', 'total')
+        sequence = ('expense', 'doc_num', 'date', 'concept_type', 'description', 'iva', 'base', 'total')
         attrs = {"class": "table table-condensed table-bordered"}
 
     def render_base(self, value):
@@ -91,12 +128,25 @@ class ExpenseItemDetailTable(tables.Table):
 
     def render_total(self, value):
         return str("%.2f €" % value)
+    
+    def render_payment_date(self, value):
+        if not value:
+            return ""
+        else:
+            return value
+
+    def render_doc_num(self, value):
+        if not value:
+            return ""
+        else:
+            return value    
 
 class ResumeTable(tables.Table):
     iva = tables.Column(verbose_name="IVA")
     total = tables.Column(verbose_name='Base')
     class Meta:
         attrs = {"class": "table table-condensed table-bordered"}
+        orderable = False
         
 class SectorsTable(tables.Table):
     name = tables.LinkColumn('skcrm.views.sectors', args=[A('id')], verbose_name='Sector')

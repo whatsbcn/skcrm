@@ -1,9 +1,0 @@
-{% extends "planilles/base.html" %}
-
-{% block content %}
-        <ol>
-        {% for usuari in usuaris %}
-            <li><strong>{{ usuari.first_name }}</strong> {{ usuari.last_name|cut:','}} <em>({{ usuari.username }})</em></li>
-        {% endfor %}
-        </ol>
-{% endblock content %}

@@ -120,6 +120,7 @@ def report(request, report, id=None):
                 fecha_final = form.cleaned_data['fecha_final']
                 #get_object_or_404(Ot, pk=)
                 proveedor = form.cleaned_data['proveedor']
+                estado = form.cleaned_data['estado']
                 header_data = [('FECHA EXTRACCIÓN:', str(datetime.date.today())),
                               ('PERIODO:', "%s - %s" % (fecha_inicio, fecha_final))]
                                 
@@ -128,6 +129,9 @@ def report(request, report, id=None):
                 if proveedor:
                     selected_expense = selected_expense.filter(provider=proveedor)
                     header_data += [('PROVEEDOR:', str(proveedor))]
+                if estado:
+                    selected_expense = selected_expense.filter(state=estado)
+                    header_data += [('ESTADO:', str(estado))]
                 detail_table = ExpenseDetailTable(selected_expense, order_by=request.GET.get('sort'))
                 
 #                for iva_item, iva_desc in IVA_TYPE:
@@ -234,7 +238,7 @@ def company(request, action, id=None, ot_id=None):
             search = SearchCompanyForm(request.POST, request.FILES)
             if search.is_valid():
                 name = search.cleaned_data['name']
-                c = c.filter(name__icontains=name)        
+                c = c.filter(Q(name__icontains=name)|Q(comercial_name__icontains=name))        
                 
         table = CompaniesTable(c, order_by=request.GET.get('sort'))
         table.paginate(page=request.GET.get('page', 1), per_page=25)
@@ -254,9 +258,9 @@ def company(request, action, id=None, ot_id=None):
         if request.POST:
             form = CompanyForm(request.POST, instance=company)
             if form.is_valid():
-                form.save()
+                company = form.save()
                 messages.success(request, "Cambios guardados correctamente.")              
-                return redirect('company_list')
+                return redirect('company_edit', id=company.id)
             
         return render_to_response('company_edit.html', 
                                   {'form':form, 'rel_form': rel_form, 'table': table, 'obj':company}, 

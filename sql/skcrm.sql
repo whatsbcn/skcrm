@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.1.51, for pc-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 5.1.61, for pc-linux-gnu (x86_64)
 --
 -- Host: localhost    Database: skcrm
 -- ------------------------------------------------------
--- Server version	5.1.51-log
+-- Server version	5.1.61-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,42 +16,6 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `actions`
---
-
-DROP TABLE IF EXISTS `actions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `actions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(256) DEFAULT NULL,
-  `description` tinytext,
-  `type` int(11) DEFAULT NULL,
-  `state` int(11) DEFAULT NULL,
-  `client_id` int(11) DEFAULT NULL,
-  `date` datetime DEFAULT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_actions_3` (`client_id`),
-  KEY `fk_actions_4` (`user_id`),
-  KEY `fk_actions_2` (`type`),
-  KEY `fk_actions_1` (`state`),
-  CONSTRAINT `fk_actions_3` FOREIGN KEY (`client_id`) REFERENCES `contacts` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_actions_4` FOREIGN KEY (`user_id`) REFERENCES `auth_user` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `actions`
---
-
-LOCK TABLES `actions` WRITE;
-/*!40000 ALTER TABLE `actions` DISABLE KEYS */;
-INSERT INTO `actions` VALUES (14,'Garmin GPRx200','',NULL,1,NULL,'2011-11-02 13:08:38',1);
-/*!40000 ALTER TABLE `actions` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `auth_group`
 --
 
@@ -63,7 +27,7 @@ CREATE TABLE `auth_group` (
   `name` varchar(80) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,7 +36,7 @@ CREATE TABLE `auth_group` (
 
 LOCK TABLES `auth_group` WRITE;
 /*!40000 ALTER TABLE `auth_group` DISABLE KEYS */;
-INSERT INTO `auth_group` VALUES (1,'Becaris');
+INSERT INTO `auth_group` VALUES (1,'Becario'),(2,'Gestor de cuentas');
 /*!40000 ALTER TABLE `auth_group` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -91,7 +55,7 @@ CREATE TABLE `auth_group_permissions` (
   UNIQUE KEY `group_id` (`group_id`,`permission_id`),
   KEY `auth_group_permissions_bda51c3c` (`group_id`),
   KEY `auth_group_permissions_1e014c8f` (`permission_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -116,7 +80,7 @@ CREATE TABLE `auth_message` (
   `message` longtext NOT NULL,
   PRIMARY KEY (`id`),
   KEY `auth_message_fbfc09f1` (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -143,7 +107,7 @@ CREATE TABLE `auth_permission` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `content_type_id` (`content_type_id`,`codename`),
   KEY `auth_permission_e4470c6e` (`content_type_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=64 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=103 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -152,7 +116,7 @@ CREATE TABLE `auth_permission` (
 
 LOCK TABLES `auth_permission` WRITE;
 /*!40000 ALTER TABLE `auth_permission` DISABLE KEYS */;
-INSERT INTO `auth_permission` VALUES (1,'Can add permission',1,'add_permission'),(2,'Can change permission',1,'change_permission'),(3,'Can delete permission',1,'delete_permission'),(4,'Can add group',2,'add_group'),(5,'Can change group',2,'change_group'),(6,'Can delete group',2,'delete_group'),(7,'Can add user',3,'add_user'),(8,'Can change user',3,'change_user'),(9,'Can delete user',3,'delete_user'),(10,'Can add message',4,'add_message'),(11,'Can change message',4,'change_message'),(12,'Can delete message',4,'delete_message'),(13,'Can add content type',5,'add_contenttype'),(14,'Can change content type',5,'change_contenttype'),(15,'Can delete content type',5,'delete_contenttype'),(16,'Can add session',6,'add_session'),(17,'Can change session',6,'change_session'),(18,'Can delete session',6,'delete_session'),(19,'Can add site',7,'add_site'),(20,'Can change site',7,'change_site'),(21,'Can delete site',7,'delete_site'),(22,'Can add log entry',8,'add_logentry'),(23,'Can change log entry',8,'change_logentry'),(24,'Can delete log entry',8,'delete_logentry'),(25,'Can add action states',9,'add_actionstates'),(26,'Can change action states',9,'change_actionstates'),(27,'Can delete action states',9,'delete_actionstates'),(28,'Can add action types',10,'add_actiontypes'),(29,'Can change action types',10,'change_actiontypes'),(30,'Can delete action types',10,'delete_actiontypes'),(31,'Can add countries',11,'add_countries'),(32,'Can change countries',11,'change_countries'),(33,'Can delete countries',11,'delete_countries'),(34,'Can add regions',12,'add_regions'),(35,'Can change regions',12,'change_regions'),(36,'Can delete regions',12,'delete_regions'),(37,'Can add cities',13,'add_cities'),(38,'Can change cities',13,'change_cities'),(39,'Can delete cities',13,'delete_cities'),(40,'Can add contact treatments',14,'add_contacttreatments'),(41,'Can change contact treatments',14,'change_contacttreatments'),(42,'Can delete contact treatments',14,'delete_contacttreatments'),(43,'Can add contact types',15,'add_contacttypes'),(44,'Can change contact types',15,'change_contacttypes'),(45,'Can delete contact types',15,'delete_contacttypes'),(46,'Can add sectors',16,'add_sectors'),(47,'Can change sectors',16,'change_sectors'),(48,'Can delete sectors',16,'delete_sectors'),(49,'Can add contacts',17,'add_contacts'),(50,'Can change contacts',17,'change_contacts'),(51,'Can delete contacts',17,'delete_contacts'),(52,'Can add actions',18,'add_actions'),(53,'Can change actions',18,'change_actions'),(54,'Can delete actions',18,'delete_actions'),(55,'Can add contact relation types',19,'add_contactrelationtypes'),(56,'Can change contact relation types',19,'change_contactrelationtypes'),(57,'Can delete contact relation types',19,'delete_contactrelationtypes'),(58,'Can add contact actions',20,'add_contactactions'),(59,'Can change contact actions',20,'change_contactactions'),(60,'Can delete contact actions',20,'delete_contactactions'),(61,'Can add contact relations',21,'add_contactrelations'),(62,'Can change contact relations',21,'change_contactrelations'),(63,'Can delete contact relations',21,'delete_contactrelations');
+INSERT INTO `auth_permission` VALUES (1,'Can add permission',1,'add_permission'),(2,'Can change permission',1,'change_permission'),(3,'Can delete permission',1,'delete_permission'),(4,'Can add group',2,'add_group'),(5,'Can change group',2,'change_group'),(6,'Can delete group',2,'delete_group'),(7,'Can add user',3,'add_user'),(8,'Can change user',3,'change_user'),(9,'Can delete user',3,'delete_user'),(90,'Can delete ot',30,'delete_ot'),(89,'Can change ot',30,'change_ot'),(88,'Can add ot',30,'add_ot'),(13,'Can add content type',5,'add_contenttype'),(14,'Can change content type',5,'change_contenttype'),(15,'Can delete content type',5,'delete_contenttype'),(16,'Can add session',6,'add_session'),(17,'Can change session',6,'change_session'),(18,'Can delete session',6,'delete_session'),(19,'Can add log entry',7,'add_logentry'),(20,'Can change log entry',7,'change_logentry'),(21,'Can delete log entry',7,'delete_logentry'),(22,'Can add country',8,'add_country'),(23,'Can change country',8,'change_country'),(24,'Can delete country',8,'delete_country'),(25,'Can add region',9,'add_region'),(26,'Can change region',9,'change_region'),(27,'Can delete region',9,'delete_region'),(28,'Can add city',10,'add_city'),(29,'Can change city',10,'change_city'),(30,'Can delete city',10,'delete_city'),(31,'Can add contact treatment',11,'add_contacttreatment'),(32,'Can change contact treatment',11,'change_contacttreatment'),(33,'Can delete contact treatment',11,'delete_contacttreatment'),(34,'Can add media type',12,'add_mediatype'),(35,'Can change media type',12,'change_mediatype'),(36,'Can delete media type',12,'delete_mediatype'),(37,'Can add person type',13,'add_persontype'),(38,'Can change person type',13,'change_persontype'),(39,'Can delete person type',13,'delete_persontype'),(40,'Can add company type',14,'add_companytype'),(41,'Can change company type',14,'change_companytype'),(42,'Can delete company type',14,'delete_companytype'),(43,'Can add context type',15,'add_contexttype'),(44,'Can change context type',15,'change_contexttype'),(45,'Can delete context type',15,'delete_contexttype'),(46,'Can add distribution type',16,'add_distributiontype'),(47,'Can change distribution type',16,'change_distributiontype'),(48,'Can delete distribution type',16,'delete_distributiontype'),(49,'Can add periodicity type',17,'add_periodicitytype'),(50,'Can change periodicity type',17,'change_periodicitytype'),(51,'Can delete periodicity type',17,'delete_periodicitytype'),(52,'Can add phone type',18,'add_phonetype'),(53,'Can change phone type',18,'change_phonetype'),(54,'Can delete phone type',18,'delete_phonetype'),(55,'Can add email type',19,'add_emailtype'),(56,'Can change email type',19,'change_emailtype'),(57,'Can delete email type',19,'delete_emailtype'),(58,'Can add position types',20,'add_positiontypes'),(59,'Can change position types',20,'change_positiontypes'),(60,'Can delete position types',20,'delete_positiontypes'),(61,'Can add sector',21,'add_sector'),(62,'Can change sector',21,'change_sector'),(63,'Can delete sector',21,'delete_sector'),(64,'Can add section',22,'add_section'),(65,'Can change section',22,'change_section'),(66,'Can delete section',22,'delete_section'),(67,'Can add contact',23,'add_contact'),(68,'Can change contact',23,'change_contact'),(69,'Can delete contact',23,'delete_contact'),(70,'Can add person',24,'add_person'),(71,'Can change person',24,'change_person'),(72,'Can delete person',24,'delete_person'),(73,'Can add company',25,'add_company'),(74,'Can change company',25,'change_company'),(75,'Can delete company',25,'delete_company'),(76,'Can add phone',26,'add_phone'),(77,'Can change phone',26,'change_phone'),(78,'Can delete phone',26,'delete_phone'),(79,'Can add email',27,'add_email'),(80,'Can change email',27,'change_email'),(81,'Can delete email',27,'delete_email'),(82,'Can add media',28,'add_media'),(83,'Can change media',28,'change_media'),(84,'Can delete media',28,'delete_media'),(85,'Can add contact position',29,'add_contactposition'),(86,'Can change contact position',29,'change_contactposition'),(87,'Can delete contact position',29,'delete_contactposition'),(91,'Can add expense document type',31,'add_expensedocumenttype'),(92,'Can change expense document type',31,'change_expensedocumenttype'),(93,'Can delete expense document type',31,'delete_expensedocumenttype'),(94,'Can add expense concept type',32,'add_expenseconcepttype'),(95,'Can change expense concept type',32,'change_expenseconcepttype'),(96,'Can delete expense concept type',32,'delete_expenseconcepttype'),(97,'Can add expense',33,'add_expense'),(98,'Can change expense',33,'change_expense'),(99,'Can delete expense',33,'delete_expense'),(100,'Can add expense item',34,'add_expenseitem'),(101,'Can change expense item',34,'change_expenseitem'),(102,'Can delete expense item',34,'delete_expenseitem');
 /*!40000 ALTER TABLE `auth_permission` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -165,11 +129,11 @@ DROP TABLE IF EXISTS `auth_user`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `auth_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(30) CHARACTER SET latin1 NOT NULL,
-  `first_name` varchar(30) CHARACTER SET latin1 NOT NULL,
-  `last_name` varchar(30) CHARACTER SET latin1 NOT NULL,
-  `email` varchar(75) CHARACTER SET latin1 NOT NULL,
-  `password` varchar(128) CHARACTER SET latin1 NOT NULL,
+  `username` varchar(30) NOT NULL,
+  `first_name` varchar(30) NOT NULL,
+  `last_name` varchar(30) NOT NULL,
+  `email` varchar(75) NOT NULL,
+  `password` varchar(128) NOT NULL,
   `is_staff` tinyint(1) NOT NULL,
   `is_active` tinyint(1) NOT NULL,
   `is_superuser` tinyint(1) NOT NULL,
@@ -177,7 +141,7 @@ CREATE TABLE `auth_user` (
   `date_joined` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -186,7 +150,7 @@ CREATE TABLE `auth_user` (
 
 LOCK TABLES `auth_user` WRITE;
 /*!40000 ALTER TABLE `auth_user` DISABLE KEYS */;
-INSERT INTO `auth_user` VALUES (1,'whats','Albert','Sellarès Torra','whats@wekk.net','sha1$8a23d$6e1a6cafcb9d040248402126c7ed4bc5616ee51b',1,1,1,'2011-11-02 11:30:46','2011-10-26 14:35:27'),(2,'press','','','','sha1$38569$a28aa2e30db74167867c870d7c26bd66e3a4502a',1,1,0,'2011-10-31 11:18:13','2011-10-31 11:12:26');
+INSERT INTO `auth_user` VALUES (1,'whats','Albert','Sellarès Torra','whats@wekk.net','pbkdf2_sha256$10000$8vpjHUu2zdUh$D0EMuYZbf6qLNyZGons1qXTF/sOAVfFVZCY9uIr4BAk=',1,1,1,'2012-12-23 19:07:24','2012-05-20 13:32:05'),(2,'tboneta','Toni','Boneta','c.boneta@boneta.net','pbkdf2_sha256$10000$oS2clswVq57c$Pgexi/JoM+o6wOwFRqjPo9y8QR8wKA3gqhHVoPOGbbU=',0,1,0,'2012-12-23 18:39:38','2012-12-23 18:17:38');
 /*!40000 ALTER TABLE `auth_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -205,7 +169,7 @@ CREATE TABLE `auth_user_groups` (
   UNIQUE KEY `user_id` (`user_id`,`group_id`),
   KEY `auth_user_groups_fbfc09f1` (`user_id`),
   KEY `auth_user_groups_bda51c3c` (`group_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -232,7 +196,7 @@ CREATE TABLE `auth_user_user_permissions` (
   UNIQUE KEY `user_id` (`user_id`,`permission_id`),
   KEY `auth_user_user_permissions_fbfc09f1` (`user_id`),
   KEY `auth_user_user_permissions_1e014c8f` (`permission_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -270,34 +234,110 @@ INSERT INTO `cities` VALUES (1,1,'Alegría-Dulantzi'),(2,1,'Amurrio'),(3,1,'Aña
 UNLOCK TABLES;
 
 --
--- Table structure for table `contact_answer`
+-- Table structure for table `company`
 --
 
-DROP TABLE IF EXISTS `contact_answer`;
+DROP TABLE IF EXISTS `company`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `contact_answer` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `contact_id` int(11) NOT NULL,
-  `action_id` int(11) DEFAULT NULL,
-  `attempt` int(11) NOT NULL DEFAULT '0',
-  `answer` varchar(64) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `fk_contact_action_uniq` (`contact_id`,`action_id`),
-  KEY `fk_contact_actions_1` (`contact_id`),
-  KEY `fk_contact_actions_2` (`action_id`),
-  CONSTRAINT `fk_contact_actions_2` FOREIGN KEY (`action_id`) REFERENCES `actions` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+CREATE TABLE `company` (
+  `contact_ptr_id` int(11) NOT NULL,
+  `comercial_name` varchar(100) DEFAULT NULL,
+  `context_id` int(11) DEFAULT NULL,
+  `is_group` tinyint(1) NOT NULL,
+  `in_group_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`contact_ptr_id`),
+  KEY `company_8510bf2` (`context_id`),
+  KEY `company_d5b7bd5b` (`in_group_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `contact_answer`
+-- Dumping data for table `company`
 --
 
-LOCK TABLES `contact_answer` WRITE;
-/*!40000 ALTER TABLE `contact_answer` DISABLE KEYS */;
-INSERT INTO `contact_answer` VALUES (11,6,14,0,'1'),(12,7,14,0,'1'),(13,9,14,0,'1'),(14,8,14,0,'1'),(16,10,14,0,'1');
-/*!40000 ALTER TABLE `contact_answer` ENABLE KEYS */;
+LOCK TABLES `company` WRITE;
+/*!40000 ALTER TABLE `company` DISABLE KEYS */;
+INSERT INTO `company` VALUES (1,NULL,1,0,2),(7,NULL,NULL,1,NULL),(8,NULL,NULL,0,7),(13,NULL,NULL,0,7),(28,NULL,NULL,0,NULL),(29,'Flash Courier',NULL,0,NULL),(31,'',NULL,0,NULL);
+/*!40000 ALTER TABLE `company` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `company_types`
+--
+
+DROP TABLE IF EXISTS `company_types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `company_types` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `company_types`
+--
+
+LOCK TABLES `company_types` WRITE;
+/*!40000 ALTER TABLE `company_types` DISABLE KEYS */;
+INSERT INTO `company_types` VALUES (1,'Proveedor'),(2,'Cliente'),(3,'Medio de comunicación');
+/*!40000 ALTER TABLE `company_types` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `contact_email_types`
+--
+
+DROP TABLE IF EXISTS `contact_email_types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `contact_email_types` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(144) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `contact_email_types`
+--
+
+LOCK TABLES `contact_email_types` WRITE;
+/*!40000 ALTER TABLE `contact_email_types` DISABLE KEYS */;
+INSERT INTO `contact_email_types` VALUES (1,'borram');
+/*!40000 ALTER TABLE `contact_email_types` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `contact_emails`
+--
+
+DROP TABLE IF EXISTS `contact_emails`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `contact_emails` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `email` varchar(45) NOT NULL,
+  `type_id` int(11) DEFAULT NULL,
+  `contact_id` int(11) DEFAULT NULL,
+  `primary` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `contact_emails_777d41c8` (`type_id`),
+  KEY `contact_emails_170b8823` (`contact_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `contact_emails`
+--
+
+LOCK TABLES `contact_emails` WRITE;
+/*!40000 ALTER TABLE `contact_emails` DISABLE KEYS */;
+INSERT INTO `contact_emails` VALUES (2,'whats@wekk.net',1,3,'0'),(3,'merda@wekk.net',1,3,'1');
+/*!40000 ALTER TABLE `contact_emails` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -309,10 +349,10 @@ DROP TABLE IF EXISTS `contact_phone_types`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `contact_phone_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(144) CHARACTER SET latin1 NOT NULL,
+  `name` varchar(144) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -321,7 +361,7 @@ CREATE TABLE `contact_phone_types` (
 
 LOCK TABLES `contact_phone_types` WRITE;
 /*!40000 ALTER TABLE `contact_phone_types` DISABLE KEYS */;
-INSERT INTO `contact_phone_types` VALUES (5,'Fax'),(3,'Fijo personal'),(2,'Fijo trabajo'),(1,'Móvil personal'),(4,'Móvil trabajo');
+INSERT INTO `contact_phone_types` VALUES (1,'Movil personal'),(2,'Teléfono directo');
 /*!40000 ALTER TABLE `contact_phone_types` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -334,14 +374,14 @@ DROP TABLE IF EXISTS `contact_phones`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `contact_phones` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `number` int(11) DEFAULT NULL,
+  `number` int(11) NOT NULL,
   `type_id` int(11) DEFAULT NULL,
   `contact_id` int(11) DEFAULT NULL,
+  `primary` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_phone` (`contact_id`),
-  KEY `fk_type` (`type_id`),
-  CONSTRAINT `fk_phone` FOREIGN KEY (`contact_id`) REFERENCES `contacts` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  KEY `contact_phones_777d41c8` (`type_id`),
+  KEY `contact_phones_170b8823` (`contact_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -350,64 +390,63 @@ CREATE TABLE `contact_phones` (
 
 LOCK TABLES `contact_phones` WRITE;
 /*!40000 ALTER TABLE `contact_phones` DISABLE KEYS */;
-INSERT INTO `contact_phones` VALUES (1,677541957,1,6),(2,938736966,2,6),(3,655643234,3,7);
+INSERT INTO `contact_phones` VALUES (1,677541957,1,3,NULL),(2,932123212,2,3,NULL);
 /*!40000 ALTER TABLE `contact_phones` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `contact_relation_types`
+-- Table structure for table `contact_position`
 --
 
-DROP TABLE IF EXISTS `contact_relation_types`;
+DROP TABLE IF EXISTS `contact_position`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `contact_relation_types` (
+CREATE TABLE `contact_position` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  `person_id` int(11) DEFAULT NULL,
+  `company_id` int(11) DEFAULT NULL,
+  `media_id` int(11) DEFAULT NULL,
+  `type_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `contact_position_21b911c5` (`person_id`),
+  KEY `contact_position_543518c6` (`company_id`),
+  KEY `contact_position_11f50c51` (`media_id`),
+  KEY `contact_position_777d41c8` (`type_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `contact_relation_types`
+-- Dumping data for table `contact_position`
 --
 
-LOCK TABLES `contact_relation_types` WRITE;
-/*!40000 ALTER TABLE `contact_relation_types` DISABLE KEYS */;
-INSERT INTO `contact_relation_types` VALUES (1,'Laboral');
-/*!40000 ALTER TABLE `contact_relation_types` ENABLE KEYS */;
+LOCK TABLES `contact_position` WRITE;
+/*!40000 ALTER TABLE `contact_position` DISABLE KEYS */;
+INSERT INTO `contact_position` VALUES (3,3,13,14,23),(5,4,8,9,18);
+/*!40000 ALTER TABLE `contact_position` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `contact_relations`
+-- Table structure for table `contact_position_types`
 --
 
-DROP TABLE IF EXISTS `contact_relations`;
+DROP TABLE IF EXISTS `contact_position_types`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `contact_relations` (
+CREATE TABLE `contact_position_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) DEFAULT NULL,
-  `contact_id1` int(11) DEFAULT NULL,
-  `contact_id2` int(11) DEFAULT NULL,
-  `type_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `fk_contact_relations_1` (`contact_id1`),
-  KEY `fk_contact_relations_2` (`contact_id2`),
-  KEY `fk_contact_relations_3` (`type_id`),
-  CONSTRAINT `fk_contact_relations_1` FOREIGN KEY (`contact_id1`) REFERENCES `contacts` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_contact_relations_2` FOREIGN KEY (`contact_id2`) REFERENCES `contacts` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_contact_relations_3` FOREIGN KEY (`type_id`) REFERENCES `contact_relation_types` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `name` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `contact_relations`
+-- Dumping data for table `contact_position_types`
 --
 
-LOCK TABLES `contact_relations` WRITE;
-/*!40000 ALTER TABLE `contact_relations` DISABLE KEYS */;
-/*!40000 ALTER TABLE `contact_relations` ENABLE KEYS */;
+LOCK TABLES `contact_position_types` WRITE;
+/*!40000 ALTER TABLE `contact_position_types` DISABLE KEYS */;
+INSERT INTO `contact_position_types` VALUES (1,'Presidente'),(2,'Consejero Delegado'),(3,'Director General'),(4,'Director Comercial'),(5,'Director de Márketing'),(6,'Director de comunicación'),(7,'Empleado'),(8,'Secretaria'),(9,'RRPP'),(10,'Director /a'),(11,'Subdirector'),(13,'Subdirector /a'),(14,'Coordinador /a'),(15,'Jefe/a de sección'),(16,'Secretaria redacción'),(17,'Secretaria dirección'),(18,'Redactor'),(19,'Periodista'),(20,'Redactor jefe'),(21,'Estilista'),(22,'Atrezzo'),(23,'Editor'),(24,'Coordinador de redacción'),(25,'Corresponsal'),(26,'Productor'),(27,'Presentador'),(28,'Presentador'),(29,'Delegado/a de public./editorial'),(30,'Responsable de contenidos'),(31,'Fotógrafo'),(32,'Cámara'),(33,'Freelance'),(34,'Blogger'),(35,'CM');
+/*!40000 ALTER TABLE `contact_position_types` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -419,9 +458,9 @@ DROP TABLE IF EXISTS `contact_treatments`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `contact_treatments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(32) DEFAULT NULL,
+  `name` varchar(32) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -430,32 +469,8 @@ CREATE TABLE `contact_treatments` (
 
 LOCK TABLES `contact_treatments` WRITE;
 /*!40000 ALTER TABLE `contact_treatments` DISABLE KEYS */;
-INSERT INTO `contact_treatments` VALUES (1,'Sr');
+INSERT INTO `contact_treatments` VALUES (1,'Sr.'),(2,'Sra.'),(3,'Sr. D.'),(4,'Sra. Dña.'),(5,'Srta.'),(6,'Ilmo. Sr.'),(7,'Excmo. Sr.');
 /*!40000 ALTER TABLE `contact_treatments` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `contact_types`
---
-
-DROP TABLE IF EXISTS `contact_types`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `contact_types` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `contact_types`
---
-
-LOCK TABLES `contact_types` WRITE;
-/*!40000 ALTER TABLE `contact_types` DISABLE KEYS */;
-INSERT INTO `contact_types` VALUES (1,'Periodista'),(2,'Empresa'),(3,'Sociedad'),(4,'Cliente'),(5,'Proveedor');
-/*!40000 ALTER TABLE `contact_types` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -467,34 +482,22 @@ DROP TABLE IF EXISTS `contacts`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `contacts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(256) DEFAULT NULL,
-  `cognom1` varchar(256) DEFAULT NULL,
-  `cognom2` varchar(256) DEFAULT NULL,
-  `surname` varchar(256) DEFAULT NULL,
-  `email` varchar(64) DEFAULT NULL,
-  `personal_assistant_id` int(11) DEFAULT NULL,
-  `treatment_id` int(11) DEFAULT NULL,
-  `address` varchar(256) DEFAULT NULL,
-  `postal_code` varchar(32) DEFAULT NULL,
+  `name` varchar(100) NOT NULL,
+  `address` varchar(100) NOT NULL,
+  `packets_address` varchar(100) NOT NULL,
+  `postal_code` varchar(32) NOT NULL,
   `city_id` int(11) DEFAULT NULL,
   `region_id` int(11) DEFAULT NULL,
   `country_id` int(11) DEFAULT NULL,
-  `website` varchar(256) DEFAULT NULL,
-  `born_date` date DEFAULT NULL,
-  `mailing` tinyint(1) DEFAULT '1',
-  `NIF_CIF` varchar(45) DEFAULT NULL,
+  `website` varchar(100) NOT NULL,
+  `mailing` tinyint(1) NOT NULL,
+  `disabled` tinyint(1) NOT NULL,
+  `NIF_CIF` varchar(45) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_contacts_1` (`treatment_id`),
-  KEY `fk_contacts_2` (`personal_assistant_id`),
-  KEY `fk_contacts_3` (`city_id`),
-  KEY `fk_contacts_4` (`country_id`),
-  KEY `fk_contacts_6` (`region_id`),
-  CONSTRAINT `fk_contacts_1` FOREIGN KEY (`treatment_id`) REFERENCES `contact_treatments` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_contacts_2` FOREIGN KEY (`personal_assistant_id`) REFERENCES `contacts` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_contacts_3` FOREIGN KEY (`city_id`) REFERENCES `cities` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_contacts_4` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `fk_contacts_6` FOREIGN KEY (`region_id`) REFERENCES `regions` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+  KEY `contacts_586a73b5` (`city_id`),
+  KEY `contacts_f6a8b032` (`region_id`),
+  KEY `contacts_534dd89` (`country_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -503,8 +506,32 @@ CREATE TABLE `contacts` (
 
 LOCK TABLES `contacts` WRITE;
 /*!40000 ALTER TABLE `contacts` DISABLE KEYS */;
-INSERT INTO `contacts` VALUES (6,'Albert','Sellarès','Torra','',NULL,NULL,1,'Sant Joan de Malta 45, 3e 2a','08018',899,33,73,'http://www.wekk.net/','1984-02-29',1,'39372585N'),(7,'Albert','Mateu','','','',NULL,NULL,'','',NULL,NULL,NULL,'',NULL,0,''),(8,'Silvia','Rubió','','','sr.comunicacion@orbyce.com',NULL,NULL,'','',NULL,NULL,NULL,'http://www.orbyce.com/',NULL,0,''),(9,'Andreu','Buenafuente','','','',NULL,NULL,'','',NULL,NULL,NULL,'',NULL,0,''),(10,'Alessia','','','','',NULL,NULL,'','',NULL,NULL,NULL,'',NULL,0,'');
+INSERT INTO `contacts` VALUES (8,'La vanguardia ediciones S.L.','','','',NULL,NULL,NULL,'',0,0,''),(7,'Grup Godó','','','',899,33,73,'',0,0,''),(3,'Jordi','Leiva 11, 1a','','08080',899,33,73,'',0,0,''),(4,'test cultura a la vanguardia','','','',NULL,NULL,NULL,'',0,0,''),(5,'test2 cultura museos','','','',NULL,NULL,NULL,'',0,0,''),(6,'Sr periodista al pais','','','',NULL,NULL,NULL,'',0,0,''),(9,'La vanguardia','','','',NULL,NULL,NULL,'',0,0,''),(13,'Rac1','','','',NULL,NULL,NULL,'',0,0,''),(14,'El món a RAC1','','','',NULL,NULL,NULL,'',0,0,''),(15,'àlbert','','','',NULL,NULL,NULL,'',0,0,''),(16,'Jordi','','','',NULL,NULL,NULL,'',0,0,''),(28,'Orbyce S.L.','Sant Elies 29-35 esc B 4t 2a','Sant Elies 29-35 esc B 4t 2a','08006',899,33,73,'http://www.orbyce.com/',0,0,''),(31,'Bonis SPA','','','',899,33,73,'',0,0,''),(29,'Urbecourier Missatgers S.L.','Viladomat, 365 Tienda 1','','08029',899,33,73,'',0,0,'B63405633');
 /*!40000 ALTER TABLE `contacts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `context_types`
+--
+
+DROP TABLE IF EXISTS `context_types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `context_types` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `context_types`
+--
+
+LOCK TABLES `context_types` WRITE;
+/*!40000 ALTER TABLE `context_types` DISABLE KEYS */;
+INSERT INTO `context_types` VALUES (1,'Local'),(2,'Comarcal'),(3,'Autonómico'),(4,'Nacional'),(5,'Internacional'),(6,'Vecinal'),(7,'Internet'),(8,'Newsletter');
+/*!40000 ALTER TABLE `context_types` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -532,6 +559,30 @@ INSERT INTO `countries` VALUES (1,'Afganistán'),(2,'Islas Gland'),(3,'Albania')
 UNLOCK TABLES;
 
 --
+-- Table structure for table `distribution_types`
+--
+
+DROP TABLE IF EXISTS `distribution_types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `distribution_types` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `distribution_types`
+--
+
+LOCK TABLES `distribution_types` WRITE;
+/*!40000 ALTER TABLE `distribution_types` DISABLE KEYS */;
+INSERT INTO `distribution_types` VALUES (1,'Gratuita'),(2,'Interno (mktg.dir.)'),(3,'Suscripción'),(4,'Selectiva'),(5,'Kiosco');
+/*!40000 ALTER TABLE `distribution_types` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `django_admin_log`
 --
 
@@ -550,7 +601,7 @@ CREATE TABLE `django_admin_log` (
   PRIMARY KEY (`id`),
   KEY `django_admin_log_fbfc09f1` (`user_id`),
   KEY `django_admin_log_e4470c6e` (`content_type_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=57 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=313 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -559,7 +610,7 @@ CREATE TABLE `django_admin_log` (
 
 LOCK TABLES `django_admin_log` WRITE;
 /*!40000 ALTER TABLE `django_admin_log` DISABLE KEYS */;
-INSERT INTO `django_admin_log` VALUES (1,'2011-10-31 09:07:58',1,7,'1','skcrm.wekk.net',2,'Changed domain and name.'),(2,'2011-10-31 10:18:12',1,15,'None','Periodista',1,''),(3,'2011-10-31 10:19:10',1,15,'None','Empresa',1,''),(4,'2011-10-31 10:19:40',1,15,'None','Sociedad',1,''),(5,'2011-10-31 10:25:46',1,14,'None','Sr',1,''),(6,'2011-10-31 10:29:51',1,15,'None','Cliente',1,''),(7,'2011-10-31 10:58:09',1,19,'None','Laboral',1,''),(8,'2011-10-31 11:12:26',1,3,'2','press',1,''),(9,'2011-10-31 11:13:57',1,3,'2','press',2,'Changed is_staff.'),(10,'2011-10-31 11:15:47',1,2,'1','Becaris',1,''),(11,'2011-10-31 11:50:32',1,15,'None','Proveedor',1,''),(12,'2011-10-31 12:35:54',1,17,'None','Albert',1,''),(13,'2011-10-31 12:52:16',1,17,'6','Albert Sellarès Torra',2,'Changed types.'),(14,'2011-10-31 13:00:43',1,22,'None','Phones object',1,''),(15,'2011-10-31 13:01:07',1,22,'None','Phones object',1,''),(16,'2011-10-31 13:21:37',1,23,'None','Móvil',1,''),(17,'2011-10-31 13:21:48',1,23,'None','Fijo',1,''),(18,'2011-10-31 13:29:14',1,25,'2','Fijo trabajo',2,'Changed name.'),(19,'2011-10-31 13:29:24',1,25,'None','Fijo personal',1,''),(20,'2011-10-31 13:29:36',1,25,'1','Móvil personal',2,'Changed name.'),(21,'2011-10-31 13:29:50',1,25,'None','Móvil trabajo',1,''),(22,'2011-11-01 07:59:28',1,28,'None','Invitación',1,''),(23,'2011-11-01 08:00:06',1,28,'None','Nota de prensa',1,''),(24,'2011-11-01 08:13:22',1,25,'None','Fax',1,''),(25,'2011-11-01 08:24:38',1,24,'6','Albert Sellarès Torra',2,'Changed mailing and NIF_CIF.'),(26,'2011-11-01 12:44:15',1,24,'None','Artur Mas ',1,''),(27,'2011-11-01 12:44:48',1,24,'16','Artur Mas ',3,''),(28,'2011-11-01 13:08:20',1,31,'None','Invitación',1,''),(29,'2011-11-01 13:08:41',1,31,'None','Nota de prensa',1,''),(30,'2011-11-01 13:08:45',1,28,'1','Invitación',3,''),(31,'2011-11-01 13:08:46',1,28,'2','Nota de prensa',3,''),(32,'2011-11-02 08:48:50',1,24,'7','Albert Mateu ',1,''),(33,'2011-11-02 08:56:04',1,24,'8','Silvia Rubió ',1,''),(34,'2011-11-02 08:56:42',1,24,'9','Andreu Buenafuente ',1,''),(35,'2011-11-02 13:25:54',1,30,'1','Acción autogenerada',3,''),(36,'2011-11-02 12:03:37',1,30,'2','Acción autogenerada',3,''),(37,'2011-11-02 12:03:37',1,30,'4','Acción autogenerada',3,''),(38,'2011-11-02 12:03:37',1,30,'7','Acción autogenerada',3,''),(39,'2011-11-02 12:20:12',1,30,'9','Acción autogenerada',2,'Changed state. Changed attempt for contact answer \"Answer: None\".'),(40,'2011-11-02 12:21:16',1,3,'1','whats',2,'Changed first_name and last_name.'),(41,'2011-11-02 12:43:06',1,30,'9','teststasdfsa asdf as d',2,'Changed name, type and state. Changed answer for contact answer \"Answer: 3\".'),(42,'2011-11-02 12:48:22',1,30,'9','teststasdfsa asdf as d',2,'Changed answer for contact answer \"Answer: 2\". Changed answer for contact answer \"Answer: 1\".'),(43,'2011-11-02 12:49:56',1,30,'9','teststasdfsa asdf as d',2,'Changed description.'),(44,'2011-11-02 12:49:58',1,30,'9','teststasdfsa asdf as d',2,'No fields changed.'),(45,'2011-11-02 13:00:27',1,32,'5','Answer: 1',2,'Changed answer.'),(46,'2011-11-02 13:00:31',1,32,'5','Answer: 3',2,'Changed answer.'),(47,'2011-11-02 13:00:41',1,32,'7','Answer: 2',1,''),(48,'2011-11-02 13:00:42',1,32,'8','Answer: 2',1,''),(49,'2011-11-02 13:06:50',1,30,'8','Acción autogenerada',3,''),(50,'2011-11-02 13:06:50',1,30,'12','Acción autogenerada',3,''),(51,'2011-11-02 13:06:50',1,30,'9','teststasdfsa asdf as d',3,''),(52,'2011-11-02 13:29:34',1,30,'14','Garmin GPRx200 / 2011-11-02 13:08:38 / None',2,'Changed name.'),(53,'2011-11-02 13:59:28',1,24,'10','Alessia  ',1,''),(54,'2011-11-02 14:00:30',1,30,'14','Garmin GPRx200 / 2011-11-02 13:08:38 / None',2,'Added contact answer \"Answer: 1\".'),(55,'2011-11-02 14:00:41',1,30,'14','Garmin GPRx200 / 2011-11-02 13:08:38 / None',2,'Added contact answer \"Answer: 2\".'),(56,'2011-11-02 14:01:25',1,30,'14','Garmin GPRx200 / 2011-11-02 13:08:38 / None',2,'Deleted contact answer \"Answer: 2\".');
+INSERT INTO `django_admin_log` VALUES (1,'2012-05-20 13:42:47',1,25,'1','Racc1',1,''),(2,'2012-05-20 13:43:57',1,15,'1','Local',1,''),(3,'2012-05-20 13:44:42',1,25,'2','Grup Godó',1,''),(4,'2012-05-20 13:44:47',1,25,'1','Racc1',2,'Changed context and in_group.'),(5,'2012-05-20 13:46:22',1,16,'1','Gratuita',1,''),(6,'2012-05-20 13:46:36',1,17,'1','Diaria',1,''),(7,'2012-05-20 13:46:47',1,12,'1','Radio',1,''),(8,'2012-05-20 13:47:46',1,25,'1','Rac1',2,'Changed name.'),(9,'2012-05-20 13:48:46',1,28,'1','El món a RAC1',2,'No fields changed.'),(10,'2012-05-20 13:50:02',1,24,'3','Jordi Basté i Duran',1,''),(11,'2012-05-20 13:50:20',1,24,'3','Jordi Basté i Duran',2,'Changed city, region and country.'),(12,'2012-05-20 13:52:27',1,21,'1','Información general',1,''),(13,'2012-05-20 13:53:31',1,28,'1','El món a RAC1',2,'Changed sectors.'),(14,'2012-05-20 13:54:34',1,22,'1','Gente',1,''),(15,'2012-05-20 13:54:52',1,13,'1','Periodista',1,''),(16,'2012-05-20 13:55:13',1,13,'2','Contacto de sociedad',1,''),(17,'2012-05-20 13:55:22',1,24,'3','Jordi Basté i Duran',2,'Changed types and sections.'),(18,'2012-05-20 13:57:53',1,13,'3','Cliente',1,''),(19,'2012-05-20 13:57:59',1,13,'4','Proveedor',1,''),(20,'2012-05-20 13:58:01',1,24,'3','Jordi Basté i Duran',2,'No fields changed.'),(21,'2012-05-20 14:05:42',1,24,'3','Jordi Basté i Durant',2,'Changed cognoms.'),(22,'2012-05-20 14:06:42',1,20,'1','Presidente',1,''),(23,'2012-05-20 14:08:49',1,29,'2','Jordi Basté i Durant Rac1 El món a RAC1',1,''),(24,'2012-05-20 14:09:00',1,29,'1','Jordi Basté i Durant Rac1 El món a RAC1',3,''),(25,'2012-05-20 14:10:00',1,11,'1','Sr.',1,''),(26,'2012-05-20 14:13:59',1,2,'1','Becario',1,''),(27,'2012-05-20 14:14:07',1,2,'2','Gestor de cuentas',1,''),(28,'2012-07-30 18:49:17',1,24,'4','test ',1,''),(29,'2012-07-30 18:50:17',1,24,'5','test2 ',1,''),(30,'2012-07-30 18:50:35',1,24,'6','test4 ',1,''),(31,'2012-07-30 18:52:28',1,24,'4','test Cognom1 Cognom2',2,'Changed cognoms.'),(32,'2012-07-30 18:53:55',1,24,'4','test Cognom1 Cognom4',2,'Changed cognoms.'),(33,'2012-07-30 18:54:54',1,24,'5','test2 Segon cognom',2,'Changed cognoms.'),(34,'2012-07-31 11:18:34',1,18,'1','Movil personal',1,''),(35,'2012-07-31 11:25:26',1,18,'2','Teléfono directo',1,''),(36,'2012-07-31 11:25:56',1,24,'3','Jordi Basté i Durant',2,'Added phone \"677541957\". Added phone \"932123212\".'),(37,'2012-07-31 12:14:52',1,22,'2','VIP',1,''),(38,'2012-07-31 12:15:02',1,22,'3','Corazón',1,''),(39,'2012-07-31 12:15:10',1,22,'4','Economia',1,''),(40,'2012-08-20 10:37:51',1,22,'5','Sociedad',1,''),(41,'2012-08-20 10:38:06',1,22,'6','Educación',1,''),(42,'2012-08-20 10:47:42',1,22,'7','Empresa',1,''),(43,'2012-08-20 10:47:55',1,22,'8','Consumo',1,''),(44,'2012-08-20 10:48:47',1,22,'9','Finanzas',1,''),(45,'2012-08-20 10:48:53',1,22,'10','Innovación',1,''),(46,'2012-08-20 10:49:04',1,22,'11','Bolsa',1,''),(47,'2012-08-20 10:50:04',1,22,'12','Laboral',1,''),(48,'2012-08-20 10:50:25',1,22,'13','Marketing y publicidad',1,''),(49,'2012-08-20 10:51:28',1,22,'14','Entrevistas',1,''),(50,'2012-08-20 10:52:11',1,22,'15','Entrevistas Perfiles',1,''),(51,'2012-08-20 10:53:59',1,22,'16','Reportajes',1,''),(52,'2012-08-20 10:54:10',1,22,'17','',1,''),(53,'2012-08-20 10:54:57',1,22,'17','',3,''),(54,'2012-08-20 10:55:36',1,22,'18','Actualidad',1,''),(55,'2012-08-20 10:55:46',1,22,'19','Internacional',1,''),(56,'2012-08-20 10:56:01',1,22,'20','Política',1,''),(57,'2012-08-20 10:56:10',1,19,'1','borram',1,''),(58,'2012-08-20 10:56:31',1,22,'21','Sucesos',1,''),(59,'2012-08-20 10:56:49',1,28,'1','Rac1',2,'Added phone \"938473322\".'),(60,'2012-08-20 10:56:49',1,22,'22','Opinión',1,''),(61,'2012-08-20 10:57:26',1,22,'23','Artículos',1,''),(62,'2012-08-20 10:57:51',1,22,'24','Semáforo',1,''),(63,'2012-08-20 10:58:05',1,22,'25','Temas de debate',1,''),(64,'2012-08-20 10:58:25',1,22,'26','Director- Editorial',1,''),(65,'2012-08-20 10:58:38',1,22,'27','Deportes',1,''),(66,'2012-08-20 10:59:49',1,22,'28','Tecnología',1,''),(67,'2012-08-20 11:00:12',1,22,'29','Informática',1,''),(68,'2012-08-20 11:00:30',1,22,'30','Internet',1,''),(69,'2012-08-20 11:00:49',1,22,'31','Telefonía',1,''),(70,'2012-08-20 11:01:28',1,22,'32','Gadget',1,''),(71,'2012-08-20 11:02:17',1,22,'33','Ciencia',1,''),(72,'2012-08-20 11:02:36',1,22,'34','Investigación',1,''),(73,'2012-08-20 11:02:45',1,22,'35','Aparatos',1,''),(74,'2012-08-20 11:03:41',1,22,'36',' Medicina',1,''),(75,'2012-08-20 11:04:14',1,22,'37','Medio Ambiente',1,''),(76,'2012-08-20 11:04:54',1,22,'38','Tendencias',1,''),(77,'2012-08-20 11:05:02',1,22,'39',' Salud Pública',1,''),(78,'2012-08-20 11:05:32',1,22,'40','Bazar- Compras',1,''),(79,'2012-08-20 11:06:09',1,22,'39',' Salud Pública',2,'Changed parent.'),(80,'2012-08-20 11:06:21',1,22,'41','Decoración',1,''),(81,'2012-08-20 11:07:42',1,22,'42','Belleza',1,''),(82,'2012-08-20 11:08:01',1,22,'43','Maquillaje',1,''),(83,'2012-08-20 11:08:23',1,22,'44','Tratamientos ',1,''),(84,'2012-08-20 11:08:47',1,22,'45','Pasarela',1,''),(85,'2012-08-20 11:09:06',1,22,'46',' Colecciones',1,''),(86,'2012-08-20 11:09:28',1,22,'47',' Productos',1,''),(87,'2012-08-20 11:10:10',1,22,'48','Moda',1,''),(88,'2012-08-20 11:10:47',1,22,'49','Pasarela- Colecciones ',1,''),(89,'2012-08-20 11:10:59',1,22,'50','Tendencia',1,''),(90,'2012-08-20 11:11:11',1,22,'51',' Ropa',1,''),(91,'2012-08-20 11:11:17',1,22,'52',' Calzado',1,''),(92,'2012-08-20 11:11:35',1,22,'53','Accesorios',1,''),(93,'2012-08-20 11:11:45',1,22,'54',' Labores y patrones',1,''),(94,'2012-08-20 11:11:51',1,22,'55',' Joyas-relojes',1,''),(95,'2012-08-20 11:12:20',1,22,'56','Cultura',1,''),(96,'2012-08-20 11:12:37',1,22,'57','Música',1,''),(97,'2012-08-20 11:12:45',1,22,'58',' Cine',1,''),(98,'2012-08-20 11:12:51',1,22,'59',' Televisión',1,''),(99,'2012-08-20 11:13:41',1,22,'60','Radio',1,''),(100,'2012-08-20 11:13:54',1,22,'61','Pintura',1,''),(101,'2012-08-20 11:14:28',1,22,'62','Museos',1,''),(102,'2012-08-20 11:14:51',1,22,'63','Literatura',1,''),(103,'2012-08-20 11:15:07',1,22,'64','Arte',1,''),(104,'2012-08-20 11:15:22',1,22,'65','Danza',1,''),(105,'2012-08-20 11:15:32',1,22,'66','Escultura',1,''),(106,'2012-08-20 11:15:39',1,22,'67','Teatro',1,''),(107,'2012-08-20 11:15:54',1,22,'68','Ocio',1,''),(108,'2012-08-20 11:16:47',1,22,'69','Hobbies',1,''),(109,'2012-08-20 11:16:56',1,22,'70','Hoteles',1,''),(110,'2012-08-20 11:17:11',1,22,'71','Viajes',1,''),(111,'2012-08-20 11:17:28',1,22,'72','Destinos',1,''),(112,'2012-08-20 11:17:40',1,22,'73','Turismo',1,''),(113,'2012-08-20 11:17:53',1,22,'74','Gastronomía',1,''),(114,'2012-08-20 11:18:13',1,22,'75','Motor',1,''),(115,'2012-08-20 11:26:07',1,15,'2','Comarcal',1,''),(116,'2012-08-20 11:26:29',1,15,'3','Autonómico',1,''),(117,'2012-08-20 11:26:42',1,15,'4','Nacional',1,''),(118,'2012-08-20 11:26:45',1,15,'5','Internacional',1,''),(119,'2012-08-20 11:28:56',1,11,'2','Sra.',1,''),(120,'2012-08-20 11:29:18',1,11,'3','Sr. D.',1,''),(121,'2012-08-20 11:29:28',1,11,'4','Sra. Dña.',1,''),(122,'2012-08-20 11:29:36',1,11,'5','Srta.',1,''),(123,'2012-08-20 11:29:55',1,14,'1','Proveedor',1,''),(124,'2012-08-20 11:30:06',1,14,'2','Cliente',1,''),(125,'2012-08-20 11:30:08',1,11,'6','Ilmo. Sr.',1,''),(126,'2012-08-20 11:30:25',1,11,'7','Excmo. Sr.',1,''),(127,'2012-08-20 11:32:39',1,20,'2','Consejero Delegado',1,''),(128,'2012-08-20 11:32:48',1,20,'3','Director General',1,''),(129,'2012-08-20 11:33:20',1,20,'4','Director Comercial',1,''),(130,'2012-08-20 11:33:38',1,20,'5','Director de Márketing',1,''),(131,'2012-08-20 11:33:42',1,20,'6','Director de comunicación',1,''),(132,'2012-08-20 11:33:50',1,20,'7','Empleado',1,''),(133,'2012-08-20 11:34:09',1,20,'8','Secretaria',1,''),(134,'2012-08-20 11:34:16',1,20,'9','RRPP',1,''),(135,'2012-08-20 11:39:00',1,20,'10','Director /a',1,''),(136,'2012-08-20 11:39:50',1,21,'2','borram',1,''),(137,'2012-08-20 11:40:12',1,20,'11','Subdirector',1,''),(138,'2012-08-20 11:40:16',1,20,'12','Editor',1,''),(139,'2012-08-20 11:41:10',1,20,'13','Subdirector /a',1,''),(140,'2012-08-20 11:41:13',1,20,'14','Coordinador /a',1,''),(141,'2012-08-20 11:41:30',1,20,'15','Jefe/a de sección',1,''),(142,'2012-08-20 11:41:49',1,20,'16','Secretaria redacción',1,''),(143,'2012-08-20 11:41:52',1,20,'17','Secretaria dirección',1,''),(144,'2012-08-20 11:42:16',1,20,'18','Redactor',1,''),(145,'2012-08-20 11:42:31',1,20,'19','Periodista',1,''),(146,'2012-08-20 11:42:37',1,20,'20','Redactor jefe',1,''),(147,'2012-08-20 11:42:42',1,20,'21','Estilista',1,''),(148,'2012-08-20 11:42:59',1,20,'22','Atrezzo',1,''),(149,'2012-08-20 11:43:07',1,20,'23','Editor',1,''),(150,'2012-08-20 11:43:32',1,20,'24','Coordinador de redacción',1,''),(151,'2012-08-20 11:43:44',1,20,'25','Corresponsal',1,''),(152,'2012-08-20 11:43:50',1,20,'26','Productor',1,''),(153,'2012-08-20 11:44:07',1,20,'27','Presentador',1,''),(154,'2012-08-20 11:44:07',1,20,'28','Presentador',1,''),(155,'2012-08-20 11:44:27',1,20,'29','Delegado/a de public./editorial',1,''),(156,'2012-08-20 11:45:05',1,20,'30','Responsable de contenidos',1,''),(157,'2012-08-20 11:45:16',1,20,'31','Fotógrafo',1,''),(158,'2012-08-20 11:45:19',1,20,'32','Cámara',1,''),(159,'2012-08-20 11:45:31',1,20,'33','Freelance',1,''),(160,'2012-08-20 11:45:37',1,20,'34','Blogger',1,''),(161,'2012-08-20 11:45:41',1,20,'35','CM',1,''),(162,'2012-08-20 11:46:56',1,17,'2','Semanal',1,''),(163,'2012-08-20 11:47:03',1,17,'3','Mensual',1,''),(164,'2012-08-20 11:47:09',1,17,'4','Bimensual',1,''),(165,'2012-08-20 11:47:15',1,17,'5','Quincenal',1,''),(166,'2012-08-20 11:47:24',1,17,'6','Trimestral',1,''),(167,'2012-08-20 11:47:40',1,17,'7','Semestral',1,''),(168,'2012-08-20 11:47:44',1,17,'8','Anual',1,''),(169,'2012-08-20 11:49:54',1,12,'2','Editorial',1,''),(170,'2012-08-20 11:50:00',1,12,'3','Grupo',1,''),(171,'2012-08-20 11:50:07',1,12,'4','Freelance',1,''),(172,'2012-08-20 11:50:13',1,12,'5','Cadena',1,''),(173,'2012-08-20 11:50:21',1,12,'6','TV',1,''),(174,'2012-08-20 11:50:29',1,12,'7','Blog',1,''),(175,'2012-08-20 11:50:33',1,12,'8','Web',1,''),(176,'2012-08-20 11:50:58',1,12,'9','Prensa',1,''),(177,'2012-08-20 11:51:04',1,12,'10','Revista técnica',1,''),(178,'2012-08-20 11:51:09',1,12,'11','Revista profesional',1,''),(179,'2012-08-20 11:51:26',1,12,'12','Suplementos',1,''),(180,'2012-08-20 11:51:34',1,12,'13','Agencia noticias',1,''),(181,'2012-08-20 11:51:39',1,12,'14','Productora',1,''),(182,'2012-08-20 11:51:57',1,12,'15','Internet medio digital',1,''),(183,'2012-08-20 11:52:04',1,12,'16','Internet portal temático',1,''),(184,'2012-08-20 11:55:28',1,15,'6','Vecinal',1,''),(185,'2012-08-20 11:55:34',1,15,'7','Internet',1,''),(186,'2012-08-20 11:55:36',1,15,'8','Newsletter',1,''),(187,'2012-08-20 11:56:42',1,16,'2','Interno (mktg.dir.)',1,''),(188,'2012-08-20 11:56:48',1,16,'3','Suscripción',1,''),(189,'2012-08-20 11:56:59',1,16,'4','Selectiva',1,''),(190,'2012-08-20 11:57:03',1,16,'5','Kiosco',1,''),(191,'2012-08-20 11:58:57',1,21,'2','borram',3,''),(192,'2012-08-20 12:00:29',1,21,'3','Deportivas',1,''),(193,'2012-08-20 12:01:38',1,21,'4','Relojería y Joyería',1,''),(194,'2012-08-20 12:01:45',1,21,'5','Femeninas',1,''),(195,'2012-08-20 12:01:53',1,21,'6','Moda',1,''),(196,'2012-08-20 12:01:58',1,21,'7','Música',1,''),(197,'2012-08-20 12:02:33',1,21,'8','Medicina',1,''),(198,'2012-08-20 12:02:46',1,21,'9','Turismo y Hosteleria',1,''),(199,'2012-08-20 12:02:57',1,21,'10','Arquitectura y construcc.',1,''),(200,'2012-08-20 12:03:15',1,21,'11','Decoración-diseño- muebles',1,''),(201,'2012-08-20 12:03:19',1,21,'12','Masculinas',1,''),(202,'2012-08-20 12:03:29',1,21,'13','Econ., empresa y negocios',1,''),(203,'2012-08-20 12:03:40',1,21,'14','Gastronómicas',1,''),(204,'2012-08-20 12:03:44',1,21,'15','Familiares',1,''),(205,'2012-08-20 12:08:02',1,21,'16','Motor',1,''),(206,'2012-08-20 12:08:07',1,21,'17','Salud – Dietética- Forma Física',1,''),(207,'2012-08-20 12:08:38',1,21,'18','Textil',1,''),(208,'2012-08-20 12:08:45',1,21,'19','Viajes',1,''),(209,'2012-08-20 12:08:48',1,21,'20','Informática- tecnología',1,''),(210,'2012-08-20 12:09:09',1,21,'21','Publicidad',1,''),(211,'2012-08-20 12:09:16',1,21,'22','Pesca',1,''),(212,'2012-08-20 12:09:18',1,21,'23','Maternidad-infantiles',1,''),(213,'2012-08-20 12:09:51',1,21,'24','Belleza-estética-Peluquería',1,''),(214,'2012-08-20 12:09:54',1,21,'25','Televisión',1,''),(215,'2012-08-20 12:10:29',1,21,'26','Estilo de Vida',1,''),(216,'2012-08-20 12:10:45',1,21,'27','Lujo',1,''),(217,'2012-08-20 12:11:07',1,21,'28','Homosexualidad',1,''),(218,'2012-08-20 12:11:21',1,21,'29','Bricolage',1,''),(219,'2012-08-20 12:11:24',1,21,'30','Política',1,''),(220,'2012-08-20 12:11:34',1,21,'31','Motor-Automovilismo-Motocicletas',1,''),(221,'2012-08-20 12:11:42',1,21,'32','Caza',1,''),(222,'2012-08-20 12:11:57',1,21,'33','Cine',1,''),(223,'2012-08-20 12:12:02',1,21,'34','Videojuegos',1,''),(224,'2012-08-20 12:12:18',1,21,'35','Actualidad',1,''),(225,'2012-08-20 12:12:22',1,21,'36','Comunicación- Marketing',1,''),(226,'2012-08-20 12:12:37',1,21,'37','Industria',1,''),(227,'2012-08-20 12:12:40',1,21,'38','Iluminación',1,''),(228,'2012-08-20 12:12:50',1,21,'39','Juveniles',1,''),(229,'2012-08-20 12:13:08',1,21,'40','Distribución en aviones, trenes y barcos',1,''),(230,'2012-08-20 12:13:26',1,21,'41','Alimentación',1,''),(231,'2012-08-20 12:13:34',1,21,'42','Balnearios- Termalismos',1,''),(232,'2012-08-20 12:13:45',1,21,'43','Antigüedades',1,''),(233,'2012-08-20 12:14:13',1,21,'44','Historia',1,''),(234,'2012-08-20 12:14:23',1,21,'45','Óptica',1,''),(235,'2012-08-20 12:14:33',1,21,'46','Calzado',1,''),(236,'2012-08-20 12:14:37',1,21,'47','Moda- Novias',1,''),(237,'2012-08-20 12:14:49',1,21,'48','Cultura',1,''),(238,'2012-08-20 12:15:00',1,21,'49','Ocio',1,''),(239,'2012-08-20 12:15:28',1,21,'50','Deportes',1,''),(240,'2012-08-20 12:15:49',1,21,'51','Náutica',1,''),(241,'2012-08-20 12:16:13',1,21,'52','Outdoor',1,''),(242,'2012-08-20 12:16:39',1,21,'53','Tenis',1,''),(243,'2012-08-20 12:16:57',1,21,'54','Suplementos',1,''),(244,'2012-08-20 12:33:41',1,22,'52','Calzado',2,'Changed name.'),(245,'2012-08-20 12:33:48',1,22,'58','Cine',2,'Changed name.'),(246,'2012-08-20 12:33:51',1,22,'46','Colecciones',2,'Changed name.'),(247,'2012-08-20 12:33:54',1,22,'55','Joyas-relojes',2,'Changed name.'),(248,'2012-08-20 12:33:57',1,22,'54','Labores y patrones',2,'Changed name.'),(249,'2012-08-20 12:34:00',1,22,'36','Medicina',2,'Changed name.'),(250,'2012-08-20 12:34:03',1,22,'47','Productos',2,'Changed name.'),(251,'2012-08-20 12:34:06',1,22,'51','Ropa',2,'Changed name.'),(252,'2012-08-20 12:34:09',1,22,'39','Salud Pública',2,'Changed name.'),(253,'2012-08-20 12:34:12',1,22,'59','Televisión',2,'Changed name.'),(254,'2012-08-20 12:59:30',1,21,'47','Novias',2,'Changed name and parent.'),(255,'2012-08-20 12:59:42',1,21,'31','Automovilismo-Motocicletas',2,'Changed name and parent.'),(256,'2012-08-20 13:17:09',1,24,'4','test deportes Cognom1 Cognom4',2,'Changed name and sections.'),(257,'2012-08-20 13:17:25',1,24,'5','test2 deportes nauticos Segon cognom',2,'Changed name.'),(258,'2012-08-20 13:17:56',1,24,'5','test2 deportes nauticos Segon cognom',2,'Changed sections.'),(259,'2012-08-20 13:18:17',1,24,'5','test2 cultura museos Segon cognom',2,'Changed name.'),(260,'2012-08-20 13:18:31',1,24,'4','test cultura Cognom1 Cognom4',2,'Changed name and sections.'),(261,'2012-08-20 13:32:17',1,28,'1','Rac1',3,''),(262,'2012-08-20 13:32:29',1,25,'2','Grup Godó',3,''),(263,'2012-08-20 13:37:51',1,25,'7','Grup Godó',1,''),(264,'2012-08-20 13:38:25',1,25,'8','La vanguardia ediciones S.L.',1,''),(265,'2012-08-20 13:43:06',1,28,'9','La vanguardia',1,''),(266,'2012-08-20 13:43:30',1,25,'10','Grupo Prisa',1,''),(267,'2012-08-20 13:43:52',1,25,'11','Ediciones el pais S.L.',1,''),(268,'2012-08-20 13:44:47',1,28,'12','El País',1,''),(269,'2012-08-20 13:47:30',1,28,'12','El País',2,'Changed company.'),(270,'2012-08-20 13:47:38',1,28,'9','La vanguardia',2,'Changed company.'),(271,'2012-08-20 13:52:37',1,25,'13','Rac1',1,''),(272,'2012-08-20 13:52:58',1,28,'14','El món a RAC1',1,''),(273,'2012-08-20 13:54:53',1,20,'12','Editor',3,''),(274,'2012-08-20 13:56:33',1,24,'3','Jordi Basté i Durant',2,'Added contact position \"Jordi Basté i Durant - Rac1 - El món a RAC1\".'),(275,'2012-08-20 13:57:20',1,24,'6','Sr periodista al pais ',2,'Changed name. Added contact position \"Sr periodista al pais  - Ediciones el pais S.L. - El País\".'),(276,'2012-08-20 13:59:52',1,24,'4','test cultura a la vanguardia Cognom1 Cognom4',2,'Changed name. Added contact position \"test cultura a la vanguardia Cognom1 Cognom4 - La vanguardia ediciones S.L. - La vanguardia\".'),(277,'2012-08-20 14:02:11',1,28,'14','El món a RAC1',2,'Changed sectors.'),(278,'2012-08-20 14:02:22',1,28,'12','El País',2,'Changed sectors.'),(279,'2012-08-20 14:02:47',1,28,'9','La vanguardia',2,'Changed sectors.'),(280,'2012-08-20 15:04:57',1,24,'3','Jordi Basté i Durant',2,'Added email \"whats@wekk.net\". Added email \"merda@wekk.net\".'),(281,'2012-10-14 05:46:06',1,28,'14','El món a RAC1',2,'Changed type.'),(282,'2012-10-14 05:57:16',1,24,'3','Jordi Basté i Durant',2,'Changed address and postal_code.'),(283,'2012-10-14 12:06:57',1,21,'55','test',1,''),(284,'2012-10-14 12:07:30',1,21,'55','test',3,''),(285,'2012-10-14 13:33:07',1,21,'35','Actualidad',2,'No fields changed.'),(286,'2012-10-14 13:33:41',1,21,'35','Actualidad',2,'No fields changed.'),(287,'2012-10-14 13:34:10',1,21,'56','Test',1,''),(288,'2012-10-14 13:34:21',1,21,'56','Test',3,''),(289,'2012-10-14 13:35:02',1,21,'57','AAAA',1,''),(290,'2012-10-14 13:35:07',1,21,'57','AAAA',3,''),(291,'2012-10-14 13:35:35',1,21,'58','AAAA',1,''),(292,'2012-10-14 13:35:46',1,21,'58','AAAA',3,''),(293,'2012-10-15 10:16:32',1,21,'59','test',1,''),(294,'2012-10-15 10:16:47',1,21,'59','test',3,''),(295,'2012-10-15 10:39:51',1,14,'3','Medio de comunicación',1,''),(296,'2012-10-15 11:13:51',1,24,'15','Albert Sellarès Torra',1,''),(297,'2012-10-15 11:15:23',1,24,'15','àlbert Sellarès Torra',2,'Changed name.'),(298,'2012-10-15 11:16:54',1,24,'16','Jordi ',1,''),(299,'2012-10-24 10:26:39',1,24,'3','Jordi Basté i Durant',2,'Added contact position \"Jordi Basté i Durant - Grupo Prisa - El món a RAC1\".'),(300,'2012-12-19 14:23:16',1,3,'1','whats',2,'Changed first_name and last_name.'),(301,'2012-12-23 04:36:42',1,9,'53','Catalunya',1,''),(302,'2012-12-23 05:30:30',1,9,'53','Cataluña',2,'Changed name.'),(303,'2012-12-23 05:40:03',1,9,'53','Cataluña',3,''),(304,'2012-12-23 06:16:35',1,30,'1','Ot object',1,''),(305,'2012-12-23 06:53:24',1,32,'1','Mensajeria',1,''),(306,'2012-12-23 06:53:39',1,32,'2','Prensa',1,''),(307,'2012-12-23 07:18:27',1,30,'1','US Polo - Gabinete PR',1,''),(308,'2012-12-23 09:37:26',1,31,'1','Factura',1,''),(309,'2012-12-23 09:37:31',1,31,'2','Recibo',1,''),(310,'2012-12-23 09:37:37',1,31,'3','Tiquet',1,''),(311,'2012-12-23 18:17:38',1,3,'2','tboneta',1,''),(312,'2012-12-23 18:18:48',1,3,'2','tboneta',2,'Changed password, first_name, last_name and email.');
 /*!40000 ALTER TABLE `django_admin_log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -577,7 +628,7 @@ CREATE TABLE `django_content_type` (
   `model` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `app_label` (`app_label`,`model`)
-) ENGINE=MyISAM AUTO_INCREMENT=34 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -586,7 +637,7 @@ CREATE TABLE `django_content_type` (
 
 LOCK TABLES `django_content_type` WRITE;
 /*!40000 ALTER TABLE `django_content_type` DISABLE KEYS */;
-INSERT INTO `django_content_type` VALUES (1,'permission','auth','permission'),(2,'group','auth','group'),(3,'user','auth','user'),(4,'message','auth','message'),(5,'content type','contenttypes','contenttype'),(6,'session','sessions','session'),(7,'site','sites','site'),(8,'log entry','admin','logentry'),(9,'action states','skcrm','actionstates'),(10,'action types','skcrm','actiontypes'),(11,'countries','skcrm','countries'),(12,'regions','skcrm','regions'),(13,'cities','skcrm','cities'),(14,'contact treatments','skcrm','contacttreatments'),(15,'contact types','skcrm','contacttypes'),(16,'sectors','skcrm','sectors'),(17,'contacts','skcrm','contacts'),(18,'actions','skcrm','actions'),(19,'contact relation types','skcrm','contactrelationtypes'),(20,'contact actions','skcrm','contactactions'),(21,'contact relations','skcrm','contactrelations'),(22,'phones','skcrm','phones'),(23,'phone types','skcrm','phonetypes'),(24,'contact','skcrm','contact'),(25,'phone type','skcrm','phonetype'),(26,'city','skcrm','city'),(27,'contact type','skcrm','contacttype'),(28,'action state','skcrm','actionstate'),(29,'phone','skcrm','phone'),(30,'action','skcrm','action'),(31,'action type','skcrm','actiontype'),(32,'contact answer','skcrm','contactanswer'),(33,'country','skcrm','country');
+INSERT INTO `django_content_type` VALUES (1,'permission','auth','permission'),(2,'group','auth','group'),(3,'user','auth','user'),(30,'ot','skcrm','ot'),(5,'content type','contenttypes','contenttype'),(6,'session','sessions','session'),(7,'log entry','admin','logentry'),(8,'country','skcrm','country'),(9,'region','skcrm','region'),(10,'city','skcrm','city'),(11,'contact treatment','skcrm','contacttreatment'),(12,'media type','skcrm','mediatype'),(13,'person type','skcrm','persontype'),(14,'company type','skcrm','companytype'),(15,'context type','skcrm','contexttype'),(16,'distribution type','skcrm','distributiontype'),(17,'periodicity type','skcrm','periodicitytype'),(18,'phone type','skcrm','phonetype'),(19,'email type','skcrm','emailtype'),(20,'position types','skcrm','positiontypes'),(21,'sector','skcrm','sector'),(22,'section','skcrm','section'),(23,'contact','skcrm','contact'),(24,'person','skcrm','person'),(25,'company','skcrm','company'),(26,'phone','skcrm','phone'),(27,'email','skcrm','email'),(28,'media','skcrm','media'),(29,'contact position','skcrm','contactposition'),(31,'expense document type','skcrm','expensedocumenttype'),(32,'expense concept type','skcrm','expenseconcepttype'),(33,'expense','skcrm','expense'),(34,'expense item','skcrm','expenseitem');
 /*!40000 ALTER TABLE `django_content_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -603,7 +654,7 @@ CREATE TABLE `django_session` (
   `expire_date` datetime NOT NULL,
   PRIMARY KEY (`session_key`),
   KEY `django_session_c25c2c28` (`expire_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -612,33 +663,280 @@ CREATE TABLE `django_session` (
 
 LOCK TABLES `django_session` WRITE;
 /*!40000 ALTER TABLE `django_session` DISABLE KEYS */;
-INSERT INTO `django_session` VALUES ('103c4fff180511d04d8699992dc893cd','NjlmNTM0N2JmYWM5NmVmZjU1MTdmYmM2YjcxMGM1ZjEyMDBkYzM1NjqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED\nVQ1fYXV0aF91c2VyX2lkcQSKAQF1Lg==\n','2011-11-14 09:07:25'),('c9b362cd427c4344874fba2ff586712e','NjlmNTM0N2JmYWM5NmVmZjU1MTdmYmM2YjcxMGM1ZjEyMDBkYzM1NjqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED\nVQ1fYXV0aF91c2VyX2lkcQSKAQF1Lg==\n','2011-11-15 07:54:46'),('a0c26b0d40fd0b81b668f6bebe2e34d9','YWFlNjlmYzEyYjJkZGQ2MGJhY2IwZjQzYWZmYTIxNzI3YjEwODA1NzqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED\nVQ1fYXV0aF91c2VyX2lkcQSKAQJ1Lg==\n','2011-11-14 11:18:14'),('db835c845dd875fdfe9cd9b27f6a3311','NjlmNTM0N2JmYWM5NmVmZjU1MTdmYmM2YjcxMGM1ZjEyMDBkYzM1NjqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED\nVQ1fYXV0aF91c2VyX2lkcQSKAQF1Lg==\n','2011-11-14 11:14:39'),('8fb0bd370f13fdf1ee3411334d51c71e','NjlmNTM0N2JmYWM5NmVmZjU1MTdmYmM2YjcxMGM1ZjEyMDBkYzM1NjqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED\nVQ1fYXV0aF91c2VyX2lkcQSKAQF1Lg==\n','2011-11-15 08:55:28'),('0df4e36dd10aca688e5da3757bc1ec7d','NjlmNTM0N2JmYWM5NmVmZjU1MTdmYmM2YjcxMGM1ZjEyMDBkYzM1NjqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED\nVQ1fYXV0aF91c2VyX2lkcQSKAQF1Lg==\n','2011-11-16 11:30:47');
+INSERT INTO `django_session` VALUES ('58ea735342a8d6cff42256d8b0c1b14d','NjlmNTM0N2JmYWM5NmVmZjU1MTdmYmM2YjcxMGM1ZjEyMDBkYzM1NjqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED\nVQ1fYXV0aF91c2VyX2lkcQSKAQF1Lg==\n','2012-06-03 13:32:21'),('3882ac87c26e746f579a562fb6e6c4f9','ZWZlZWIzM2Q4MzA5ZTBhYTViYWY4NDg2MTU1MDRhMmI4ZWMyNTJiODqAAn1xAShVD3NlbGVjdGVk\nX3Blb3BsZXECY19fYnVpbHRpbl9fCnNldApxA11xBChjZGphbmdvLmRiLm1vZGVscy5iYXNlCm1v\nZGVsX3VucGlja2xlCnEFY3NrY3JtLm1vZGVscwpQZXJzb24KcQZdY2RqYW5nby5kYi5tb2RlbHMu\nYmFzZQpzaW1wbGVfY2xhc3NfZmFjdG9yeQpxB4dScQh9cQkoVQd3ZWJzaXRlcQpYAAAAAFUMdHJl\nYXRtZW50X2lkcQtOVQdOSUZfQ0lGcQxYAAAAAFUHc3VybmFtZXENWAAAAABVBG5hbWVxDlgFAAAA\nSm9yZGlxD1UZaGFzX3BlcnNvbmFsX2Fzc2lzdGFudF9pZHEQTlUHY2l0eV9pZHERigKDA1UKY291\nbnRyeV9pZHESigFJVQ5jb250YWN0X3B0cl9pZHETigEDVQZfc3RhdGVxFGNkamFuZ28uZGIubW9k\nZWxzLmJhc2UKTW9kZWxTdGF0ZQpxFSmBcRZ9cRcoVQZhZGRpbmdxGIlVAmRicRlVB2RlZmF1bHRx\nGnViVQhkaXNhYmxlZHEbiVULcG9zdGFsX2NvZGVxHFgAAAAAVQlib3JuX2RhdGVxHU5VB2FkZHJl\nc3NxHlgAAAAAVQ9wYWNrZXRzX2FkZHJlc3NxH1gAAAAAVQdjb2dub21zcSBYDwAAAEJhc3TDqSBp\nIER1cmFudHEhVQdtYWlsaW5ncSKJVQJpZHEjigEDVQlyZWdpb25faWRxJIoBIXViaAVoBl1oB4dS\ncSV9cSYoVQd3ZWJzaXRlcSdYAAAAAFUMdHJlYXRtZW50X2lkcShOVQdOSUZfQ0lGcSlYAAAAAFUH\nc3VybmFtZXEqWAAAAABVBG5hbWVxK1gFAAAAdGVzdDJxLFUZaGFzX3BlcnNvbmFsX2Fzc2lzdGFu\ndF9pZHEtTlUHY2l0eV9pZHEuTlUKY291bnRyeV9pZHEvTlUOY29udGFjdF9wdHJfaWRxMIoBBVUG\nX3N0YXRlcTFoFSmBcTJ9cTMoVQZhZGRpbmdxNIlVAmRicTVVB2RlZmF1bHRxNnViVQhkaXNhYmxl\nZHE3iVULcG9zdGFsX2NvZGVxOFgAAAAAVQlib3JuX2RhdGVxOU5VB2FkZHJlc3NxOlgAAAAAVQ9w\nYWNrZXRzX2FkZHJlc3NxO1gAAAAAVQdjb2dub21zcTxYDAAAAFNlZ29uIGNvZ25vbXE9VQdtYWls\naW5ncT6JVQJpZHE/igEFVQlyZWdpb25faWRxQE51YmWFUnFBVQ1fYXV0aF91c2VyX2lkcUKKAQFV\nEl9hdXRoX3VzZXJfYmFja2VuZHFDVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVs\nQmFja2VuZHFEdS4=\n','2012-08-14 11:16:08'),('40142e7ef7a8ad0ce4741997b28d019e','MDJiOWJkYTZlNmU1ZjEyYmE2NzdjZmI3ZWI1Y2M3MjkxNWMzZTQwZjqAAn1xAShVD3NlbGVjdGVk\nX3Blb3BsZXECY19fYnVpbHRpbl9fCnNldApxA11xBChjZGphbmdvLmRiLm1vZGVscy5iYXNlCm1v\nZGVsX3VucGlja2xlCnEFY3NrY3JtLm1vZGVscwpQZXJzb24KcQZdY2RqYW5nby5kYi5tb2RlbHMu\nYmFzZQpzaW1wbGVfY2xhc3NfZmFjdG9yeQpxB4dScQh9cQkoVQd3ZWJzaXRlcQpYAAAAAFUMdHJl\nYXRtZW50X2lkcQtOVQdOSUZfQ0lGcQxYAAAAAFUHc3VybmFtZXENWAAAAABVBG5hbWVxDlgFAAAA\nSm9yZGlxD1UZaGFzX3BlcnNvbmFsX2Fzc2lzdGFudF9pZHEQTlUHY2l0eV9pZHERigKDA1UKY291\nbnRyeV9pZHESigFJVQ5jb250YWN0X3B0cl9pZHETigEDVQZfc3RhdGVxFGNkamFuZ28uZGIubW9k\nZWxzLmJhc2UKTW9kZWxTdGF0ZQpxFSmBcRZ9cRcoVQZhZGRpbmdxGIlVAmRicRlVB2RlZmF1bHRx\nGnViVQhkaXNhYmxlZHEbiVULcG9zdGFsX2NvZGVxHFgAAAAAVQlib3JuX2RhdGVxHU5VB2FkZHJl\nc3NxHlgAAAAAVQ9wYWNrZXRzX2FkZHJlc3NxH1gAAAAAVQdjb2dub21zcSBYDwAAAEJhc3TDqSBp\nIER1cmFudHEhVQdtYWlsaW5ncSKJVQJpZHEjigEDVQlyZWdpb25faWRxJIoBIXViaAVoBl1oB4dS\ncSV9cSYoaApYAAAAAGgLTmgMWAAAAABoDVgAAAAAaA5YBAAAAHRlc3RxJ2gQTmgRTmgSTmgTigEE\naBRoFSmBcSh9cSkoaBiJaBloGnViaBuJaBxYAAAAAGgdTmgeWAAAAABoH1gAAAAAaCBYDwAAAENv\nZ25vbTEgQ29nbm9tNHEqaCKJaCOKAQRoJE51YmgFaAZdaAeHUnErfXEsKGgKWAAAAABoC05oDFgA\nAAAAaA1YAAAAAGgOWAUAAAB0ZXN0MnEtaBBOaBFOaBJOaBOKAQVoFGgVKYFxLn1xLyhoGIloGWga\ndWJoG4loHFgAAAAAaB1OaB5YAAAAAGgfWAAAAABoIFgMAAAAU2Vnb24gY29nbm9tcTBoIoloI4oB\nBWgkTnViaAVoBl1oB4dScTF9cTIoaApYAAAAAGgLTmgMWAAAAABoDVgAAAAAaA5YBQAAAHRlc3Q0\ncTNoEE5oEU5oEk5oE4oBBmgUaBUpgXE0fXE1KGgYiWgZaBp1YmgbiWgcWAAAAABoHU5oHlgAAAAA\naB9YAAAAAGggWAAAAABoIoloI4oBBmgkTnViZYVScTZVEl9hdXRoX3VzZXJfYmFja2VuZHE3VSlk\namFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHE4VQ1fYXV0aF91c2VyX2lk\ncTmKAQF1Lg==\n','2012-08-13 20:26:54'),('eda125e454480a1b20b394b4468cb09b','MWJjMDRmOWU0ZDUzOTJiNzJlOTlkNzI0NjI2YzNhNTI1ODk1NGJhZTqAAn1xAShVD3NlbGVjdGVk\nX3Blb3BsZXECY19fYnVpbHRpbl9fCnNldApxA11xBChjZGphbmdvLmRiLm1vZGVscy5iYXNlCm1v\nZGVsX3VucGlja2xlCnEFY3NrY3JtLm1vZGVscwpQZXJzb24KcQZdY2RqYW5nby5kYi5tb2RlbHMu\nYmFzZQpzaW1wbGVfY2xhc3NfZmFjdG9yeQpxB4dScQh9cQkoVQd3ZWJzaXRlcQpYAAAAAFUMdHJl\nYXRtZW50X2lkcQtOVQdOSUZfQ0lGcQxYAAAAAFUHc3VybmFtZXENWAAAAABVBG5hbWVxDlgFAAAA\nSm9yZGlxD1UZaGFzX3BlcnNvbmFsX2Fzc2lzdGFudF9pZHEQTlUHY2l0eV9pZHERigKDA1UKY291\nbnRyeV9pZHESigFJVQ5jb250YWN0X3B0cl9pZHETigEDVQZfc3RhdGVxFGNkamFuZ28uZGIubW9k\nZWxzLmJhc2UKTW9kZWxTdGF0ZQpxFSmBcRZ9cRcoVQZhZGRpbmdxGIlVAmRicRlVB2RlZmF1bHRx\nGnViVQhkaXNhYmxlZHEbiVULcG9zdGFsX2NvZGVxHFgAAAAAVQlib3JuX2RhdGVxHU5VB2FkZHJl\nc3NxHlgAAAAAVQ9wYWNrZXRzX2FkZHJlc3NxH1gAAAAAVQdjb2dub21zcSBYDwAAAEJhc3TDqSBp\nIER1cmFudHEhVQdtYWlsaW5ncSKJVQJpZHEjigEDVQlyZWdpb25faWRxJIoBIXViaAVoBl1oB4dS\ncSV9cSYoaApYAAAAAGgLTmgMWAAAAABoDVgAAAAAaA5YHAAAAHRlc3QgY3VsdHVyYSBhIGxhIHZh\nbmd1YXJkaWFxJ2gQTmgRTmgSTmgTigEEaBRoFSmBcSh9cSkoaBiJaBloGnViaBuJaBxYAAAAAGgd\nTmgeWAAAAABoH1gAAAAAaCBYDwAAAENvZ25vbTEgQ29nbm9tNHEqaCKJaCOKAQRoJE51YmgFaAZd\naAeHUnErfXEsKGgKWAAAAABoC05oDFgAAAAAaA1YAAAAAGgOWBQAAAB0ZXN0MiBjdWx0dXJhIG11\nc2Vvc3EtaBBOaBFOaBJOaBOKAQVoFGgVKYFxLn1xLyhoGIloGWgadWJoG4loHFgAAAAAaB1OaB5Y\nAAAAAGgfWAAAAABoIFgMAAAAU2Vnb24gY29nbm9tcTBoIoloI4oBBWgkTnViaAVoBl1oB4dScTF9\ncTIoaApYAAAAAGgLTmgMWAAAAABoDVgAAAAAaA5YFQAAAFNyIHBlcmlvZGlzdGEgYWwgcGFpc3Ez\naBBOaBFOaBJOaBOKAQZoFGgVKYFxNH1xNShoGIloGWgadWJoG4loHFgAAAAAaB1OaB5YAAAAAGgf\nWAAAAABoIFgAAAAAaCKJaCOKAQZoJE51YmWFUnE2VQ1fYXV0aF91c2VyX2lkcTeKAQFVEl9hdXRo\nX3VzZXJfYmFja2VuZHE4VSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2Vu\nZHE5dS4=\n','2012-09-10 08:58:59'),('80ab385c7a6457c3db9f1bda25dda128','NjlmNTM0N2JmYWM5NmVmZjU1MTdmYmM2YjcxMGM1ZjEyMDBkYzM1NjqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED\nVQ1fYXV0aF91c2VyX2lkcQSKAQF1Lg==\n','2012-09-03 10:41:55'),('c8f5456b322fd744a6e17304770f58cd','NmRiY2Q0ODgxMjQzYmUyMTU1M2ViOTg5NThjZGRiZDRhNDJiZjRkNDqAAn1xAShVD3NlbGVjdGVk\nX3Blb3BsZXECTlUSX2F1dGhfdXNlcl9iYWNrZW5kcQNVKWRqYW5nby5jb250cmliLmF1dGguYmFj\na2VuZHMuTW9kZWxCYWNrZW5kcQRVDV9hdXRoX3VzZXJfaWRxBYoBAXUu\n','2012-10-28 14:55:41'),('ac4cdcf9b8bae5028b86d3401e204ba4','OTYwYzBkZDYwNjJlNmQyODZjM2QwYWMzMGExYTlmZTMzYjBjYjk5OTqAAn1xAShVD3NlbGVjdGVk\nX3Blb3BsZXECY19fYnVpbHRpbl9fCnNldApxA11xBChjZGphbmdvLmRiLm1vZGVscy5iYXNlCm1v\nZGVsX3VucGlja2xlCnEFY3NrY3JtLm1vZGVscwpQZXJzb24KcQZdY2RqYW5nby5kYi5tb2RlbHMu\nYmFzZQpzaW1wbGVfY2xhc3NfZmFjdG9yeQpxB4dScQh9cQkoVQd3ZWJzaXRlcQpYAAAAAFUMdHJl\nYXRtZW50X2lkcQtOVQdOSUZfQ0lGcQxYAAAAAFUHc3VybmFtZXENWAAAAABVBG5hbWVxDlgFAAAA\nSm9yZGlxD1UZaGFzX3BlcnNvbmFsX2Fzc2lzdGFudF9pZHEQTlUHY2l0eV9pZHERigKDA1UKY291\nbnRyeV9pZHESigFJVQ5jb250YWN0X3B0cl9pZHETigEDVQZfc3RhdGVxFGNkamFuZ28uZGIubW9k\nZWxzLmJhc2UKTW9kZWxTdGF0ZQpxFSmBcRZ9cRcoVQZhZGRpbmdxGIlVAmRicRlVB2RlZmF1bHRx\nGnViVQhkaXNhYmxlZHEbiVULcG9zdGFsX2NvZGVxHFgFAAAAMDgwODBxHVUJYm9ybl9kYXRlcR5O\nVQdhZGRyZXNzcR9YDAAAAExlaXZhIDExLCAxYXEgVQ9wYWNrZXRzX2FkZHJlc3NxIVgAAAAAVQdj\nb2dub21zcSJYDwAAAEJhc3TDqSBpIER1cmFudHEjVQdtYWlsaW5ncSSJVQJpZHEligEDVQlyZWdp\nb25faWRxJooBIXViaAVoBl1oB4dScSd9cSgoaApYAAAAAGgLTmgMWAAAAABoDVgAAAAAaA5YHAAA\nAHRlc3QgY3VsdHVyYSBhIGxhIHZhbmd1YXJkaWFxKWgQTmgRTmgSTmgTigEEaBRoFSmBcSp9cSso\naBiJaBloGnViaBuJaBxYAAAAAGgeTmgfWAAAAABoIVgAAAAAaCJYDwAAAENvZ25vbTEgQ29nbm9t\nNHEsaCSJaCWKAQRoJk51YmgFaAZdaAeHUnEtfXEuKGgKWAAAAABoC05oDFgAAAAAaA1YAAAAAGgO\nWBQAAAB0ZXN0MiBjdWx0dXJhIG11c2Vvc3EvaBBOaBFOaBJOaBOKAQVoFGgVKYFxMH1xMShoGIlo\nGWgadWJoG4loHFgAAAAAaB5OaB9YAAAAAGghWAAAAABoIlgMAAAAU2Vnb24gY29nbm9tcTJoJIlo\nJYoBBWgmTnViaAVoBl1oB4dScTN9cTQoaApYAAAAAGgLTmgMWAAAAABoDVgAAAAAaA5YFQAAAFNy\nIHBlcmlvZGlzdGEgYWwgcGFpc3E1aBBOaBFOaBJOaBOKAQZoFGgVKYFxNn1xNyhoGIloGWgadWJo\nG4loHFgAAAAAaB5OaB9YAAAAAGghWAAAAABoIlgAAAAAaCSJaCWKAQZoJk51YmWFUnE4VRJfYXV0\naF91c2VyX2JhY2tlbmRxOVUpZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tl\nbmRxOlUNX2F1dGhfdXNlcl9pZHE7igEBdS4=\n','2012-10-28 15:02:23'),('2d05da35f6a0c3fd2897e62ec5383663','ODI3YjcxMDFlYjM5NzBlNWM4YTY3N2UyNzMyZDViM2YyMzFjZTQyMDqAAn1xAVUKdGVzdGNvb2tp\nZXECVQZ3b3JrZWRxA3Mu\n','2012-12-29 17:16:15'),('6be0004da69b0763740f401d362abeb1','Yzk1YzYxZThlYWEzMGI1MTg3ZjlhOTJkZTQzNjY2ZTU1Njk3NTcxYzqAAn1xAShVD3NlbGVjdGVk\nX3Blb3BsZXECY19fYnVpbHRpbl9fCnNldApxA11xBChjZGphbmdvLmRiLm1vZGVscy5iYXNlCm1v\nZGVsX3VucGlja2xlCnEFY3NrY3JtLm1vZGVscwpQZXJzb24KcQZdY2RqYW5nby5kYi5tb2RlbHMu\nYmFzZQpzaW1wbGVfY2xhc3NfZmFjdG9yeQpxB4dScQh9cQkoVQd3ZWJzaXRlcQpYAAAAAFUMdHJl\nYXRtZW50X2lkcQtOVQdOSUZfQ0lGcQxYAAAAAFUHc3VybmFtZXENWAAAAABVBG5hbWVxDlgFAAAA\nSm9yZGlxD1UZaGFzX3BlcnNvbmFsX2Fzc2lzdGFudF9pZHEQTlUHY2l0eV9pZHERigKDA1UKY291\nbnRyeV9pZHESigFJVQ5jb250YWN0X3B0cl9pZHETigEDVQZfc3RhdGVxFGNkamFuZ28uZGIubW9k\nZWxzLmJhc2UKTW9kZWxTdGF0ZQpxFSmBcRZ9cRcoVQZhZGRpbmdxGIlVAmRicRlVB2RlZmF1bHRx\nGnViVQhkaXNhYmxlZHEbiVULcG9zdGFsX2NvZGVxHFgFAAAAMDgwODBxHVUJYm9ybl9kYXRlcR5O\nVQdhZGRyZXNzcR9YDAAAAExlaXZhIDExLCAxYXEgVQ9wYWNrZXRzX2FkZHJlc3NxIVgAAAAAVQdj\nb2dub21zcSJYDwAAAEJhc3TDqSBpIER1cmFudHEjVQdtYWlsaW5ncSSJVQJpZHEligEDVQlyZWdp\nb25faWRxJooBIXViaAVoBl1oB4dScSd9cSgoVQd3ZWJzaXRlcSlYAAAAAFUMdHJlYXRtZW50X2lk\ncSpOVQdOSUZfQ0lGcStYAAAAAFUHc3VybmFtZXEsWAAAAABVBG5hbWVxLVgcAAAAdGVzdCBjdWx0\ndXJhIGEgbGEgdmFuZ3VhcmRpYXEuVRloYXNfcGVyc29uYWxfYXNzaXN0YW50X2lkcS9OVQdjaXR5\nX2lkcTBOVQpjb3VudHJ5X2lkcTFOVQ5jb250YWN0X3B0cl9pZHEyigEEVQZfc3RhdGVxM2gVKYFx\nNH1xNShVBmFkZGluZ3E2iVUCZGJxN1UHZGVmYXVsdHE4dWJVCGRpc2FibGVkcTmJVQtwb3N0YWxf\nY29kZXE6WAAAAABVCWJvcm5fZGF0ZXE7TlUHYWRkcmVzc3E8WAAAAABVD3BhY2tldHNfYWRkcmVz\nc3E9WAAAAABVB2NvZ25vbXNxPlgPAAAAQ29nbm9tMSBDb2dub200cT9VB21haWxpbmdxQIlVAmlk\ncUGKAQRVCXJlZ2lvbl9pZHFCTnViaAVoBl1oB4dScUN9cUQoVQd3ZWJzaXRlcUVYAAAAAFUMdHJl\nYXRtZW50X2lkcUZOVQdOSUZfQ0lGcUdYAAAAAFUHc3VybmFtZXFIWAAAAABVBG5hbWVxSVgUAAAA\ndGVzdDIgY3VsdHVyYSBtdXNlb3NxSlUZaGFzX3BlcnNvbmFsX2Fzc2lzdGFudF9pZHFLTlUHY2l0\neV9pZHFMTlUKY291bnRyeV9pZHFNTlUOY29udGFjdF9wdHJfaWRxTooBBVUGX3N0YXRlcU9oFSmB\ncVB9cVEoVQZhZGRpbmdxUolVAmRicVNVB2RlZmF1bHRxVHViVQhkaXNhYmxlZHFViVULcG9zdGFs\nX2NvZGVxVlgAAAAAVQlib3JuX2RhdGVxV05VB2FkZHJlc3NxWFgAAAAAVQ9wYWNrZXRzX2FkZHJl\nc3NxWVgAAAAAVQdjb2dub21zcVpYDAAAAFNlZ29uIGNvZ25vbXFbVQdtYWlsaW5ncVyJVQJpZHFd\nigEFVQlyZWdpb25faWRxXk51YmWFUnFfVQ1fYXV0aF91c2VyX2lkcWCKAQFVEl9hdXRoX3VzZXJf\nYmFja2VuZHFhVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHFidS4=\n','2012-10-29 10:44:32'),('b24c1a5fd3d690c950a047fe66dddaa2','NjZkM2UxM2ZlNGNhNzg4ZDc4MTFmNjdkZWQ1OTdlNmEzNjcxOTViZjqAAn1xAShVD3NlbGVjdGVk\nX3Blb3BsZXECY19fYnVpbHRpbl9fCnNldApxA11xBChjZGphbmdvLmRiLm1vZGVscy5iYXNlCm1v\nZGVsX3VucGlja2xlCnEFY3NrY3JtLm1vZGVscwpQZXJzb24KcQZdY2RqYW5nby5kYi5tb2RlbHMu\nYmFzZQpzaW1wbGVfY2xhc3NfZmFjdG9yeQpxB4dScQh9cQkoVQd3ZWJzaXRlcQpYAAAAAFUMdHJl\nYXRtZW50X2lkcQtOVQdOSUZfQ0lGcQxYAAAAAFUHc3VybmFtZXENWAAAAABVBG5hbWVxDlgFAAAA\nSm9yZGlxD1UZaGFzX3BlcnNvbmFsX2Fzc2lzdGFudF9pZHEQTlUHY2l0eV9pZHERigKDA1UKY291\nbnRyeV9pZHESigFJVQ5jb250YWN0X3B0cl9pZHETigEDVQZfc3RhdGVxFGNkamFuZ28uZGIubW9k\nZWxzLmJhc2UKTW9kZWxTdGF0ZQpxFSmBcRZ9cRcoVQZhZGRpbmdxGIlVAmRicRlVB2RlZmF1bHRx\nGnViVQhkaXNhYmxlZHEbiVULcG9zdGFsX2NvZGVxHFgFAAAAMDgwODBxHVUJYm9ybl9kYXRlcR5O\nVQdhZGRyZXNzcR9YDAAAAExlaXZhIDExLCAxYXEgVQ9wYWNrZXRzX2FkZHJlc3NxIVgAAAAAVQdj\nb2dub21zcSJYDwAAAEJhc3TDqSBpIER1cmFudHEjVQdtYWlsaW5ncSSJVQJpZHEligEDVQlyZWdp\nb25faWRxJooBIXViaAVoBl1oB4dScSd9cSgoaApYAAAAAGgLTmgMWAAAAABoDVgAAAAAaA5YHAAA\nAHRlc3QgY3VsdHVyYSBhIGxhIHZhbmd1YXJkaWFxKWgQTmgRTmgSTmgTigEEaBRoFSmBcSp9cSso\naBiJaBloGnViaBuJaBxYAAAAAGgeTmgfWAAAAABoIVgAAAAAaCJYDwAAAENvZ25vbTEgQ29nbm9t\nNHEsaCSJaCWKAQRoJk51YmgFaAZdaAeHUnEtfXEuKGgKWAAAAABoC05oDFgAAAAAaA1YAAAAAGgO\nWBQAAAB0ZXN0MiBjdWx0dXJhIG11c2Vvc3EvaBBOaBFOaBJOaBOKAQVoFGgVKYFxMH1xMShoGIlo\nGWgadWJoG4loHFgAAAAAaB5OaB9YAAAAAGghWAAAAABoIlgMAAAAU2Vnb24gY29nbm9tcTJoJIlo\nJYoBBWgmTnViaAVoBl1oB4dScTN9cTQoaApYAAAAAGgLTmgMWAAAAABoDVgAAAAAaA5YFQAAAFNy\nIHBlcmlvZGlzdGEgYWwgcGFpc3E1aBBOaBFOaBJOaBOKAQZoFGgVKYFxNn1xNyhoGIloGWgadWJo\nG4loHFgAAAAAaB5OaB9YAAAAAGghWAAAAABoIlgAAAAAaCSJaCWKAQZoJk51YmgFaAZdaAeHUnE4\nfXE5KGgKWAAAAABoC05oDFgAAAAAaA1YAAAAAGgOWAcAAADDoGxiZXJ0cTpoEE5oEU5oEk5oE4oB\nD2gUaBUpgXE7fXE8KGgYiWgZaBp1YmgbiWgcWAAAAABoHk5oH1gAAAAAaCFYAAAAAGgiWA8AAABT\nZWxsYXLDqHMgVG9ycmFxPWgkiWgligEPaCZOdWJoBWgGXWgHh1JxPn1xPyhoClgAAAAAaAtOaAxY\nAAAAAGgNWAAAAABoDlgFAAAASm9yZGlxQGgQTmgRTmgSTmgTigEQaBRoFSmBcUF9cUIoaBiJaBlo\nGnViaBuJaBxYAAAAAGgeTmgfWAAAAABoIVgAAAAAaCJYAAAAAGgkiWgligEQaCZOdWJlhVJxQ1UN\nX2F1dGhfdXNlcl9pZHFEigEBVRJfYXV0aF91c2VyX2JhY2tlbmRxRVUpZGphbmdvLmNvbnRyaWIu\nYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmRxRnUu\n','2012-11-07 10:24:54'),('c7a55b0eb247665cc7061aecf0b63ea1','NjlmNTM0N2JmYWM5NmVmZjU1MTdmYmM2YjcxMGM1ZjEyMDBkYzM1NjqAAn1xAShVEl9hdXRoX3Vz\nZXJfYmFja2VuZHECVSlkamFuZ28uY29udHJpYi5hdXRoLmJhY2tlbmRzLk1vZGVsQmFja2VuZHED\nVQ1fYXV0aF91c2VyX2lkcQSKAQF1Lg==\n','2012-12-09 06:51:02'),('11165ff330a90244ad0cd2be46b2e921','YjNhYjgyMzNkNDZmNDE1ZTMyYjc5N2NiZjUwZjQ2YzE4OTY1MzRhZDqAAn1xAVUKdGVzdGNvb2tp\nZXECVQZ3b3JrZWRxA3Mu\n','2013-01-06 19:08:02');
 /*!40000 ALTER TABLE `django_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `django_site`
+-- Table structure for table `expense`
 --
 
-DROP TABLE IF EXISTS `django_site`;
+DROP TABLE IF EXISTS `expense`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `django_site` (
+CREATE TABLE `expense` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `domain` varchar(100) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+  `doc_type_id` int(11) DEFAULT NULL,
+  `doc_num` int(11) DEFAULT NULL,
+  `date` date NOT NULL,
+  `state` int(11) NOT NULL,
+  `provider_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `expense_c9a50b03` (`doc_type_id`),
+  KEY `expense_d9e5df97` (`provider_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `django_site`
+-- Dumping data for table `expense`
 --
 
-LOCK TABLES `django_site` WRITE;
-/*!40000 ALTER TABLE `django_site` DISABLE KEYS */;
-INSERT INTO `django_site` VALUES (1,'skcrm.wekk.net','skcrm.wekk.net');
-/*!40000 ALTER TABLE `django_site` ENABLE KEYS */;
+LOCK TABLES `expense` WRITE;
+/*!40000 ALTER TABLE `expense` DISABLE KEYS */;
+INSERT INTO `expense` VALUES (1,1,3151446,'2012-12-21',1,29),(2,3,NULL,'2012-12-06',1,29),(3,3,NULL,'2012-12-04',2,NULL);
+/*!40000 ALTER TABLE `expense` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `expense_concept_types`
+--
+
+DROP TABLE IF EXISTS `expense_concept_types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `expense_concept_types` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `expense_concept_types`
+--
+
+LOCK TABLES `expense_concept_types` WRITE;
+/*!40000 ALTER TABLE `expense_concept_types` DISABLE KEYS */;
+INSERT INTO `expense_concept_types` VALUES (1,'Mensajeria'),(2,'Prensa');
+/*!40000 ALTER TABLE `expense_concept_types` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `expense_document_types`
+--
+
+DROP TABLE IF EXISTS `expense_document_types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `expense_document_types` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `expense_document_types`
+--
+
+LOCK TABLES `expense_document_types` WRITE;
+/*!40000 ALTER TABLE `expense_document_types` DISABLE KEYS */;
+INSERT INTO `expense_document_types` VALUES (1,'Factura'),(2,'Recibo'),(3,'Tiquet');
+/*!40000 ALTER TABLE `expense_document_types` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `expense_item`
+--
+
+DROP TABLE IF EXISTS `expense_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `expense_item` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `concept_type_id` int(11) DEFAULT NULL,
+  `iva` int(11) NOT NULL,
+  `base` float NOT NULL,
+  `description` longtext NOT NULL,
+  `expense_id` int(11) NOT NULL,
+  `ot_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `expense_item_d9453937` (`concept_type_id`),
+  KEY `expense_item_5c5bdf45` (`expense_id`),
+  KEY `expense_item_d50664cd` (`ot_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `expense_item`
+--
+
+LOCK TABLES `expense_item` WRITE;
+/*!40000 ALTER TABLE `expense_item` DISABLE KEYS */;
+INSERT INTO `expense_item` VALUES (4,1,4,12,'ssssssssss',1,5),(2,1,10,213,'aaaaaaaaaaaa',1,5),(3,2,21,123,'aaaaaaaa',1,5),(5,1,21,1234,'asdfasdfasdf',1,5),(6,2,10,1023.23,'test',1,5),(8,1,4,1234,'test',2,5),(9,1,10,142,'aaaaaaaaa',3,6);
+/*!40000 ALTER TABLE `expense_item` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `media`
+--
+
+DROP TABLE IF EXISTS `media`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `media` (
+  `contact_ptr_id` int(11) NOT NULL AUTO_INCREMENT,
+  `type_id` int(11) DEFAULT NULL,
+  `context_id` int(11) DEFAULT NULL,
+  `ditribution_id` int(11) DEFAULT NULL,
+  `periodicity_id` int(11) DEFAULT NULL,
+  `company_id` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`contact_ptr_id`),
+  KEY `media_777d41c8` (`type_id`),
+  KEY `media_8510bf2` (`context_id`),
+  KEY `media_406328ea` (`ditribution_id`),
+  KEY `media_1b438792` (`periodicity_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `media`
+--
+
+LOCK TABLES `media` WRITE;
+/*!40000 ALTER TABLE `media` DISABLE KEYS */;
+INSERT INTO `media` VALUES (9,NULL,NULL,NULL,1,'8'),(14,1,NULL,NULL,NULL,'13');
+/*!40000 ALTER TABLE `media` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `media_types`
+--
+
+DROP TABLE IF EXISTS `media_types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `media_types` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `media_types`
+--
+
+LOCK TABLES `media_types` WRITE;
+/*!40000 ALTER TABLE `media_types` DISABLE KEYS */;
+INSERT INTO `media_types` VALUES (1,'Radio'),(2,'Editorial'),(3,'Grupo'),(4,'Freelance'),(5,'Cadena'),(6,'TV'),(7,'Blog'),(8,'Web'),(9,'Prensa'),(10,'Revista técnica'),(11,'Revista profesional'),(12,'Suplementos'),(13,'Agencia noticias'),(14,'Productora'),(15,'Internet medio digital'),(16,'Internet portal temático');
+/*!40000 ALTER TABLE `media_types` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ot`
+--
+
+DROP TABLE IF EXISTS `ot`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ot` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `number` int(11) NOT NULL,
+  `company_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `number` (`number`),
+  KEY `ot_543518c6` (`company_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ot`
+--
+
+LOCK TABLES `ot` WRITE;
+/*!40000 ALTER TABLE `ot` DISABLE KEYS */;
+INSERT INTO `ot` VALUES (5,'US Polo - Gabinete PR',153,31),(6,'Ot de test',132,31),(7,'tuko',154,31);
+/*!40000 ALTER TABLE `ot` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `periodicity_types`
+--
+
+DROP TABLE IF EXISTS `periodicity_types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `periodicity_types` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `periodicity_types`
+--
+
+LOCK TABLES `periodicity_types` WRITE;
+/*!40000 ALTER TABLE `periodicity_types` DISABLE KEYS */;
+INSERT INTO `periodicity_types` VALUES (1,'Diaria'),(2,'Semanal'),(3,'Mensual'),(4,'Bimensual'),(5,'Quincenal'),(6,'Trimestral'),(7,'Semestral'),(8,'Anual');
+/*!40000 ALTER TABLE `periodicity_types` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `person`
+--
+
+DROP TABLE IF EXISTS `person`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `person` (
+  `contact_ptr_id` int(11) NOT NULL,
+  `cognoms` varchar(200) NOT NULL,
+  `surname` varchar(100) NOT NULL,
+  `has_personal_assistant_id` int(11) DEFAULT NULL,
+  `treatment_id` int(11) DEFAULT NULL,
+  `born_date` date DEFAULT NULL,
+  PRIMARY KEY (`contact_ptr_id`),
+  KEY `person_fe9b8df8` (`has_personal_assistant_id`),
+  KEY `person_2d0def0d` (`treatment_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `person`
+--
+
+LOCK TABLES `person` WRITE;
+/*!40000 ALTER TABLE `person` DISABLE KEYS */;
+INSERT INTO `person` VALUES (3,'Basté i Durant','',NULL,NULL,NULL),(4,'Cognom1 Cognom4','',NULL,NULL,NULL),(5,'Segon cognom','',NULL,NULL,NULL),(6,'','',NULL,NULL,NULL),(15,'Sellarès Torra','',NULL,NULL,NULL),(16,'','',NULL,NULL,NULL);
+/*!40000 ALTER TABLE `person` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `person_types`
+--
+
+DROP TABLE IF EXISTS `person_types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `person_types` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `person_types`
+--
+
+LOCK TABLES `person_types` WRITE;
+/*!40000 ALTER TABLE `person_types` DISABLE KEYS */;
+INSERT INTO `person_types` VALUES (1,'Periodista'),(2,'Contacto de sociedad'),(3,'Cliente'),(4,'Proveedor');
+/*!40000 ALTER TABLE `person_types` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -652,7 +950,7 @@ CREATE TABLE `regions` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -666,57 +964,142 @@ INSERT INTO `regions` VALUES (1,'Álava'),(2,'Castellón'),(3,'León'),(4,'Salam
 UNLOCK TABLES;
 
 --
--- Table structure for table `rel_contact_sectors`
+-- Table structure for table `rel_company_sectors`
 --
 
-DROP TABLE IF EXISTS `rel_contact_sectors`;
+DROP TABLE IF EXISTS `rel_company_sectors`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `rel_contact_sectors` (
+CREATE TABLE `rel_company_sectors` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `contact_id` int(11) NOT NULL,
+  `media_id` int(11) NOT NULL,
   `sector_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `contacts_id` (`contact_id`,`sector_id`),
-  KEY `sectors_id_refs_id_45e4f04a` (`sector_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  UNIQUE KEY `media_id` (`media_id`,`sector_id`),
+  KEY `rel_company_sectors_11f50c51` (`media_id`),
+  KEY `rel_company_sectors_94c48b8` (`sector_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `rel_contact_sectors`
+-- Dumping data for table `rel_company_sectors`
 --
 
-LOCK TABLES `rel_contact_sectors` WRITE;
-/*!40000 ALTER TABLE `rel_contact_sectors` DISABLE KEYS */;
-INSERT INTO `rel_contact_sectors` VALUES (2,10,3),(4,10,5),(1,10,8),(3,10,11);
-/*!40000 ALTER TABLE `rel_contact_sectors` ENABLE KEYS */;
+LOCK TABLES `rel_company_sectors` WRITE;
+/*!40000 ALTER TABLE `rel_company_sectors` DISABLE KEYS */;
+INSERT INTO `rel_company_sectors` VALUES (7,14,48),(6,9,43);
+/*!40000 ALTER TABLE `rel_company_sectors` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `rel_contact_types`
+-- Table structure for table `rel_company_types`
 --
 
-DROP TABLE IF EXISTS `rel_contact_types`;
+DROP TABLE IF EXISTS `rel_company_types`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `rel_contact_types` (
+CREATE TABLE `rel_company_types` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `contact_id` int(11) NOT NULL,
-  `contacttype_id` int(11) NOT NULL,
+  `company_id` int(11) NOT NULL,
+  `companytype_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `contacts_id` (`contact_id`,`contacttype_id`),
-  KEY `contacttypes_id_refs_id_4c57156b` (`contacttype_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  UNIQUE KEY `company_id` (`company_id`,`companytype_id`),
+  KEY `rel_company_types_543518c6` (`company_id`),
+  KEY `rel_company_types_3e497c4a` (`companytype_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `rel_contact_types`
+-- Dumping data for table `rel_company_types`
 --
 
-LOCK TABLES `rel_contact_types` WRITE;
-/*!40000 ALTER TABLE `rel_contact_types` DISABLE KEYS */;
-INSERT INTO `rel_contact_types` VALUES (2,6,5),(3,9,3),(5,10,4);
-/*!40000 ALTER TABLE `rel_contact_types` ENABLE KEYS */;
+LOCK TABLES `rel_company_types` WRITE;
+/*!40000 ALTER TABLE `rel_company_types` DISABLE KEYS */;
+INSERT INTO `rel_company_types` VALUES (3,7,2),(4,29,1);
+/*!40000 ALTER TABLE `rel_company_types` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rel_person_section`
+--
+
+DROP TABLE IF EXISTS `rel_person_section`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `rel_person_section` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `person_id` int(11) NOT NULL,
+  `section_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `person_id` (`person_id`,`section_id`),
+  KEY `rel_person_section_21b911c5` (`person_id`),
+  KEY `rel_person_section_c007bd5a` (`section_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rel_person_section`
+--
+
+LOCK TABLES `rel_person_section` WRITE;
+/*!40000 ALTER TABLE `rel_person_section` DISABLE KEYS */;
+INSERT INTO `rel_person_section` VALUES (13,3,1),(10,4,56),(7,5,62);
+/*!40000 ALTER TABLE `rel_person_section` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rel_person_types`
+--
+
+DROP TABLE IF EXISTS `rel_person_types`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `rel_person_types` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `person_id` int(11) NOT NULL,
+  `persontype_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `person_id` (`person_id`,`persontype_id`),
+  KEY `rel_person_types_21b911c5` (`person_id`),
+  KEY `rel_person_types_85d5e69f` (`persontype_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rel_person_types`
+--
+
+LOCK TABLES `rel_person_types` WRITE;
+/*!40000 ALTER TABLE `rel_person_types` DISABLE KEYS */;
+INSERT INTO `rel_person_types` VALUES (8,3,1);
+/*!40000 ALTER TABLE `rel_person_types` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `section`
+--
+
+DROP TABLE IF EXISTS `section`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `section` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `parent_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`),
+  KEY `section_63f17a16` (`parent_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=76 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `section`
+--
+
+LOCK TABLES `section` WRITE;
+/*!40000 ALTER TABLE `section` DISABLE KEYS */;
+INSERT INTO `section` VALUES (1,'Gente',NULL),(2,'VIP',1),(3,'Corazón',1),(4,'Economia',NULL),(5,'Sociedad',NULL),(6,'Educación',5),(7,'Empresa',4),(8,'Consumo',4),(9,'Finanzas',4),(10,'Innovación',4),(11,'Bolsa',4),(12,'Laboral',4),(13,'Marketing y publicidad',4),(14,'Entrevistas',NULL),(15,'Entrevistas Perfiles',14),(16,'Reportajes',14),(18,'Actualidad',NULL),(19,'Internacional',NULL),(20,'Política',NULL),(21,'Sucesos',NULL),(22,'Opinión',NULL),(23,'Artículos',22),(24,'Semáforo',22),(25,'Temas de debate',22),(26,'Director- Editorial',22),(27,'Deportes',NULL),(28,'Tecnología',NULL),(29,'Informática',28),(30,'Internet',28),(31,'Telefonía',28),(32,'Gadget',28),(33,'Ciencia',NULL),(34,'Investigación',33),(35,'Aparatos',NULL),(36,'Medicina',NULL),(37,'Medio Ambiente',33),(38,'Tendencias',33),(39,'Salud Pública',33),(40,'Bazar- Compras',NULL),(41,'Decoración',NULL),(42,'Belleza',NULL),(43,'Maquillaje',42),(44,'Tratamientos ',42),(45,'Pasarela',42),(46,'Colecciones',42),(47,'Productos',42),(48,'Moda',NULL),(49,'Pasarela- Colecciones ',48),(50,'Tendencia',48),(51,'Ropa',48),(52,'Calzado',48),(53,'Accesorios',48),(54,'Labores y patrones',48),(55,'Joyas-relojes',48),(56,'Cultura',NULL),(57,'Música',56),(58,'Cine',56),(59,'Televisión',56),(60,'Radio',56),(61,'Pintura',56),(62,'Museos',56),(63,'Literatura',56),(64,'Arte',56),(65,'Danza',56),(66,'Escultura',56),(67,'Teatro',56),(68,'Ocio',NULL),(69,'Hobbies',68),(70,'Hoteles',68),(71,'Viajes',68),(72,'Destinos',68),(73,'Turismo',68),(74,'Gastronomía',68),(75,'Motor',68);
+/*!40000 ALTER TABLE `section` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -728,10 +1111,11 @@ DROP TABLE IF EXISTS `sectors`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sectors` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(45) CHARACTER SET latin1 DEFAULT NULL,
+  `name` varchar(45) NOT NULL,
+  `parent_id` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name_UNIQUE` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8;
+  UNIQUE KEY `name` (`name`)
+) ENGINE=MyISAM AUTO_INCREMENT=60 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -740,8 +1124,36 @@ CREATE TABLE `sectors` (
 
 LOCK TABLES `sectors` WRITE;
 /*!40000 ALTER TABLE `sectors` DISABLE KEYS */;
-INSERT INTO `sectors` VALUES (1,'ACTUALIDAD'),(2,'AGENDA'),(3,'ANIMALES'),(4,'ARQUITECTURA'),(5,'ARTE'),(6,'AUTOMOVILISMO'),(7,'BAZAR'),(8,'BEBÉ'),(9,'BEBÉ/NIÑOS'),(10,'BELLEZA'),(11,'BOLSA E INVERSIONES ECONOMIA'),(12,'CIENCIA'),(13,'CINE'),(14,'COLUMNA SEMANAL'),(15,'COMUNICACION'),(16,'COPAS Y RESTAURACION'),(17,'CORAZON'),(18,'COSAS DE LA VIDA'),(19,'CULTURA'),(20,'DECORACIÓN'),(21,'DEPORTES'),(22,'ECOLOGIA'),(23,'ECONOMIA'),(24,'ELECTRODOMÉSTICOS'),(25,'ELECTRÓNICA'),(26,'EMPRESAS ECONOMIA'),(27,'ENTREVISTA/ PERFIL'),(28,'ESCAPARATES'),(29,'ESPECTACULOS'),(30,'ESTILO DE VIDA'),(31,'FERRETERIA'),(32,'FUTBOL DEPORTES'),(33,'GASTRONOMIA'),(34,'HOGAR'),(35,'HOTELES'),(36,'INFORMATIVOS'),(37,'INTERNACIONAL'),(38,'JUVENILES'),(39,'LA CONTRA'),(40,'LIBROS'),(41,'LOCAL'),(42,'MARKETING'),(43,'MEDIOAMBIENTE'),(44,'MODA'),(45,'MUSICA'),(46,'NACIONAL'),(47,'NIÑOS'),(48,'NOTICIAS'),(69,'NOVA TEMATICA'),(49,'NOVIA'),(50,'OCIO'),(51,'OPINION'),(52,'PADRES - HIJOS'),(53,'POLITICA'),(54,'REAL MADRID'),(55,'SALUD'),(56,'SHOPPING'),(57,'SOCIEDAD'),(58,'SUCESOS/ TRIBUNALES'),(59,'SUPLEMENTOS'),(60,'TENDENCIAS'),(61,'TENIS DEPORTES'),(62,'TODAS'),(63,'TURISMO'),(64,'TV / RADIO PROGRAMACION'),(65,'VIAJES'),(66,'VIDEOJUEGOS'),(67,'VIVIENDA');
+INSERT INTO `sectors` VALUES (1,'Información general',NULL),(3,'Deportivas',NULL),(4,'Relojería y Joyería',NULL),(5,'Femeninas',NULL),(6,'Moda',NULL),(7,'Música',NULL),(8,'Medicina',NULL),(9,'Turismo y Hosteleria',NULL),(10,'Arquitectura y construcc.',NULL),(11,'Decoración-diseño- muebles',NULL),(12,'Masculinas',NULL),(13,'Econ., empresa y negocios',NULL),(14,'Gastronómicas',NULL),(15,'Familiares',NULL),(16,'Motor',NULL),(17,'Salud – Dietética- Forma Física',NULL),(18,'Textil',NULL),(19,'Viajes',NULL),(20,'Informática- tecnología',NULL),(21,'Publicidad',NULL),(22,'Pesca',NULL),(23,'Maternidad-infantiles',NULL),(24,'Belleza-estética-Peluquería',NULL),(25,'Televisión',NULL),(26,'Estilo de Vida',NULL),(27,'Lujo','26'),(28,'Homosexualidad','26'),(29,'Bricolage',NULL),(30,'Política',NULL),(31,'Automovilismo-Motocicletas','16'),(32,'Caza',NULL),(33,'Cine',NULL),(34,'Videojuegos',NULL),(35,'Actualidad',NULL),(36,'Comunicación- Marketing',NULL),(37,'Industria',NULL),(38,'Iluminación',NULL),(39,'Juveniles',NULL),(40,'Distribución en aviones, trenes y barcos',NULL),(41,'Alimentación',NULL),(42,'Balnearios- Termalismos',NULL),(43,'Antigüedades',NULL),(44,'Historia',NULL),(45,'Óptica',NULL),(46,'Calzado',NULL),(47,'Novias','6'),(48,'Cultura',NULL),(49,'Ocio',NULL),(50,'Deportes',NULL),(51,'Náutica','50'),(52,'Outdoor','50'),(53,'Tenis','50'),(54,'Suplementos',NULL);
 /*!40000 ALTER TABLE `sectors` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `skcrm_ot`
+--
+
+DROP TABLE IF EXISTS `skcrm_ot`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `skcrm_ot` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `number` int(11) NOT NULL,
+  `company_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `number` (`number`),
+  KEY `skcrm_ot_543518c6` (`company_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `skcrm_ot`
+--
+
+LOCK TABLES `skcrm_ot` WRITE;
+/*!40000 ALTER TABLE `skcrm_ot` DISABLE KEYS */;
+INSERT INTO `skcrm_ot` VALUES (1,'US Polo - Gabinete PR',153,30);
+/*!40000 ALTER TABLE `skcrm_ot` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -753,4 +1165,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-11-02 20:48:42
+-- Dump completed on 2012-12-24  2:09:46

@@ -1,1 +1,0 @@
-// Main scripts for IDI APPS

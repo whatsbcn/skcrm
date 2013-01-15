@@ -21,15 +21,23 @@ ANSWER_TYPE = (
 ) 
 
 IVA_TYPE = (
+    (0, '0%'),
     (4, '4%'),               
     (10, '10%'),
     (21, '21%'),
 ) 
 
-EXPENSE_STATE = (
+IRPF_TYPE = (
+    (0, '0%'),               
+    (10, '10%'),
+    (21, '21%'),
+) 
+
+EXPENSE_STATE = [
     (1, 'Pendiente'),
     (2, 'Pagada'),
-)
+    (3, 'Domiciliada'),
+]
 
 DEFAULT_COUNTRY_ID = 73
 DEFAULT_REGION_ID = 33
@@ -258,7 +266,7 @@ class Person(Contact):
         return self.name + " " + self.cognoms
 
 class Company(Contact):
-    comercial_name = models.CharField(max_length=100, null=True, blank=True, verbose_name="Nombre comercial")
+    comercial_name = models.CharField(max_length=100, null=False, blank=False, verbose_name="Nombre comercial")
     types = models.ManyToManyField(CompanyType, db_table="rel_company_types", null=True, blank=True)
     context = models.ForeignKey(ContextType, null=True, blank=True, verbose_name="Ámbito")
     is_group = models.BooleanField(verbose_name="Es un grupo de empresas")
@@ -269,6 +277,8 @@ class Company(Contact):
         #ordering = ['name']
         verbose_name_plural = "Empresas"
     def __unicode__(self):
+        if self.comercial_name:
+            return self.comercial_name
         return self.name
     def get_absolute_url(self):
         return urlresolvers.reverse('non_admin:company_edit', args=(self.id,))    
@@ -282,26 +292,46 @@ class Ot(models.Model):
         db_table = u'ot'
         verbose_name_plural = "Ots"
     def __unicode__(self):
-        return str(self.number) + ": " + self.name
+        return str(self.number) + ": [" + str(self.company.comercial_name) + "] " + self.name
 
 class Expense(models.Model):
-    id = models.AutoField(primary_key=True)
-    doc_type = models.ForeignKey(ExpenseDocumentType, null=True, blank=True, verbose_name="Tipo de documento")
-    doc_num = models.IntegerField(null=True, blank=True, verbose_name="Número doc.")
+    id = models.AutoField(primary_key=True, verbose_name="#")
+    doc_type = models.ForeignKey(ExpenseDocumentType, null=True, blank=True, verbose_name="Tipo")
+    doc_num = models.IntegerField(null=True, blank=True, verbose_name="# Doc.")
     date = models.DateField(blank=True, verbose_name="Fecha")    
     state = models.IntegerField(choices=EXPENSE_STATE, default=1, verbose_name="Estado")
+    payment_date = models.DateField(blank=True, verbose_name="F. pago")
     provider = models.ForeignKey(Company, limit_choices_to= {"types" : 1}, verbose_name="Proveedor", null=True, blank=True)
+    irpf = models.IntegerField(choices=IRPF_TYPE, default=0, verbose_name="% IRPF")
     class Meta:
         db_table = u'expense'
         ordering = ['-id']
         verbose_name_plural = "Gastos"
     def __unicode__(self):
         return unicode(self.id)
+    def base(self):
+        base = 0
+        for item in self.expenseitem_set.all():
+            base += item.base
+        return base
+    def iva(self):
+        iva = 0
+        for item in self.expenseitem_set.all():
+            iva += (item.base * item.iva)/100
+        return iva
+    def iva_percent(self):
+        percent = []
+        for item in self.expenseitem_set.all():
+            if item.iva not in percent:
+                percent.append(item.iva)
+        return percent
     def total(self):
         ret = 0
+        base = 0
         for item in self.expenseitem_set.all():
             ret += item.total()
-        return ret
+            base += item.base 
+        return ret - (base*self.irpf)/100
     def resume_data(self):
         table_resume_data = []
         total = 0
@@ -312,7 +342,7 @@ class Expense(models.Model):
             for table_resume_entry in table_resume_data:
                 if table_resume_entry['iva'] == item.iva:
                     table_resume_entry['total'] += item.base
-            total += item.base + (item.iva * item.base)/100
+            total += item.base + (item.iva * item.base)/100 - (item.base * self.irpf)/100
         return table_resume_data, total 
                   
 
@@ -322,7 +352,7 @@ class ExpenseItem(models.Model):
     description = models.TextField(blank=True)
     expense = models.ForeignKey(Expense, verbose_name="# Reg.")
     ot = models.ForeignKey(Ot)
-    iva = models.IntegerField(choices=IVA_TYPE, verbose_name="Iva")
+    iva = models.IntegerField(choices=IVA_TYPE, verbose_name="% IVA")
     base = models.DecimalField(verbose_name="Base", max_digits=6, decimal_places=2)    
     class Meta:
         db_table = u'expense_item'

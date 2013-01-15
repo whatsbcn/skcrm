@@ -45,7 +45,7 @@
 </div>
 
 <div>
-<h3>Registros </h3>
+<h3>Entradas </h3>
 {% autoescape off %}
 {% render_table table %}
 {% endautoescape %}
@@ -60,14 +60,24 @@
 {% autoescape off %}
 {% render_table table_resume %}
 {% endautoescape %}
-<strong>TOTAL: {{total}}€  </strong>
+</br>
+{% if obj.irpf %}
+<table class="table table-condensed table-bordered">
+<tr><td><b>IRPF</b></td><td><b>Base</b></td></tr>
+<tr><td>{{obj.irpf}}</td><td>{{obj.base}}</td></tr>
+</table>
+{% endif %}
+
+<h3>TOTAL: {{total}}€ </h3>
 
 </div>
 </div>
 
 </br>
+
+
 <div class="row">
-<h3>Añadir registro </h3>
+<h3>Añadir entrada </h3>
 <form method="post" action="{% url 'expense_add_item' obj.id %}">{% csrf_token %}
 <table>
 {{ rel_form.as_table }}
@@ -85,11 +95,7 @@
 
 {% block localjs %}
     <script type="text/javascript">
-
-        $('#id_date').datepicker({weekStart: 1, format: 'yyyy-mm-dd'});
-
-
-
+        $('.datepicker').datepicker({weekStart: 1, format: 'yyyy-mm-dd'});
     </script>
 {% endblock localjs %}
 
