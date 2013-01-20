@@ -1,3 +1,9 @@
+  Passos proper dia:
+  ==================
+  - Afegir persona
+  - Que funcioni el seleccionar contactes.
+
+
   Plantilles generals:
   ====================
   - En les taules mostrar la quantitat d'entrades mostrades (en el cas de cerca seran les trobades)
@@ -57,10 +63,15 @@
 
   - Als registres d'una factura, introduir els conceptes de la gestoria: Grupo de conceptos on agrupi els subgrups del toni (que hi hagi el manteniment que els relacioni)
   - Fer el llistat agrupant per concepte de gestoria (escollir l'any)
+  - Afegir al llistat d'ot, un filtre de categoria i subcategoria
   
+  - Ull a total factura SEMPRE, fer-lo sempre sense restar irpf. fer funció total factura i total a pagar
+  - Afegir columna calcul import irpf
+  - A empresa afegir número de compte
+  - Boto per tornar després d'afegir ots que es digui Finalizar
     
   
-  
+  - A alta empreses el in group surt en angles i mostra totes les empreses
   
  
   - A cada exportació posar per quin client es fa l'exportació de manera que quedi registrat quan s'ha contactat amb aquella persona?

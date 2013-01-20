@@ -1,6 +1,8 @@
 # coding: utf-8
 from django import forms
 from django.forms import ModelForm, Textarea, Select
+from django.forms.fields import DateField, ChoiceField, MultipleChoiceField
+from django.forms.widgets import CheckboxSelectMultiple, CheckboxInput
 from skcrm.models import *
 #from autocomplete_light_registry import AutocompleteOt
 import autocomplete_light
@@ -28,16 +30,6 @@ ANY_CHOICES = (
     ('2012', '2012'),
 )
 
-MAILING_CHOICES = (
-    (None, ''),
-    (True, 'Si'),
-    (False, 'No'),
-)
-
-MAIL_REQUERIDO = (
-    (False, 'No'),                  
-    (True, 'Sí'),
-)
 
 class SearchContactForm(forms.Form):
     CARREC_CHOICES = [('', '')]
@@ -70,8 +62,8 @@ class SearchContactForm(forms.Form):
     company = forms.CharField(required=False, label='Empresa')
     media = forms.CharField(required=False, label='Medio de comunicación')
     carrec = forms.IntegerField(required=False, label='Cargo', widget=forms.Select(choices=CARREC_CHOICES))
-    mailing = forms.BooleanField(required=False, label='Aceptar Mailing', widget=forms.Select(choices=MAILING_CHOICES))
-    withmail = forms.BooleanField(required=False, label='Solo contactos con mail', widget=forms.Select(choices=MAIL_REQUERIDO))
+    mailing = forms.BooleanField(required=False, label='Contactos que aceptan mailing', widget=CheckboxInput)
+    withmail = forms.BooleanField(required=False, label='Contactos con mail', widget=CheckboxInput)
     sector = forms.IntegerField(required=False, label='Sector del medio de comunicación del contacto', widget=forms.Select(choices=SECTOR_CHOICES))
     tipo_medio = forms.IntegerField(required=False, label='Tipo del medio de comunicación del contacto', widget=forms.Select(choices=TIPO_MEDIOS_CHOICES))
     ciutat = forms.IntegerField(required=False, label='Ciudad del contacto', widget=forms.Select(choices=CIUTAT_CHOICES))

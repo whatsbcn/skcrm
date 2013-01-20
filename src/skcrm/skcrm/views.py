@@ -5,12 +5,13 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from skcrm.models import Person, Sector, Company, Expense
 from skcrm.tables import PersonaTable, SectorsTable, CompaniesTable, SectionsTable, MediasTable, OtTable, ExpenseTable, ExpenseItemTable, ResumeTable, ExpenseItemDetailTable, ExpenseDetailTable
-from skcrm.forms import *
+from skcrm.forms import SearchSectionForm, SearchMediaForm, GastosPorOtrForm, GastosPorProveedorForm, SearchExpenseForm, ExpenseForm, ExpenseItemForm, SearchCompanyForm, CompanyForm, OtForm, SearchSectorForm, SearchContactForm 
 from django.http import HttpResponseRedirect, HttpResponse
 from django.db.models import Q
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 import datetime
+
 
 @login_required(login_url='/accounts/login/')
 def index(request):        
@@ -46,23 +47,24 @@ def sections(request, section_id=None):
                               {'form':search, 'table':table}, 
                               context_instance=RequestContext(request)) 
 @login_required
-def medias(request, media_id=None):    
-    m = Media.objects.all()
-    
-    # The form has been used
-    search = SearchMediaForm()
-    if request.method == 'POST':
-        search = SearchMediaForm(request.POST, request.FILES)
-        if search.is_valid():
-            name = search.cleaned_data['name']
-            m = m.filter(name__icontains=name)        
-            
-    table = MediasTable(m, order_by=request.GET.get('sort'))
-    table.paginate(page=request.GET.get('page', 1), per_page=25)
+def media(request, action, id=None): 
+    if action == "list":   
+        m = Media.objects.all()
         
-    return render_to_response('medias.html', 
-                              {'form':search, 'table':table}, 
-                              context_instance=RequestContext(request)) 
+        # The form has been used
+        search = SearchMediaForm()
+        if request.method == 'POST':
+            search = SearchMediaForm(request.POST, request.FILES)
+            if search.is_valid():
+                name = search.cleaned_data['name']
+                m = m.filter(name__icontains=name)        
+                
+        table = MediasTable(m, order_by=request.GET.get('sort'))
+        table.paginate(page=request.GET.get('page', 1), per_page=25)
+            
+        return render_to_response('medias.html', 
+                                  {'form':search, 'table':table}, 
+                                  context_instance=RequestContext(request)) 
 
 @login_required
 def report(request, report, id=None):
@@ -292,95 +294,104 @@ def company(request, action, id=None, ot_id=None):
         
 
 @login_required
-def sectors(request, sector_id=None):    
-    sector_name = ""
-    s = Sector.objects.all()
-    
-    # The form has been used
-    search = SearchSectorForm()
-    if request.method == 'POST':
-        search = SearchSectorForm(request.POST, request.FILES)
-        if search.is_valid():
-            name = search.cleaned_data['name']
-            s = s.filter(name__icontains=name)        
-            
-    # We are selecting a sector
-    if sector_id:
-        s = s.filter(parent__id=sector_id)
-        sector_name = Sector.objects.get(id=sector_id).name
-    else:
-        s = s.filter(parent=None)
-    table = SectorsTable(s, order_by=request.GET.get('sort'))
-    table.paginate(page=request.GET.get('page', 1), per_page=25)
+def sector(request, action, id=None):
+    if action == "list":
+        sector_name = ""
+        s = Sector.objects.all()
         
-    return render_to_response('sectors.html', 
-                              {'form':search, 'sector_name': sector_name, 'table':table}, 
-                              context_instance=RequestContext(request)) 
+        # The form has been used
+        search = SearchSectorForm()
+        if request.method == 'POST':
+            search = SearchSectorForm(request.POST, request.FILES)
+            if search.is_valid():
+                name = search.cleaned_data['name']
+                s = s.filter(name__icontains=name)        
+                
+        # We are selecting a sector
+        if id:
+            s = s.filter(parent__id=id)
+            sector_name = Sector.objects.get(id=id).name
+        else:
+            s = s.filter(parent=None)
+        table = SectorsTable(s, order_by=request.GET.get('sort'))
+        table.paginate(page=request.GET.get('page', 1), per_page=25)
+            
+        return render_to_response('sectors.html', 
+                                  {'form':search, 'sector_name': sector_name, 'table':table}, 
+                                  context_instance=RequestContext(request)) 
 
 @login_required
-def contacts(request):  
-    if request.method == 'POST':
-        search = SearchContactForm(request.POST, request.FILES)
-        if search.is_valid():
-            # Filter people
-            found_people = Person.objects.select_related().all()
-            if search.cleaned_data['name']:
-                found_people = found_people.filter(name__icontains=search.cleaned_data['name'])                
-            if search.cleaned_data['company']:
-                found_people = found_people.filter(Q(positions__name__icontains=search.cleaned_data['company'])|
-                                                   Q(positions__in_group__name__icontains=search.cleaned_data['company']))
-            if search.cleaned_data['media']:
-                found_people = found_people.filter(positions__media__name__icontains=search.cleaned_data['media'])                                    
-            if search.cleaned_data['sector']:
-                found_people = found_people.filter(Q(contactposition__media__sectors__id=search.cleaned_data['sector'])|
-                                                   Q(contactposition__media__sectors__parent__id=search.cleaned_data['sector']))
-            if search.cleaned_data['tipo_medio']:
-                found_people = found_people.filter(contactposition__media__type__id=search.cleaned_data['tipo_medio'])
-            if search.cleaned_data['section']:
-                found_people = found_people.filter(Q(sections__id=search.cleaned_data['section'])|
-                                                   Q(sections__parent__id=search.cleaned_data['section']))                
-            if search.cleaned_data['carrec']:
-                found_people = found_people.filter(contactposition__type=search.cleaned_data['carrec'])            
-            if search.cleaned_data['ciutat']:
-                found_people = found_people.filter(city__id=search.cleaned_data['ciutat'])
-            if search.cleaned_data['provincia']:
-                found_people = found_people.filter(region__id=search.cleaned_data['provincia'])  
-            if search.cleaned_data['withmail']:
-                found_people = found_people.filter(email__isnull=False, email__contains='@')
-
-                
-            # Add filtered people to the selected list
-            if 'add' in request.POST:
-                people = PersonaTable([])
-                if 'selected_people' in request.session:
-                    new_people = set(list(found_people)) - request.session['selected_people']
-                    request.session['selected_people'] |= new_people
+def contact(request, action, id=None):
+    if action == "list" or action == "select":      
+        if request.method == 'POST':
+            search = SearchContactForm(request.POST, request.FILES)
+            if search.is_valid():
+                # Filter people
+                found_people = Person.objects.select_related().all()
+                if search.cleaned_data['name']:
+                    found_people = found_people.filter(name__icontains=search.cleaned_data['name'])                
+                if search.cleaned_data['company']:
+                    found_people = found_people.filter(Q(positions__name__icontains=search.cleaned_data['company'])|
+                                                       Q(positions__in_group__name__icontains=search.cleaned_data['company']))
+                if search.cleaned_data['media']:
+                    found_people = found_people.filter(positions__media__name__icontains=search.cleaned_data['media'])                                    
+                if search.cleaned_data['sector']:
+                    found_people = found_people.filter(Q(contactposition__media__sectors__id=search.cleaned_data['sector'])|
+                                                       Q(contactposition__media__sectors__parent__id=search.cleaned_data['sector']))
+                if search.cleaned_data['tipo_medio']:
+                    found_people = found_people.filter(contactposition__media__type__id=search.cleaned_data['tipo_medio'])
+                if search.cleaned_data['section']:
+                    found_people = found_people.filter(Q(sections__id=search.cleaned_data['section'])|
+                                                       Q(sections__parent__id=search.cleaned_data['section']))                
+                if search.cleaned_data['carrec']:
+                    found_people = found_people.filter(contactposition__type=search.cleaned_data['carrec'])            
+                if search.cleaned_data['ciutat']:
+                    found_people = found_people.filter(city__id=search.cleaned_data['ciutat'])
+                if search.cleaned_data['provincia']:
+                    found_people = found_people.filter(region__id=search.cleaned_data['provincia'])  
+                if search.cleaned_data['withmail']:
+                    found_people = found_people.filter(email__isnull=False, email__contains='@')
+    
+                    
+                # Add filtered people to the selected list
+                if action == "select":
+                    people = PersonaTable([])
+                    if 'selected_people' in request.session:
+                        new_people = set(list(found_people)) - request.session['selected_people']
+                        request.session['selected_people'] |= new_people
+                    else:
+                        request.session['selected_people'] = set(list(found_people))
+                    return HttpResponseRedirect("/contacts/")                   
+                # Show filtered people
                 else:
-                    request.session['selected_people'] = set(list(found_people))
-                return HttpResponseRedirect("/contacts/")                   
-            # Show filtered people
+                    people = PersonaTable(found_people)
+                    # Paginem la gent seleccionada  
+                    people.paginate(page=request.GET.get('page', 1), per_page=25)
+               
             else:
-                people = PersonaTable(found_people)
-                # Paginem la gent seleccionada  
-                people.paginate(page=request.GET.get('page', 1), per_page=25)
-           
+                people = PersonaTable([])
+    
         else:
+            search = SearchContactForm()
             people = PersonaTable([])
-
-    else:
-        search = SearchContactForm()
-        people = PersonaTable([])
-        
-    # Mostrem la gent seleccionada    
-    search = SearchContactForm(request.POST, request.FILES)
-    if 'selected_people' in request.session:
-        selection = PersonaTable(request.session['selected_people'], order_by=request.GET.get('sort'))
-    else:
-        selection = PersonaTable([])
-        
-    return render_to_response('contacts.html', 
-                              {'form':search, 'table':people, 'selection':selection}, 
-                              context_instance=RequestContext(request)) 
+            
+        # Mostrem la gent seleccionada    
+        search = SearchContactForm(request.POST, request.FILES)
+        if 'selected_people' in request.session:
+            selection = PersonaTable(request.session['selected_people'], order_by=request.GET.get('sort'))
+        else:
+            selection = PersonaTable([])
+            
+        return render_to_response('contacts.html', 
+                                  {'form':search, 'table':people, 'selection':selection}, 
+                                  context_instance=RequestContext(request)) 
+    if action == "unselect":
+        if id:
+            person = get_object_or_404(Person, pk=id)
+            request.session['selected_people'] -= set([person])
+            return redirect('contact_list')
+        else:
+            return redirect('contact_list')
 
 @login_required
 def reset(request):      
@@ -389,7 +400,7 @@ def reset(request):
     except:
         pass
         
-    return HttpResponseRedirect("/contacts/") 
+    return redirect('contact_list') 
 
 @login_required
 #TODO: it doesn't work

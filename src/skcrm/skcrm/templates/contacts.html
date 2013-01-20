@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load url from future %}
-{% load django_tables2 %}
-
+{% load render_table from django_tables2 %}
 
 
 {% block content %}
@@ -20,42 +19,47 @@ function submitsearchform()
 
 
 
-<h1>Búsqueda de personas</h1>
+<h3>Búsqueda de personas</h3>
 <form method="post" action="" id="searchform">{% csrf_token %}
 <table>
 {{ form.as_table }}
 </table>
-<input type="submit" name="button" value="Buscar" />
+
+<div class="form-actions">
+    <div class="pull-right">
+    	<button class="btn btn-primary" type="submit">Buscar</button>
+        <a href="{% url 'contact_edit' %}" role="button" class="btn btn-primary" data-toggle="modal">Añadir</a>
+    </div>
+</div>
 </form>
 
-<h1></h1>
-<ul class="tools">
-<li><a href="/admin/skcrm/person/add/" class="add-handler focus">Añadir contacto</a></li>
-</ul>
-
-<h1>Contactos encontrados</h1>
-<div class="module changelist-results">
+<h3>Contactos encontrados</h3>
+{% autoescape off %}
 {% render_table table %}
-</div>
+{% endautoescape %}
 </br>
+
+<div class="form-actions">
+    <div class="pull-right">
+        <button class="btn btn-primary" type="submit">Seleccionar contactos</button>
+    </div>
 </div>
-</br>
-<h1></h1>
-<ul class="tools">
-<li><a href="javascript: submitsearchform()" class="select-handler focus">Seleccionar contactos</a></li>
-</ul>
 
-<h1>Personas seleccionadas</h1>
 
-<div class="module changelist-results">
+<h3>Personas seleccionadas</h3>
+
+{% autoescape off %}
 {% render_table selection %}
+{% endautoescape %}</br>
+
+<div class="form-actions">
+    <div class="pull-right">
+        <a href="/reset/" role="button" class="btn btn-danger" data-toggle="modal">Resetear selección</a>
+        <a href="/export/" role="button" class="btn btn-primary" data-toggle="modal">Exportar selección</a>
+    </div>
 </div>
-</br>
-<h1></h1>
-<ul class="tools">
-<li><a href="/reset/" class="reset-handler focus">Resetear selección</a></li>
-<li><a href="/export/" class="reset-handler focus">Exportar selección</a></li>
-</ul>
+
+
 
 {% endblock %}
 

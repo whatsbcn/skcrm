@@ -23,10 +23,19 @@ urlpatterns = patterns('',
     url(r'^unselect/(\d+)/', 'skcrm.views.unselect'),
     url(r'^reset/', 'skcrm.views.reset'),
     url(r'^export/', 'skcrm.views.export'),
-    url(r'^contacts/', 'skcrm.views.contacts', name='contactes'),
-    url(r'^sectors/(\d+)?', 'skcrm.views.sectors', name='sectors'),
-    url(r'^medias/(\d+)?', 'skcrm.views.medias', name='mitjans'),
     
+    url(r'^contact/list/$', 'skcrm.views.contact', {'action': 'list'}, name='contact_list'),
+    url(r'^contact/edit/(?P<id>\d+)?$', 'skcrm.views.contact', {'action': 'edit'}, name='contact_edit'),
+    url(r'^contact/del/(?P<id>\d+)/$', 'skcrm.views.contact', {'action': 'del'}, name='contact_del'),
+    url(r'^contact/unselect/(?P<id>\d+)/$', 'skcrm.views.contact', {'action': 'unselect'}, name='contact_unselect'),
+    
+    url(r'^sector/list/$', 'skcrm.views.sector', {'action': 'list'}, name='sector_list'),
+    url(r'^sector/edit/(?P<id>\d+)?$', 'skcrm.views.sector', {'action': 'edit'}, name='sector_edit'),
+    url(r'^sector/del/(?P<id>\d+)/$', 'skcrm.views.sector', {'action': 'del'}, name='sector_del'),
+    
+    url(r'^media/list/$', 'skcrm.views.media', {'action': 'list'}, name='media_list'),
+    url(r'^media/edit/(?P<id>\d+)?$', 'skcrm.views.media', {'action': 'edit'}, name='media_edit'),
+    url(r'^media/del/(?P<id>\d+)/$', 'skcrm.views.media', {'action': 'del'}, name='media_del'),
     
     url(r'^company/list/$', 'skcrm.views.company', {'action': 'list'}, name='company_list'),
     url(r'^company/edit/(?P<id>\d+)?$', 'skcrm.views.company', {'action': 'edit'}, name='company_edit'),

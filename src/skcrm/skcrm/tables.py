@@ -10,6 +10,9 @@ class SectionsTable(tables.Table):
     number_of_childs = tables.Column(verbose_name='Cantidad de subsecciones', orderable=False)
     actions = tables.Column(verbose_name='Acciones', accessor="id")
 
+    class Meta:
+        attrs = {"class": "table table-bordered"}
+
     def render_actions(self, value):
         ret = "<ul>"
         ret += "<li class='change-link'><a href='/admin/skcrm/section/"+ str(value) + "/'></a></li>"
@@ -20,6 +23,9 @@ class MediasTable(tables.Table):
     name = tables.Column(verbose_name='Medios')
     #number_of_childs = tables.Column(verbose_name='Cantidad de subsectores', orderable=False)
     actions = tables.Column(verbose_name='Acciones', accessor="id")
+
+    class Meta:
+        attrs = {"class": "table table-bordered"}
 
     def render_actions(self, value):
         ret = "<ul>"
@@ -153,6 +159,9 @@ class SectorsTable(tables.Table):
     number_of_childs = tables.Column(verbose_name='Cantidad de subsectores', orderable=False)
     actions = tables.Column(verbose_name='Acciones', accessor="id")
 
+    class Meta:
+        attrs = {"class": "table table-bordered"}
+
     def render_actions(self, value):
         ret = "<ul>"
         ret += "<li class='change-link'><a href='/admin/skcrm/sector/"+ str(value) + "/'></a></li>"
@@ -168,12 +177,19 @@ class PersonaTable(tables.Table):
     sections = tables.Column(verbose_name='secciones', accessor="sections")
     phone  = tables.Column(verbose_name='Teléfono', accessor="phone_set")
     positions = tables.Column(verbose_name='Cargos', accessor="contactposition_set")
-    actions = tables.Column(verbose_name='Acciones', accessor="id")
+    #actions = tables.Column(verbose_name='Acciones', accessor="id")
+    actions = tables.TemplateColumn("""
+    <a href='{% url contact_edit record.id %}'><i class='icon-pencil'></i>&nbsp;</a>
+    <a href='{% url contact_unselect record.id %}'><i class='icon-trash'></i>&nbsp;</a>
+    """, verbose_name="Acciones")
 
     #twitter = tables.Column(verbose_name='Twiter')
     #facebook = tables.Column(verbose_name='Facebook')
     
     #city = tables.Column(verbose_name='Ciudad')
+
+    class Meta:
+        attrs = {"class": "table table-bordered", 'cellspacing': '0'}    
     def render_sections(self, value):
         ret = ""
         for section in value.all():
@@ -199,16 +215,7 @@ class PersonaTable(tables.Table):
         return mark_safe(ret)
     
     
-    
-    def render_actions(self, value):
-        ret = "<ul>"
-        ret += "<li class='change-link'><a href='/admin/skcrm/person/"+ str(value) + "/'></a></li>"
-        ret += "<li class='delete-link'><a href='/unselect/"+ str(value) + "/'></a></li>"
-        ret += "</ul>"
-        return mark_safe(ret)
-    
-    class Meta:
-        attrs = {'cellspacing': '0'}
+
         #order_by = 'name'
         #model = Person
         #sequence = ("email", "name", "cognom1", "cognom2", "cargos", "...")
