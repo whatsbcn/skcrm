@@ -124,7 +124,8 @@ INSTALLED_APPS = (
     'autocomplete_light',
     'django_sorting',
     'django_tables2',
-    'skcrm'
+    'skcrm',
+    'south'
 )
 
 # A sample logging configuration. The only tangible logging
