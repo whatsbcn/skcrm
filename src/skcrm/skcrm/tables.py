@@ -78,8 +78,9 @@ class ExpenseTable(tables.Table):
             return value
 
 class ExpenseDetailTable(tables.Table):
-    iva_percent = tables.Column(verbose_name='% IVA')
-    iva = tables.Column(verbose_name='IVA')
+    irpf_value = tables.Column(verbose_name='IRPF')
+    iva = tables.Column(verbose_name='% IVA')
+    iva_value = tables.Column(verbose_name='IVA')
     base = tables.Column(verbose_name='Base')
     total = tables.Column(verbose_name='Total Fac.')
     
@@ -100,7 +101,7 @@ class ExpenseDetailTable(tables.Table):
         else:
             return value    
         
-    def render_iva_percent(self, value):
+    def render_iva(self, value):
         ret = ""
         for item in value:
             ret += str(item) + "% </br>"

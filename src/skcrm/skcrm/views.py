@@ -3,7 +3,8 @@
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
-from skcrm.models import Person, Sector, Company, Expense
+from skcrm.models import Person, Sector, Company, Expense, Section, Media, ExpenseItem, Ot
+from skcrm.models import IVA_TYPE
 from skcrm.tables import PersonaTable, SectorsTable, CompaniesTable, SectionsTable, MediasTable, OtTable, ExpenseTable, ExpenseItemTable, ResumeTable, ExpenseItemDetailTable, ExpenseDetailTable
 from skcrm.forms import SearchSectionForm, SearchMediaForm, GastosPorOtrForm, GastosPorProveedorForm, SearchExpenseForm, ExpenseForm, ExpenseItemForm, SearchCompanyForm, CompanyForm, OtForm, SearchSectorForm, SearchContactForm 
 from django.http import HttpResponseRedirect, HttpResponse

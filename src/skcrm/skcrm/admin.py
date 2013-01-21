@@ -1,6 +1,7 @@
 # coding: utf8
 from django.contrib import admin
 from models import *
+from skcrm.models import ExpenseConceptSubType
 from datetime import datetime
 from django.http import HttpResponseRedirect
 
@@ -164,6 +165,7 @@ admin.site.register(Company, CompanyAdmin)
 admin.site.register(Ot, OtAdmin)
 admin.site.register(ExpenseDocumentType)
 admin.site.register(ExpenseConceptType)
+admin.site.register(ExpenseConceptSubType)
 admin.site.register(Expense, ExpenseAdmin)
 admin.site.register(ExpenseItem)
 #admin.site.register(Phone)

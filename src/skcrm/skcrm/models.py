@@ -195,6 +195,17 @@ class ExpenseConceptType(models.Model):
     def __unicode__(self):
         return self.name 
         
+class ExpenseConceptSubType(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=45, blank=True)
+    concept_type = models.ForeignKey(ExpenseConceptType, blank=True, null=True)
+    class Meta:
+        db_table = u'expense_concept_subtypes'
+        ordering = ['name']
+        verbose_name_plural = "Subconceptos de gasto"
+    def __unicode__(self):
+        return self.name 
+                
 class Sector(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(unique=True, max_length=45, blank=True)
@@ -266,11 +277,12 @@ class Person(Contact):
         return self.name + " " + self.cognoms
 
 class Company(Contact):
+    account_number = models.CharField(max_length=100, null=True, blank=True, verbose_name="Número de cuenta")
     comercial_name = models.CharField(max_length=100, null=False, blank=False, verbose_name="Nombre comercial")
     types = models.ManyToManyField(CompanyType, db_table="rel_company_types", null=True, blank=True)
     context = models.ForeignKey(ContextType, null=True, blank=True, verbose_name="Ámbito")
     is_group = models.BooleanField(verbose_name="Es un grupo de empresas")
-    in_group = models.ForeignKey('Company', null=True, blank=True, limit_choices_to= {"is_group" : True})
+    in_group = models.ForeignKey('Company', null=True, blank=True, limit_choices_to= {"is_group" : True}, verbose_name="Permeneze al grupo")
     relations = models.ManyToManyField(Person, through='ContactPosition', null=True, blank=True)
     class Meta:
         db_table = u'company'
@@ -302,7 +314,7 @@ class Expense(models.Model):
     state = models.IntegerField(choices=EXPENSE_STATE, default=1, verbose_name="Estado")
     payment_date = models.DateField(blank=True, verbose_name="F. pago")
     provider = models.ForeignKey(Company, limit_choices_to= {"types" : 1}, verbose_name="Proveedor", null=True, blank=True)
-    irpf = models.IntegerField(choices=IRPF_TYPE, default=0, verbose_name="% IRPF")
+    irpf = models.IntegerField(null=False, blank=False, choices=IRPF_TYPE, default=0, verbose_name="% IRPF")
     class Meta:
         db_table = u'expense'
         ordering = ['-id']
@@ -315,23 +327,23 @@ class Expense(models.Model):
             base += item.base
         return base
     def iva(self):
-        iva = 0
-        for item in self.expenseitem_set.all():
-            iva += (item.base * item.iva)/100
-        return iva
-    def iva_percent(self):
         percent = []
         for item in self.expenseitem_set.all():
             if item.iva not in percent:
                 percent.append(item.iva)
-        return percent
+        return percent    
+    def iva_value(self):
+        iva = 0
+        for item in self.expenseitem_set.all():
+            iva += (item.base * item.iva)/100
+        return iva
+    def irpf_value(self):
+        return (self.base()*self.irpf)/100
     def total(self):
         ret = 0
-        base = 0
         for item in self.expenseitem_set.all():
-            ret += item.total()
-            base += item.base 
-        return ret - (base*self.irpf)/100
+            ret += item.total() 
+        return ret
     def resume_data(self):
         table_resume_data = []
         total = 0
@@ -342,7 +354,7 @@ class Expense(models.Model):
             for table_resume_entry in table_resume_data:
                 if table_resume_entry['iva'] == item.iva:
                     table_resume_entry['total'] += item.base
-            total += item.base + (item.iva * item.base)/100 - (item.base * self.irpf)/100
+            total += item.base + (item.iva * item.base)/100
         return table_resume_data, total 
                   
 

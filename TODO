@@ -8,101 +8,94 @@
   ====================
   - En les taules mostrar la quantitat d'entrades mostrades (en el cas de cerca seran les trobades)
   - Taules de cerca ordenables i maques altre cop
-  - Desplegables més petits
+  - Desplegables mÃ©s petits
   - Part de audit amb tots els canvis i consultes que es van fent.
-  - Que hi hagi un permís que sigui donar d'alta cada objecte i un altre que sigui consulta
+  - Que hi hagi un permÃ­s que sigui donar d'alta cada objecte i un altre que sigui consulta
   
 
   Contactes:
   ==========
-  - Tot el formulari d'alta i modificació d'un contacte
+  - Tot el formulari d'alta i modificaciÃ³ d'un contacte
   - Alta o baixa de relacions laborals del contacte
   - Seccions del contacte
-  - Tipus de contacte (Societat, Periodista, Clients, Proveidor). Segons això es veuran els contactes als usuaris
-  - A l'entrar les dades, les inicials del nom i de tot word de longitud més de 4 chars, sempre amb majúscula
-  - Personal assistant (que quedi clar qui és personal assistant de qui i qui te un personal assistant)
-  - Visió dels càrrecs => Mitja (càrrec)
-  - Exportació de la direcció postal com a últim camp
-  - Un contacte té N direccións de contacte igual que telefons o emails. Una personal, una professional per cada empresa amb què treballi
-  - Al càrrec posar-hi el mail, el telf i la direcció postal. Al contacte només les dades personals
-  - Pensar => Al fer exportar, que d'alguna manera l'usuari trii de cada contacte quina adreça vol fer servir.
-  - Que no deixi exportar si una persona té càrrecs duplicats.
+  - Tipus de contacte (Societat, Periodista, Clients, Proveidor). Segons aixÃ² es veuran els contactes als usuaris
+  - A l'entrar les dades, les inicials del nom i de tot word de longitud mÃ©s de 4 chars, sempre amb majÃºscula
+  - Personal assistant (que quedi clar qui Ã©s personal assistant de qui i qui te un personal assistant)
+  - VisiÃ³ dels cÃ rrecs => Mitja (cÃ rrec)
+  - ExportaciÃ³ de la direcciÃ³ postal com a Ãºltim camp
+  - Un contacte tÃ© N direcciÃ³ns de contacte igual que telefons o emails. Una personal, una professional per cada empresa amb quÃ¨ treballi
+  - Al cÃ rrec posar-hi el mail, el telf i la direcciÃ³ postal. Al contacte nomÃ©s les dades personals
+  - Pensar => Al fer exportar, que d'alguna manera l'usuari trii de cada contacte quina adreÃ§a vol fer servir.
+  - Que no deixi exportar si una persona tÃ© cÃ rrecs duplicats.
   - Alta d'usuari => Nom, cognom, mail, telf, rel_laboral
-  - Utilitzar mòdul audit (registrar qui fa què)
+  - Utilitzar mÃ²dul audit (registrar qui fa quÃ¨)
   - A la cerca de contactes, canviar "solo contactos con mail" a un checkbox
   - A la cerca de contactes, canviar "aceptar mailing" per un checkbox ("no quieres mail", mostrar solo los que si permiten mail)
-  - Al carrito, no tenir contactes sinó càrrecs. Treure els duplicats de càrrecs per exportar
+  - Al carrito, no tenir contactes sinÃ³ cÃ rrecs. Treure els duplicats de cÃ rrecs per exportar
   - Pensar => Com permetre contactes de societat (crear els permisos pels usuaris i els tipus de contactes)
   - A la cerca, poder triar quin tipus de contacte busques, societat o mitja 
   - Exportacions principalment per sector, seccio i medi
-  - Exportació amb excel: mail, nom, cognoms, cargo, medi, telf, tema, seccio
+  - ExportaciÃ³ amb excel: mail, nom, cognoms, cargo, medi, telf, tema, seccio
   - Pantalla per editar la categoria i la categoria pare.
-  - Permisos per poder treballar amb lo de societat. (si el contacte és de societat i el grup de l'usuari no te permisos, no veura totes les dades)
+  - Permisos per poder treballar amb lo de societat. (si el contacte Ã©s de societat i el grup de l'usuari no te permisos, no veura totes les dades)
   - Crear rols pels permisos: veure periodistes, veure societat, editar contactes
 
 
   Empreses:
   =========
-  - Tot el formulari d'alta i modificació
-  - A una empresa tipus grup, que li apareguin les empreses que són del grup.
+  - Tot el formulari d'alta i modificaciÃ³
+  - A una empresa tipus grup, que li apareguin les empreses que sÃ³n del grup.
 
   Sectors i seccions:
   ===================
-  - Manera àgil i intuitiva d'editar-les    
+  - Manera Ã gil i intuitiva d'editar-les    
   
-  Mitjans de comunicació:
+  Mitjans de comunicaciÃ³:
   =======================
-  - Tot el formulari d'alta i modificació
+  - Tot el formulari d'alta i modificaciÃ³
   
   Altres manteniments:
   ====================
   - Fer pantalles de manteniments senzilles
   
-  Facturació:
+  FacturaciÃ³:
   ===========
 
   - Als registres d'una factura, introduir els conceptes de la gestoria: Grupo de conceptos on agrupi els subgrups del toni (que hi hagi el manteniment que els relacioni)
   - Fer el llistat agrupant per concepte de gestoria (escollir l'any)
   - Afegir al llistat d'ot, un filtre de categoria i subcategoria
-  
-  - Ull a total factura SEMPRE, fer-lo sempre sense restar irpf. fer funció total factura i total a pagar
-  - Afegir columna calcul import irpf
-  - A empresa afegir número de compte
-  - Boto per tornar després d'afegir ots que es digui Finalizar
-    
-  
-  - A alta empreses el in group surt en angles i mostra totes les empreses
-  
- 
-  - A cada exportació posar per quin client es fa l'exportació de manera que quedi registrat quan s'ha contactat amb aquella persona?
+
+
+
+  - A cada exportaciÃ³ posar per quin client es fa l'exportaciÃ³ de manera que quedi registrat quan s'ha contactat amb aquella persona?
   
 
   Mailings:
   =========
   - Enviament de mails directament des de la web sense necessitar l'atomic
-  - Especificar adreça pels mails rebotats
+  - Especificar adreÃ§a pels mails rebotats
 
 
   Accions:
   ========
-  - Accions tipus invitació (poder apuntar qui confirma i qui no, intents, quantitat de confirmats i denegats, etc)
-  - Exportació de excel
+  - Accions tipus invitaciÃ³ (poder apuntar qui confirma i qui no, intents, quantitat de confirmats i denegats, etc)
+  - ExportaciÃ³ de excel
   - Enviament de mailing
   - Estat: Tancada, Oberta
-  - Crear una acció desde una busqueda
+  - Crear una acciÃ³ desde una busqueda
   - Poder afegir o treure contactes
-  - Poder crear una acció desde 0
+  - Poder crear una acciÃ³ desde 0
   - Poder fer l'enviament de mail
-  - Poder marcar quins periodistes han fet una publicació o quins contactes han asistit (depenent el tipus d'acció)
+  - Poder marcar quins periodistes han fet una publicaciÃ³ o quins contactes han asistit (depenent el tipus d'acciÃ³)
   - Associades a un client
-  - Mirar si una acció tancada es pot posar que sigui 'ro'
-  - Invitació (cartes/etiquetes, trucades) i control d'assistència
+  - Mirar si una acciÃ³ tancada es pot posar que sigui 'ro'
+  - InvitaciÃ³ (cartes/etiquetes, trucades) i control d'assistÃ¨ncia
   - Enviament (cremes, canastilles, etc)
-  - Enviar una invitació al facebook i contar els confirmats i introduir-los a l'aplicació.
-  - Mostrar el telf i el mail al resum de l'acció.
+  - Enviar una invitaciÃ³ al facebook i contar els confirmats i introduir-los a l'aplicaciÃ³.
+  - Mostrar el telf i el mail al resum de l'acciÃ³.
   - Poder ordenar o filtrar segons si ha confirmat o no, buscar per nom, etc.
-  - Des d'acció poder modificar la fitxa d'un contacte.
-  - Des d'acció, poder reenviar una acció per mail (per si diu que no l'ha rebut)
+  - Des d'acciÃ³ poder modificar la fitxa d'un contacte.
+  - Des d'acciÃ³, poder reenviar una acciÃ³ per mail (per si diu que no l'ha rebut)
   - Al llistat d'accions, mostrar el tipus.
   
   Altres:

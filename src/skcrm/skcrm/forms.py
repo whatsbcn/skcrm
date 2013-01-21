@@ -121,7 +121,7 @@ class CompanyForm(ModelForm):
         #city = forms.ModelChoiceField(City.objects.all(),
         #                              widget=autocomplete_light.ChoiceWidget(AutocompleteCity))
         fields = ('name', 'comercial_name', 'NIF_CIF', 'address', 'postal_code', 'country', 
-                  'region', 'city', 'website', 'types', 'disabled', 'is_group', 'in_group')
+                  'region', 'city', 'website', 'types', 'disabled', 'is_group', 'in_group', 'account_number')
         model = Company
         exclude = ('relations',)
         
