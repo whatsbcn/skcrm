@@ -1,7 +1,7 @@
 #encoding: utf8
 import autocomplete_light
 
-from models import Country, Region, City, Sector, Section, Person, Company, Ot
+from models import Country, Region, City, Sector, Section, Person, Company, Ot, ExpenseConceptType, ExpenseConceptSubType
 
 autocomplete_light.register(Country, search_fields=('name',),
     autocomplete_js_attributes={'minimum_characters': 0, 'placeholder': 'Nombre del pais ..'})
@@ -19,7 +19,26 @@ autocomplete_light.register(Company, search_fields=('name',),
     autocomplete_js_attributes={'minimum_characters': 0, 'placeholder': 'Nombre de la empresa ..'})
 autocomplete_light.register(Ot, search_fields=('name', 'number', 'company__comercial_name'),
     autocomplete_js_attributes={'minimum_characters': 0, 'placeholder': 'Nombre de ot ..'})
+autocomplete_light.register(ExpenseConceptType, search_fields=('name',),
+    autocomplete_js_attributes={'minimum_characters': 0, 'placeholder': 'Nombre de concepto ..'})
 
+class ExpenseConceptSubTypeAutocomplete(autocomplete_light.AutocompleteModelBase):
+    autocomplete_js_attributes={'minimum_characters': 0, 'placeholder': 'Nombre de concepto ..'}
+    search_fields=('name',)
+
+    def choices_for_request(self):
+        q = self.request.GET.get('q', '')
+        concept_type_id = self.request.GET.get('concept_type_id', None)
+
+        choices = self.choices.all()
+        if q:
+            choices = choices.filter(name__icontains=q)
+        if concept_type_id:
+            choices = choices.filter(concept_type_id=concept_type_id)
+
+        return self.order_choices(choices)[0:self.limit_choices]
+
+autocomplete_light.register(ExpenseConceptSubType, ExpenseConceptSubTypeAutocomplete)
 
 #class ProviderAutocomplete(autocomplete_light.AutocompleteModelBase):
 #    autocomplete_js_attributes={'placeholder': 'Número o nombre proveedor ..', 'minimum_characters': 0,}

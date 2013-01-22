@@ -60,13 +60,6 @@
   
   FacturaciÃ³:
   ===========
-
-  - Als registres d'una factura, introduir els conceptes de la gestoria: Grupo de conceptos on agrupi els subgrups del toni (que hi hagi el manteniment que els relacioni)
-  - Fer el llistat agrupant per concepte de gestoria (escollir l'any)
-  - Afegir al llistat d'ot, un filtre de categoria i subcategoria
-
-
-
   - A cada exportaciÃ³ posar per quin client es fa l'exportaciÃ³ de manera que quedi registrat quan s'ha contactat amb aquella persona?
   
 

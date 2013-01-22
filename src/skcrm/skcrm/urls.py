@@ -64,7 +64,7 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
-
+    #url(r'^chaining/', include('smart_selects.urls')),
     url(r'^$', 'skcrm.views.index'),
 
     

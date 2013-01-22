@@ -83,6 +83,7 @@ def report(request, report, id=None):
                 fecha_final = form.cleaned_data['fecha_final']
                 #get_object_or_404(Ot, pk=)
                 ot = form.cleaned_data['ot']
+                content_type = form.cleaned_data['content_type']
                 header_data = [('FECHA EXTRACCIÓN:', str(datetime.date.today())),
                               ('PERIODO:', "%s - %s" % (fecha_inicio, fecha_final))]
                 
@@ -90,6 +91,9 @@ def report(request, report, id=None):
                 if ot:
                     selected_expense_items = selected_expense_items.filter(ot=ot)
                     header_data += [('OT:', str(ot)), ('CLIENTE:', str(ot.company))]
+                if content_type:
+                    selected_expense_items = selected_expense_items.filter(concept_type=content_type)
+                    header_data += [('Concepto:', str(content_type))]                    
                 detail_table = ExpenseItemDetailTable(selected_expense_items, order_by=request.GET.get('sort'))
                 
                 for iva_item, iva_desc in IVA_TYPE:

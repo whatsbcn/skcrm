@@ -3,6 +3,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core import urlresolvers
+
+
              
 ACTION_STATE = (
     (1, 'Abierta'),
@@ -198,7 +200,7 @@ class ExpenseConceptType(models.Model):
 class ExpenseConceptSubType(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=45, blank=True)
-    concept_type = models.ForeignKey(ExpenseConceptType, blank=True, null=True)
+    concept_type = models.ForeignKey(ExpenseConceptType, null=False, blank=False, verbose_name="Concepto")
     class Meta:
         db_table = u'expense_concept_subtypes'
         ordering = ['name']
@@ -360,7 +362,8 @@ class Expense(models.Model):
 
 class ExpenseItem(models.Model):
     id = models.AutoField(primary_key=True)
-    concept_type = models.ForeignKey(ExpenseConceptType, null=True, blank=True, verbose_name="Concepto")
+    concept_type = models.ForeignKey(ExpenseConceptType, null=False, blank=False, verbose_name="Concepto")
+    concept_sub_type = models.ForeignKey(ExpenseConceptSubType, null=False, blank=False, verbose_name="Subconcepto")    
     description = models.TextField(blank=True)
     expense = models.ForeignKey(Expense, verbose_name="# Reg.")
     ot = models.ForeignKey(Ot)

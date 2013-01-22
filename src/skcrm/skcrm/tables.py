@@ -126,7 +126,7 @@ class ExpenseItemDetailTable(tables.Table):
     
     class Meta:
         model = ExpenseItem
-        exclude = ('ot', 'id')
+        exclude = ('ot', 'id', 'concept_sub_type')
         sequence = ('expense', 'doc_num', 'date', 'concept_type', 'description', 'iva', 'base', 'total')
         attrs = {"class": "table table-condensed table-bordered"}
 

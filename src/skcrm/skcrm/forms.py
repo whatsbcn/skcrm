@@ -89,7 +89,10 @@ class GastosPorOtrForm(forms.Form):
     fecha_inicio = forms.DateField(required=True, label="Fecha inicio")
     fecha_final = forms.DateField(required=True, label="Fecha final")
     ot = forms.ModelChoiceField(Ot.objects.all(),
-                                  widget=autocomplete_light.ChoiceWidget('OtAutocomplete'), required=False)    
+                                  widget=autocomplete_light.ChoiceWidget('OtAutocomplete'), required=False)
+    content_type = forms.ModelChoiceField(ExpenseConceptType.objects.all(),
+                                  #widget=autocomplete_light.ChoiceWidget('ExpenseConceptTypeAutocomplete'),
+                                  required=False, label="Concepto")
     def __init__(self, *args, **kwargs):
         super(GastosPorOtrForm, self).__init__(*args, **kwargs)
         self.fields['fecha_inicio'].widget.attrs.update({'class': "input-small datepicker"})
@@ -141,8 +144,16 @@ class ExpenseForm(ModelForm):
         self.fields['state'].widget.attrs.update({'class': "input-medium"})  
 
 class ExpenseItemForm(ModelForm):
+    content_type = forms.ModelChoiceField(ExpenseConceptType.objects.all(),
+                                  widget=autocomplete_light.ChoiceWidget('ExpenseConceptTypeAutocomplete'),
+                                  required=False, label="Concepto")
+    content_sub_type = forms.ModelChoiceField(ExpenseConceptSubType.objects.all(),
+                                  widget=autocomplete_light.ChoiceWidget('ExpenseConceptSubTypeAutocomplete'),
+                                  required=False, label="Subconcepto")
     class Meta:        
         widgets = autocomplete_light.get_widgets_dict(ExpenseItem)
+        # http://django-autocomplete-light.readthedocs.org/en/latest/dependant.html
+        #js = ('dependant_autocomplete.js',)
         widgets['description'] = Textarea(attrs={'rows':2, 'cols':180, 'class': "input-xxlarge"})
         model = ExpenseItem        
         exclude = ('expense',)
