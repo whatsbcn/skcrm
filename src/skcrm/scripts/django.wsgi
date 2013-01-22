@@ -7,7 +7,7 @@ for path in paths:
                 sys.path.append(path)
 
 os.environ['PYTHON_EGG_CACHE'] = '/var/tmp'
-os.environ['DJANGO_SETTINGS_MODULE'] = 'apps.settings_prod'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'settings_prod'
 
 import django.core.handlers.wsgi
 application = django.core.handlers.wsgi.WSGIHandler()
