@@ -1,8 +1,6 @@
 # coding: utf-8
 from django import forms
-from django.forms import ModelForm, Textarea, Select
-from django.forms.fields import DateField, ChoiceField, MultipleChoiceField
-from django.forms.widgets import CheckboxSelectMultiple, CheckboxInput
+#from django.forms.widgets import CheckboxSelectMultiple, CheckboxInput
 from skcrm.models import *
 #from autocomplete_light_registry import AutocompleteOt
 import autocomplete_light
@@ -62,8 +60,8 @@ class SearchContactForm(forms.Form):
     company = forms.CharField(required=False, label='Empresa')
     media = forms.CharField(required=False, label='Medio de comunicación')
     carrec = forms.IntegerField(required=False, label='Cargo', widget=forms.Select(choices=CARREC_CHOICES))
-    mailing = forms.BooleanField(required=False, label='Contactos que aceptan mailing', widget=CheckboxInput)
-    withmail = forms.BooleanField(required=False, label='Contactos con mail', widget=CheckboxInput)
+    mailing = forms.BooleanField(required=False, label='Contactos que aceptan mailing', widget=forms.CheckboxInput)
+    withmail = forms.BooleanField(required=False, label='Contactos con mail', widget=forms.CheckboxInput)
     sector = forms.IntegerField(required=False, label='Sector del medio de comunicación del contacto', widget=forms.Select(choices=SECTOR_CHOICES))
     tipo_medio = forms.IntegerField(required=False, label='Tipo del medio de comunicación del contacto', widget=forms.Select(choices=TIPO_MEDIOS_CHOICES))
     ciutat = forms.IntegerField(required=False, label='Ciudad del contacto', widget=forms.Select(choices=CIUTAT_CHOICES))
@@ -118,7 +116,7 @@ class AnyMesForm(forms.Form):
 
 #from autocomplete_light_registry import AutocompleteCity
     
-class CompanyForm(ModelForm):
+class CompanyForm(forms.ModelForm):
     class Meta:
         widgets = autocomplete_light.get_widgets_dict(Company)
         #city = forms.ModelChoiceField(City.objects.all(),
@@ -128,12 +126,12 @@ class CompanyForm(ModelForm):
         model = Company
         exclude = ('relations',)
         
-class OtForm(ModelForm):
+class OtForm(forms.ModelForm):
     class Meta:
         model = Ot   
         exclude = ('company',)
 
-class ExpenseForm(ModelForm):
+class ExpenseForm(forms.ModelForm):
     class Meta:
         widgets = autocomplete_light.get_widgets_dict(Expense)        
         model = Expense   
@@ -143,17 +141,17 @@ class ExpenseForm(ModelForm):
         self.fields['payment_date'].widget.attrs.update({'class': "input-small datepicker"})
         self.fields['state'].widget.attrs.update({'class': "input-medium"})  
 
-class ExpenseItemForm(ModelForm):
+class ExpenseItemForm(forms.ModelForm):
     content_type = forms.ModelChoiceField(ExpenseConceptType.objects.all(),
                                   widget=autocomplete_light.ChoiceWidget('ExpenseConceptTypeAutocomplete'),
                                   required=False, label="Concepto")
     content_sub_type = forms.ModelChoiceField(ExpenseConceptSubType.objects.all(),
                                   widget=autocomplete_light.ChoiceWidget('ExpenseConceptSubTypeAutocomplete'),
                                   required=False, label="Subconcepto")
+    #class Media:
+    #    js = ('media/js/expenseitemform.js',)
     class Meta:        
-        widgets = autocomplete_light.get_widgets_dict(ExpenseItem)
-        # http://django-autocomplete-light.readthedocs.org/en/latest/dependant.html
-        #js = ('dependant_autocomplete.js',)
-        widgets['description'] = Textarea(attrs={'rows':2, 'cols':180, 'class': "input-xxlarge"})
+        widgets = autocomplete_light.get_widgets_dict(ExpenseItem)        
+        widgets['description'] = forms.Textarea(attrs={'rows':2, 'cols':180, 'class': "input-xxlarge"})
         model = ExpenseItem        
         exclude = ('expense',)
