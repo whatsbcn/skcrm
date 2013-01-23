@@ -363,7 +363,7 @@ class Expense(models.Model):
 class ExpenseItem(models.Model):
     id = models.AutoField(primary_key=True)
     concept_type = models.ForeignKey(ExpenseConceptType, null=False, blank=False, verbose_name="Concepto")
-    concept_sub_type = models.ForeignKey(ExpenseConceptSubType, null=False, blank=False, verbose_name="Subconcepto")    
+    concept_sub_type = models.ForeignKey(ExpenseConceptSubType, null=True, blank=True, verbose_name="Subconcepto")    
     description = models.TextField(blank=True)
     expense = models.ForeignKey(Expense, verbose_name="# Reg.")
     ot = models.ForeignKey(Ot)
