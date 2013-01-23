@@ -306,7 +306,7 @@ class Ot(models.Model):
         db_table = u'ot'
         verbose_name_plural = "Ots"
     def __unicode__(self):
-        return str(self.number) + ": [" + str(self.company.comercial_name) + "] " + self.name
+        return unicode(self.number) + ": [" + unicode(self.company.comercial_name) + "] " + self.name
 
 class Expense(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="#")
