@@ -142,12 +142,12 @@ class ExpenseForm(forms.ModelForm):
         self.fields['state'].widget.attrs.update({'class': "input-medium"})  
 
 class ExpenseItemForm(forms.ModelForm):
-    content_type = forms.ModelChoiceField(ExpenseConceptType.objects.all(),
-                                  widget=autocomplete_light.ChoiceWidget('ExpenseConceptTypeAutocomplete'),
-                                  required=False, label="Concepto")
-    content_sub_type = forms.ModelChoiceField(ExpenseConceptSubType.objects.all(),
-                                  widget=autocomplete_light.ChoiceWidget('ExpenseConceptSubTypeAutocomplete'),
-                                  required=False, label="Subconcepto")
+#    content_type = forms.ModelChoiceField(ExpenseConceptType.objects.all(),
+#                                  widget=autocomplete_light.ChoiceWidget('ExpenseConceptTypeAutocomplete'),
+#                                  required=False, label="Concepto")
+#    content_sub_type = forms.ModelChoiceField(ExpenseConceptSubType.objects.all(),
+#                                  widget=autocomplete_light.ChoiceWidget('ExpenseConceptSubTypeAutocomplete'),
+#                                  required=False, label="Subconcepto")
     #class Media:
     #    js = ('media/js/expenseitemform.js',)
     class Meta:        

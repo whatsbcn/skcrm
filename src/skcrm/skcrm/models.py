@@ -311,7 +311,7 @@ class Ot(models.Model):
 class Expense(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="#")
     doc_type = models.ForeignKey(ExpenseDocumentType, null=True, blank=True, verbose_name="Tipo")
-    doc_num = models.IntegerField(null=True, blank=True, verbose_name="# Doc.")
+    doc_num = models.CharField(max_length=64, null=True, blank=True, verbose_name="# Doc.")
     date = models.DateField(blank=True, verbose_name="Fecha")    
     state = models.IntegerField(choices=EXPENSE_STATE, default=1, verbose_name="Estado")
     payment_date = models.DateField(blank=True, verbose_name="F. pago")
