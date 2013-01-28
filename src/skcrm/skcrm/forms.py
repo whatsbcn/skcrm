@@ -155,3 +155,14 @@ class ExpenseItemForm(forms.ModelForm):
         widgets['description'] = forms.Textarea(attrs={'rows':2, 'cols':180, 'class': "input-xxlarge"})
         model = ExpenseItem        
         exclude = ('expense',)
+
+class PersonForm(forms.ModelForm):
+    class Meta:
+        widgets = autocomplete_light.get_widgets_dict(Expense)        
+        model = Person
+        fields = ['name', 'cognoms', 'surname']
+#    def __init__(self, *args, **kwargs):
+#        super(ExpenseForm, self).__init__(*args, **kwargs)
+#        self.fields['date'].widget.attrs.update({'class': "input-small datepicker"})
+#        self.fields['payment_date'].widget.attrs.update({'class': "input-small datepicker"})
+#        self.fields['state'].widget.attrs.update({'class': "input-medium"})  

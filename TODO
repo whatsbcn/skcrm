@@ -11,7 +11,8 @@
   - Desplegables mÃ©s petits
   - Part de audit amb tots els canvis i consultes que es van fent.
   - Que hi hagi un permÃ­s que sigui donar d'alta cada objecte i un altre que sigui consulta
-  
+  - Formulari calendari obliga a deixar-hi data si hi fem click.
+  - A país provincia ciutat, caldria fer filtre ajax 
 
   Contactes:
   ==========

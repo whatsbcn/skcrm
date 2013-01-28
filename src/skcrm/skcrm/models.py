@@ -262,7 +262,7 @@ class Contact(models.Model):
         return self.name
         
 class Person(Contact):
-    cognoms = models.CharField(max_length=200, blank=True)
+    cognoms = models.CharField(max_length=200, blank=True, verbose_name="Apellidos")
     #cognom2 = models.CharField(max_length=100, blank=True)
     surname = models.CharField(max_length=100, blank=True)
     has_personal_assistant = models.ForeignKey('self', null=True, blank=True)

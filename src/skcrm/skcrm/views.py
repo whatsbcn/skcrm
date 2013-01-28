@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from skcrm.models import Person, Sector, Company, Expense, Section, Media, ExpenseItem, Ot
 from skcrm.models import IVA_TYPE
 from skcrm.tables import PersonaTable, SectorsTable, CompaniesTable, SectionsTable, MediasTable, OtTable, ExpenseTable, ExpenseItemTable, ResumeTable, ExpenseItemDetailTable, ExpenseDetailTable
-from skcrm.forms import SearchSectionForm, SearchMediaForm, GastosPorOtrForm, GastosPorProveedorForm, SearchExpenseForm, ExpenseForm, ExpenseItemForm, SearchCompanyForm, CompanyForm, OtForm, SearchSectorForm, SearchContactForm 
+from skcrm.forms import SearchSectionForm, SearchMediaForm, GastosPorOtrForm, GastosPorProveedorForm, SearchExpenseForm, ExpenseForm, ExpenseItemForm, SearchCompanyForm, CompanyForm, OtForm, SearchSectorForm, SearchContactForm, PersonForm 
 from django.http import HttpResponseRedirect, HttpResponse
 from django.db.models import Q
 from django.core.urlresolvers import reverse
@@ -397,7 +397,26 @@ def contact(request, action, id=None):
             return redirect('contact_list')
         else:
             return redirect('contact_list')
+    if action == "edit":        
+        if id:
+            person = get_object_or_404(Person, pk=id)
+        else:
+            person = Person()
+                                    
+        form = PersonForm(instance=person)
+        #table = PersonTable(company.ot_set.all(), order_by=request.GET.get('sort'))
+        #rel_form = OtForm()
 
+        if request.POST:
+            form = PersonForm(request.POST, instance=person)
+            if form.is_valid():
+                person = form.save()
+                messages.success(request, "Cambios guardados correctamente.")              
+                return redirect('contact_edit', id=company.id)
+            
+        return render_to_response('contact_edit.html', 
+                                  {'form':form, 'obj':person}, 
+                                  context_instance=RequestContext(request))
 @login_required
 def reset(request):      
     try:  
