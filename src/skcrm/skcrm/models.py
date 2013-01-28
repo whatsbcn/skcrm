@@ -306,12 +306,12 @@ class Ot(models.Model):
         db_table = u'ot'
         verbose_name_plural = "Ots"
     def __unicode__(self):
-        return str(self.number) + ": [" + str(self.company.comercial_name) + "] " + self.name
+        return unicode(self.number) + ": [" + unicode(self.company.comercial_name) + "] " + self.name
 
 class Expense(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="#")
     doc_type = models.ForeignKey(ExpenseDocumentType, null=True, blank=True, verbose_name="Tipo")
-    doc_num = models.IntegerField(null=True, blank=True, verbose_name="# Doc.")
+    doc_num = models.CharField(max_length=64, null=True, blank=True, verbose_name="# Doc.")
     date = models.DateField(blank=True, verbose_name="Fecha")    
     state = models.IntegerField(choices=EXPENSE_STATE, default=1, verbose_name="Estado")
     payment_date = models.DateField(blank=True, verbose_name="F. pago")
@@ -363,7 +363,7 @@ class Expense(models.Model):
 class ExpenseItem(models.Model):
     id = models.AutoField(primary_key=True)
     concept_type = models.ForeignKey(ExpenseConceptType, null=False, blank=False, verbose_name="Concepto")
-    concept_sub_type = models.ForeignKey(ExpenseConceptSubType, null=False, blank=False, verbose_name="Subconcepto")    
+    concept_sub_type = models.ForeignKey(ExpenseConceptSubType, null=True, blank=True, verbose_name="Subconcepto")    
     description = models.TextField(blank=True)
     expense = models.ForeignKey(Expense, verbose_name="# Reg.")
     ot = models.ForeignKey(Ot)
