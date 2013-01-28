@@ -57,7 +57,7 @@ class OtTable(tables.Table):
         attrs = {"class": "table table-bordered"}
 
 class ExpenseTable(tables.Table):
-    total = tables.Column(verbose_name='Total Fac.')
+    total = tables.Column(verbose_name='Total Fac.', attrs={"td": {"style": "text-align: right"}})
     actions = tables.TemplateColumn("<a href='/expense/edit/{{ record.id }}'><i class='icon-pencil'></i>&nbsp;</a>", verbose_name="Acciones")
     
     class Meta:
@@ -76,13 +76,15 @@ class ExpenseTable(tables.Table):
             return ""
         else:
             return value
+    def render_total(self, value):
+        return "%.2f€" % value
 
 class ExpenseDetailTable(tables.Table):
-    irpf_value = tables.Column(verbose_name='IRPF')
-    iva = tables.Column(verbose_name='% IVA')
-    iva_value = tables.Column(verbose_name='IVA')
-    base = tables.Column(verbose_name='Base')
-    total = tables.Column(verbose_name='Total Fac.')
+    irpf_value = tables.Column(verbose_name='IRPF', attrs={"td": {"style": "text-align: right"}})
+    iva = tables.Column(verbose_name='% IVA', attrs={"td": {"style": "text-align: right"}})
+    iva_value = tables.Column(verbose_name='IVA', attrs={"td": {"style": "text-align: right"}})
+    base = tables.Column(verbose_name='Base', attrs={"td": {"style": "text-align: right"}})
+    total = tables.Column(verbose_name='Total Fac.', attrs={"td": {"style": "text-align: right"}})
     
     class Meta:
         model = Expense
@@ -106,6 +108,19 @@ class ExpenseDetailTable(tables.Table):
         for item in value:
             ret += str(item) + "% </br>"
         return ret
+
+    def render_irpf_value(self, value):
+        return "%.2f€" % value
+
+    def render_iva_value(self, value):
+        return "%.2f€" % value
+
+    def render_base(self, value):
+        return "%.2f€" % value
+    
+    def render_total(self, value):
+        return "%.2f€" % value
+
 
 class ExpenseItemTable(tables.Table):
     total = tables.Column(verbose_name='Total Fac.')
@@ -131,10 +146,10 @@ class ExpenseItemDetailTable(tables.Table):
         attrs = {"class": "table table-condensed table-bordered"}
 
     def render_base(self, value):
-        return str("%.2f €" % value)
+        return str("%.2f€" % value)
 
     def render_total(self, value):
-        return str("%.2f €" % value)
+        return str("%.2f€" % value)
     
     def render_payment_date(self, value):
         if not value:
