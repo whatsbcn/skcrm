@@ -2,6 +2,7 @@
 {% load url from future %}
 {% load i18n %}
 
+
 {% block header %}
     <div class="navbar navbar-fixed-top">
     <div class="navbar-inner">
@@ -14,18 +15,19 @@
             <a class="brand" href="/"><strong>DB</strong>Orbyce</a>    
             <div class="nav-collapse collapse">
                 <ul class="nav">
-                {% for group in user.groups.all %}
-    			{% if group.id >= 1 and group.id != 3 %}
+                {% with max_perm=user.groups.all|dictsort:"id"|last %}
+                
+    			{% if max_perm.id >= 1 and max_perm.id != 3 %}
 					<li><a href="{% url 'contact_list' %}">Contactos</a></li>
 					<li><a href="{% url 'media_list' %}">Medios</a></li>
 			    {% endif %}
 			    
-			    {% if group.id >= 1 %}
+			    {% if max_perm.id >= 1 %}
 					<li><a href="{% url 'company_list' %}">Empresas</a></li>
 				{% endif %}
 
 				
-                {% if group.id == 3 %}    
+                {% if max_perm.id >= 3 %}    
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             Gastos
@@ -41,7 +43,7 @@
                         </ul>
                     </li>
                 {% endif %}
-                {% if group.id >= 4 and group.id != 3 %}                    
+                {% if max_perm.id >= 4 %}                    
                      <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             Mantenimientos
@@ -72,7 +74,7 @@
                         </ul>
                     </li>
                 {% endif %}
-                {% endfor %}
+                {% endwith %}
                     {# MENU DE NO USER #}
                     {% if  request.user.get_profile.permis_menu != 'USER' %}
                     {# PLANILLES - Planilles #}
