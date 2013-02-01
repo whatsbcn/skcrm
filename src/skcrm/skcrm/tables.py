@@ -11,7 +11,7 @@ class SectionsTable(tables.Table):
     actions = tables.Column(verbose_name='Acciones', accessor="id")
 
     class Meta:
-        attrs = {"class": "table table-bordered"}
+        attrs = {"class": "table table-bordered table-condensed table-stripped"}
 
     def render_actions(self, value):
         ret = "<ul>"
@@ -25,7 +25,7 @@ class MediasTable(tables.Table):
     actions = tables.Column(verbose_name='Acciones', accessor="id")
 
     class Meta:
-        attrs = {"class": "table table-bordered"}
+        attrs = {"class": "table table-bordered table-condensed table-stripped"}
 
     def render_actions(self, value):
         ret = "<ul>"
@@ -41,7 +41,7 @@ class CompaniesTable(tables.Table):
     #name = tables.LinkColumn('empreses', args=[id])
     
     class Meta:
-        attrs = {"class": "table table-bordered"}
+        attrs = {"class": "table table-bordered table-condensed table-stripped"}
 
     def render_actions(self, value):
         #ret = "<a href='/company/edit/"+ str(value) + "'><i class='icon-search'></i>&nbsp;</a>"
@@ -54,7 +54,7 @@ class OtTable(tables.Table):
     #actions = tables.Column(verbose_name='Acciones', accessor="id")
     actions = tables.TemplateColumn("<a href='/company/{{ record.company.id }}/del_ot/{{ record.id }}'><i class='icon-trash'></i>&nbsp;</a>", verbose_name="Acciones")
     class Meta:
-        attrs = {"class": "table table-bordered"}
+        attrs = {"class": "table table-bordered table-condensed table-stripped"}
 
 class ExpenseTable(tables.Table):
     total = tables.Column(verbose_name='Total Fac.', attrs={"td": {"style": "text-align: right"}})
@@ -62,7 +62,7 @@ class ExpenseTable(tables.Table):
     
     class Meta:
         model = Expense
-        attrs = {"class": "table table-bordered"}
+        attrs = {"class": "table table-bordered table-condensed table-stripped"}
         exclude = ('payment_date', 'irpf')
         
     def render_payment_date(self, value):
@@ -88,7 +88,7 @@ class ExpenseDetailTable(tables.Table):
     
     class Meta:
         model = Expense
-        attrs = {"class": "table table-bordered"}
+        attrs = {"class": "table table-bordered table-condensed table-stripped"}
         exclude = ('payment_date',)
         
     def render_payment_date(self, value):
@@ -143,7 +143,7 @@ class ExpenseItemDetailTable(tables.Table):
         model = ExpenseItem
         exclude = ('ot', 'id', 'concept_sub_type')
         sequence = ('expense', 'doc_num', 'date', 'concept_type', 'description', 'iva', 'base', 'total')
-        attrs = {"class": "table table-condensed table-bordered"}
+        attrs = {"class": "table table-condensed table-bordered table-stripped"}
 
     def render_base(self, value):
         return str("%.2f€" % value)
@@ -176,7 +176,7 @@ class SectorsTable(tables.Table):
     actions = tables.Column(verbose_name='Acciones', accessor="id")
 
     class Meta:
-        attrs = {"class": "table table-bordered"}
+        attrs = {"class": "table table-bordered table-condensed table-stripped"}
 
     def render_actions(self, value):
         ret = "<ul>"
@@ -205,7 +205,7 @@ class PersonaTable(tables.Table):
     #city = tables.Column(verbose_name='Ciudad')
 
     class Meta:
-        attrs = {"class": "table table-bordered", 'cellspacing': '0'}    
+        attrs = {"class": "table table-bordered table-condensed table-stripped", 'cellspacing': '0'}    
     def render_sections(self, value):
         ret = ""
         for section in value.all():

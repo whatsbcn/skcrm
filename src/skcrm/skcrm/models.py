@@ -300,23 +300,28 @@ class Company(Contact):
 class Ot(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, blank=True, verbose_name="Nombre")
-    number = models.IntegerField(unique=True, verbose_name="Número de OT")
+    number = models.IntegerField(unique=True, verbose_name="Número de OT", null=True, blank=True)
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name="Empresa")
     class Meta:
         db_table = u'ot'
         verbose_name_plural = "Ots"
     def __unicode__(self):
         return unicode(self.number) + ": [" + unicode(self.company.comercial_name) + "] " + self.name
-
+    def save(self, force_insert=False, force_update=False):
+        if self.number == None:
+            from django.db.models import Max
+            self.number = Ot.objects.all().aggregate(Max('number'))['number__max'] + 1
+        super(Ot, self).save(force_insert, force_update)
+        
 class Expense(models.Model):
     id = models.AutoField(primary_key=True, verbose_name="#")
     doc_type = models.ForeignKey(ExpenseDocumentType, null=True, blank=True, verbose_name="Tipo")
-    doc_num = models.CharField(max_length=64, null=True, blank=True, verbose_name="# Doc.")
+    doc_num = models.CharField(max_length=64, null=True, blank=True, verbose_name="#Doc.")
     date = models.DateField(blank=True, verbose_name="Fecha")    
     state = models.IntegerField(choices=EXPENSE_STATE, default=1, verbose_name="Estado")
     payment_date = models.DateField(blank=True, verbose_name="F. pago")
     provider = models.ForeignKey(Company, limit_choices_to= {"types" : 1}, verbose_name="Proveedor", null=True, blank=True)
-    irpf = models.IntegerField(null=False, blank=False, choices=IRPF_TYPE, default=0, verbose_name="% IRPF")
+    irpf = models.IntegerField(null=False, blank=False, choices=IRPF_TYPE, default=0, verbose_name="%IRPF")
     class Meta:
         db_table = u'expense'
         ordering = ['-id']
@@ -365,9 +370,9 @@ class ExpenseItem(models.Model):
     concept_type = models.ForeignKey(ExpenseConceptType, null=False, blank=False, verbose_name="Concepto")
     concept_sub_type = models.ForeignKey(ExpenseConceptSubType, null=True, blank=True, verbose_name="Subconcepto")    
     description = models.TextField(blank=True)
-    expense = models.ForeignKey(Expense, verbose_name="# Reg.")
+    expense = models.ForeignKey(Expense, verbose_name="#")
     ot = models.ForeignKey(Ot)
-    iva = models.IntegerField(choices=IVA_TYPE, verbose_name="% IVA")
+    iva = models.IntegerField(choices=IVA_TYPE, verbose_name="%IVA")
     base = models.DecimalField(verbose_name="Base", max_digits=6, decimal_places=2)    
     class Meta:
         db_table = u'expense_item'

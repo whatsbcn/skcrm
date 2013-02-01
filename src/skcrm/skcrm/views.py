@@ -278,7 +278,9 @@ def company(request, action, id=None, ot_id=None):
             rel_form = OtForm(request.POST, instance=Ot(company=company))
             if rel_form.is_valid():
                 rel_form.save()
-                messages.success(request, "Cambios guardados correctamente.")              
+                messages.success(request, "Cambios guardados correctamente.")
+            else:
+                messages.error(request, "No se han podido guardar los cambios.")           
         
         return redirect('company_edit', id=id)
 
