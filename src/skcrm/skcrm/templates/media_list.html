@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% load url from future %}
+{% load render_table from django_tables2 %}
+
+
+{% block content %}
+
+<h3>Búsqueda de medios de comunicación</h3>
+<form method="post" action="" id="searchform">{% csrf_token %}
+<table>
+{{ form.as_table }}
+</table>
+</form>
+
+<h3>Medios {{sector_name}}</h3>
+
+{% autoescape off %}
+{% render_table table %}
+{% endautoescape %}
+
+<div class="form-actions">
+    <div class="pull-right">
+        <a href="{% url 'media_edit' %}" role="button" class="btn btn-primary" data-toggle="modal">Añadir</a>
+    </div>
+</div>
+
+
+{% endblock %}
+
+
