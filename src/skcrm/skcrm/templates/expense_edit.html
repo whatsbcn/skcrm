@@ -19,10 +19,10 @@
 <div class="form-actions">
     <div class="pull-right">
         <button class="btn btn-primary" type="submit">Guardar</button>
-        {% if obj.id %}
+        {% if obj.id and False %}
         <a href="#modal-esborrar" role="button" class="btn btn-danger" data-toggle="modal">Borrar</a>
         {% endif %}
-        <a href="{% url 'expense_list' %}" role="button" class="btn" data-toggle="modal">Cancelar</a>
+        <a href="{% url 'expense_list' %}" role="button" class="btn" data-toggle="modal">Volver</a>
     </div>
 </div>
 </form>
@@ -83,10 +83,11 @@
 <div class="form-actions">
     <div class="pull-right">
         <button class="btn btn-primary" type="submit">Añadir</button>
+        <a href="{% url 'expense_list' %}" role="button" class="btn" data-toggle="modal">Volver</a>
     </div>
 </div>
 </form>
-{{ rel_form.media }}
+
 </div>
 {% endif %}
 

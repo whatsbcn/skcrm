@@ -19,6 +19,7 @@
                 
     			{% if max_perm.id >= 1 and max_perm.id != 3 %}
 					<li><a href="{% url 'contact_list' %}">Contactos</a></li>
+					<li><a href="{% url 'person_list' %}">Personas</a></li>
 					<li><a href="{% url 'media_list' %}">Medios</a></li>
 			    {% endif %}
 			    
@@ -59,17 +60,14 @@
                                 <li><a href="#">Ámbito</a></li>
                             <li class="divider"></li>
                             <li class="nav-header">Contactos</li>
-                                <li><a href="{% url 'seccions' %}">Secciones</a></li>
+                                <li><a href="{% url 'section_list' %}">Secciones</a></li>
                                 <li><a href="#">Cargos</a></li>
-                                <li><a href="#">Relaciones laborales</a></li>
                                 <li><a href="#">Tipo</a></li>
                             <li class="divider"></li>
                             <li class="nav-header">Varios</li>                       
                             <li><a href="#">Ciudades</a></li>
                             <li><a href="#">Paises</a></li>
                             <li><a href="#">Provincias</a></li>     
-                            <li><a href="#">Tipo de email</a></li>
-                            <li><a href="#">Tipo de teléfono</a></li>
                             <li><a href="#">Tratos</a></li>
                         </ul>
                     </li>

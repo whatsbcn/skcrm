@@ -17,23 +17,22 @@ class Migration(DataMigration):
         
         for company in orm.Company.objects.all():
             try:
-                contact = orm.Contact.objects.get(id=company.contact_ptr_id)
+                contact = orm.Contact.objects.get(id=company.contact_ptr_id)      
+                company.id = contact.id
+                company.name = contact.name
+                company.website = contact.website
+                company.mailing = contact.mailing
+                company.disabled = contact.disabled
+                company.NIF_CIF= contact.NIF_CIF
+                company.save()
+                if contact.address != "" and contact.address != "NULL":
+                    contact_data = orm.ContactData(company=company, type=contact_data_type2, address=contact.address, 
+                                               packets_address=contact.packets_address, postal_code=contact.postal_code, 
+                                               country=contact.country, region=contact.region, city=contact.city)
+                    contact_data.save() 
             except Exception, e:
                 print "Error migrant contact_ptr_id=%d (%s)" % (company.contact_ptr_id, e)
                 pass
-            
-            company.id = contact.id
-            company.name = contact.name
-            company.website = contact.website
-            company.mailing = contact.mailing
-            company.disabled = contact.disabled
-            company.NIF_CIF= contact.NIF_CIF
-            company.save()
-            contact_data = orm.ContactData(company=company, type=contact_data_type2, address=contact.address, 
-                                           packets_address=contact.packets_address, postal_code=contact.postal_code, 
-                                           country=contact.country, region=contact.region, city=contact.city)
-            contact_data.save() 
-
 
 
     def backwards(self, orm):

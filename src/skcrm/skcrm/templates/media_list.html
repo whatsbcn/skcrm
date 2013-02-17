@@ -6,7 +6,7 @@
 {% block content %}
 
 <h3>Búsqueda de medios de comunicación</h3>
-<form method="post" action="" id="searchform">{% csrf_token %}
+<form method="post" action="{% url 'media_list' %}" id="searchform">{% csrf_token %}
 <table>
 {{ form.as_table }}
 </table>

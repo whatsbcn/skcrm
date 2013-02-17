@@ -39,36 +39,34 @@ from django.http import HttpResponseRedirect
 #    extra = 0
 #    verbose_name_plural = "Acciones participadas"
     
-class RelationInline(admin.TabularInline):
-    model = ContactPosition
-    fields = ['name', 'company', 'type']
-    extra = 0
+#class RelationInline(admin.TabularInline):
+#    model = ContactPosition
+#    fields = ['name', 'company', 'type']
+#    extra = 0
+#    
+#class CompanyRelationInline(admin.TabularInline):
+#    model = ContactPosition
+#    fields = ['person', 'type', 'company', 'media']
+#    extra = 0
     
-class CompanyRelationInline(admin.TabularInline):
-    model = ContactPosition
-    fields = ['person', 'type', 'company', 'media']
-    extra = 0
-    
-class PhoneInline(admin.TabularInline):
-    model = Phone
-    fields = ['number', 'type', 'primary']
-    extra = 0
-    verbose_name_plural = "Números de teléfono"
-    
-class EmailInline(admin.TabularInline):
-    model = Email
-    fields = ['email', 'type', 'primary']
-    extra = 0
-    verbose_name_plural = "Emails"    
+#class PhoneInline(admin.TabularInline):
+#    model = Phone
+#    fields = ['number', 'type', 'primary']
+#    extra = 0
+#    verbose_name_plural = "Números de teléfono"
+#    
+#class EmailInline(admin.TabularInline):
+#    model = Email
+#    fields = ['email', 'type', 'primary']
+#    extra = 0
+#    verbose_name_plural = "Emails"    
     
 class PersonAdmin(admin.ModelAdmin):
-    list_display = ['name', 'cognoms', 
-                    'address', 'city', 'website']
-    inlines = [CompanyRelationInline,PhoneInline,EmailInline]
-    search_fields = ['name', 'cognom1', 'cognom2', 
-                    'address', 'website']
+    list_display = ['name', 'cognoms', 'website']
+    #inlines = [CompanyRelationInline,PhoneInline,EmailInline]
+    search_fields = ['name', 'cognom1', 'cognom2', 'website']
     #filter_horizontal  = ('sectors',)
-    list_filter = ['types']
+    #list_filter = ['type']
     def response_add(self, request, obj, post_url_continue=None):
         return HttpResponseRedirect("/contacts/")    
     def response_change(self, request, obj, post_url_continue=None):
@@ -99,7 +97,7 @@ class SectionAdmin(admin.ModelAdmin):
     
 class CompanyAdmin(admin.ModelAdmin):
     list_display = ['name', 'is_group']
-    inlines = [CompanyRelationInline,PhoneInline,EmailInline]
+    #inlines = [CompanyRelationInline,PhoneInline,EmailInline]
     list_filter = ['is_group']
     search_fields = ['name']
     def response_add(self, request, obj, post_url_continue=None):
@@ -109,7 +107,7 @@ class CompanyAdmin(admin.ModelAdmin):
     
 class MediaAdmin(admin.ModelAdmin):
     search_fields = ['name']
-    inlines = [PhoneInline,EmailInline]
+    #inlines = [PhoneInline,EmailInline]
     def response_add(self, request, obj, post_url_continue=None):
         return HttpResponseRedirect("/")    
     def response_change(self, request, obj, post_url_continue=None):
@@ -155,8 +153,8 @@ admin.site.register(CompanyType)
 admin.site.register(ContextType)
 admin.site.register(DistributionType)
 admin.site.register(PeriodicityType)
-admin.site.register(PhoneType)
-admin.site.register(EmailType)
+#admin.site.register(PhoneType)
+#admin.site.register(EmailType)
 admin.site.register(PositionTypes)
 admin.site.register(Sector, SectorAdmin)
 admin.site.register(Section, SectionAdmin)
@@ -171,7 +169,7 @@ admin.site.register(ExpenseItem)
 #admin.site.register(Phone)
 #admin.site.register(Email)
 admin.site.register(Media, MediaAdmin)
-admin.site.register(ContactPosition)
+admin.site.register(ContactDataType)
 
 
 

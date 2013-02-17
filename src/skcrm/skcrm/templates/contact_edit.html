@@ -42,24 +42,6 @@
     </div>
 </div>
 
-
-<h3>OTs </h3>
-{% autoescape off %}
-{% render_table table %}
-{% endautoescape %}
-
-<h3>Añadir OT </h3>
-<form method="post" action="{% url 'company_add_ot' obj.id %}">{% csrf_token %}
-<table>
-{{ rel_form.as_table }}
-</table>
-<div class="form-actions">
-    <div class="pull-right">
-        <button class="btn btn-primary" type="submit">Añadir</button>
-        <a href="{% url 'company_list' %}" role="button" class="btn" data-toggle="modal">Volver</a>
-    </div>
-</div>
-</form>
 {% endif %}
 
 {% endblock %}

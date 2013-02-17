@@ -19,7 +19,7 @@ function submitsearchform()
 
 
 
-<h3>Búsqueda de personas</h3>
+<h3>Búsqueda de contactos</h3>
 <form method="post" action="" id="searchform">{% csrf_token %}
 <table>
 {{ form.as_table }}
@@ -28,10 +28,9 @@ function submitsearchform()
 <div class="form-actions">
     <div class="pull-right">
     	<button class="btn btn-primary" type="submit">Buscar</button>
-        <a href="{% url 'contact_edit' %}" role="button" class="btn btn-primary" data-toggle="modal">Añadir</a>
     </div>
 </div>
-</form>
+
 
 <h3>Contactos encontrados</h3>
 {% autoescape off %}
@@ -41,12 +40,12 @@ function submitsearchform()
 
 <div class="form-actions">
     <div class="pull-right">
-        <button class="btn btn-primary" type="submit">Seleccionar contactos</button>
+        <button class="btn btn-primary" type="submit" onclick="javascript:document.forms[0].action='{% url 'contact_select_list' %}'">Seleccionar contactos</button>
     </div>
 </div>
+</form>
 
-
-<h3>Personas seleccionadas</h3>
+<h3>Contactos seleccionados</h3>
 
 {% autoescape off %}
 {% render_table selection %}
@@ -54,8 +53,8 @@ function submitsearchform()
 
 <div class="form-actions">
     <div class="pull-right">
-        <a href="/reset/" role="button" class="btn btn-danger" data-toggle="modal">Resetear selección</a>
-        <a href="/export/" role="button" class="btn btn-primary" data-toggle="modal">Exportar selección</a>
+        <a href="{% url 'contact_reset' %}" role="button" class="btn btn-danger" data-toggle="modal">Resetear selección</a>
+        <a href="{% url 'contact_export' %}" role="button" class="btn btn-primary" data-toggle="modal">Exportar selección</a>
     </div>
 </div>
 

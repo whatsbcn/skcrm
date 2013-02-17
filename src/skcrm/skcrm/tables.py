@@ -5,36 +5,30 @@ from django.utils.safestring import mark_safe
 from django_tables2.utils import A
 from django.utils.html import escape
 
-class SectionsTable(tables.Table):
-    name = tables.LinkColumn('skcrm.views.sections', args=[A('id')],verbose_name='Secciones')
-    number_of_childs = tables.Column(verbose_name='Cantidad de subsecciones', orderable=False)
+class SectionTable(tables.Table):
+    name = tables.Column(verbose_name='Secciones')
+    #number_of_childs = tables.Column(verbose_name='Cantidad de subsecciones', orderable=False)
     actions = tables.Column(verbose_name='Acciones', accessor="id")
 
     class Meta:
         attrs = {"class": "table table-bordered table-condensed table-stripped"}
 
-    def render_actions(self, value):
-        ret = "<ul>"
-        ret += "<li class='change-link'><a href='/admin/skcrm/section/"+ str(value) + "/'></a></li>"
-        ret += "</ul>"
-        return mark_safe(ret)
+    def render_actions(self, value, record):
+        ret = "<a href='/section/edit/%s'><i class='icon-pencil'></i>&nbsp;</a>" % record.id
+        return ret
     
 class MediasTable(tables.Table):
     name = tables.Column(verbose_name='Medios')
     #number_of_childs = tables.Column(verbose_name='Cantidad de subsectores', orderable=False)
-    actions = tables.Column(verbose_name='Acciones', accessor="id")
+    actions = tables.TemplateColumn("<a href='/media/edit/{{ record.id }}'><i class='icon-pencil'></i>&nbsp;</a>", verbose_name="Acciones")
+    #actions = tables.Column(verbose_name='Acciones', accessor="id")
 
     class Meta:
         attrs = {"class": "table table-bordered table-condensed table-stripped"}
 
-    def render_actions(self, value):
-        ret = "<ul>"
-        ret += "<li class='change-link'><a href='/admin/skcrm/media/"+ str(value) + "/'></a></li>"
-        ret += "</ul>"
-        return mark_safe(ret)
-
 class CompaniesTable(tables.Table):
     name = tables.Column(verbose_name='Empresa')
+    comercial_name = tables.Column(verbose_name='Nombre comercial')
     #number_of_childs = tables.Column(verbose_name='Cantidad de subsectores', orderable=False)
     actions = tables.Column(verbose_name='Acciones', accessor="id")
     #id = tables.Column(verbose_name='#')
@@ -78,6 +72,12 @@ class ExpenseTable(tables.Table):
             return value
     def render_total(self, value):
         return "%.2f€" % value
+    
+    def render_provider(self, value):
+        if not value:
+            return ""
+
+        return value        
 
 class ExpenseDetailTable(tables.Table):
     irpf_value = tables.Column(verbose_name='IRPF', attrs={"td": {"style": "text-align: right"}})
@@ -132,8 +132,8 @@ class ExpenseItemTable(tables.Table):
         attrs = {"class": "table table-bordered"}
 
 class ExpenseItemDetailTable(tables.Table):
-    doc_num = tables.Column(accessor="expense.doc_num")
-    date = tables.Column(accessor="expense.date")
+    doc_num = tables.Column(accessor="expense.doc_num", default='')
+    date = tables.Column(accessor="expense.date", default='')
     #expense_id = tables.Column(accessor="expense.id", verbose_name="Número de registro")
     iva = tables.Column(attrs={"td": {"style": "text-align: right"}})
     base = tables.Column(attrs={"td": {"style": "text-align: right"}})
@@ -155,13 +155,7 @@ class ExpenseItemDetailTable(tables.Table):
         if not value:
             return ""
         else:
-            return value
-
-    def render_doc_num(self, value):
-        if not value:
-            return ""
-        else:
-            return value    
+            return value 
 
 class ResumeTable(tables.Table):
     iva = tables.Column(verbose_name="IVA")
@@ -170,33 +164,30 @@ class ResumeTable(tables.Table):
         attrs = {"class": "table table-condensed table-bordered"}
         orderable = False
         
-class SectorsTable(tables.Table):
-    name = tables.LinkColumn('skcrm.views.sectors', args=[A('id')], verbose_name='Sector')
-    number_of_childs = tables.Column(verbose_name='Cantidad de subsectores', orderable=False)
+class SectorTable(tables.Table):
+    name = tables.Column(verbose_name='Sector')
+    #number_of_childs = tables.Column(verbose_name='Subsectores', orderable=False)
     actions = tables.Column(verbose_name='Acciones', accessor="id")
 
     class Meta:
         attrs = {"class": "table table-bordered table-condensed table-stripped"}
 
-    def render_actions(self, value):
-        ret = "<ul>"
-        ret += "<li class='change-link'><a href='/admin/skcrm/sector/"+ str(value) + "/'></a></li>"
-        ret += "</ul>"
-        return mark_safe(ret)
+    def render_actions(self, value, record):
+        ret = "<a href='/sector/edit/%s'><i class='icon-pencil'></i>&nbsp;</a>" % record.id
+        return ret
     
-class PersonaTable(tables.Table):
+class PersonTable(tables.Table):
     #email = tables.EmailColumn(verbose_name='Email')
     name = tables.Column(verbose_name='Nombre', order_by=("name", "cognom1", "cognom2"))
     cognoms = tables.Column(verbose_name='Primer Apellido')
 
     #medias = tables.Column(verbose_name='Medios') 
     sections = tables.Column(verbose_name='secciones', accessor="sections")
-    phone  = tables.Column(verbose_name='Teléfono', accessor="phone_set")
-    positions = tables.Column(verbose_name='Cargos', accessor="contactposition_set")
+    #phone  = tables.Column(verbose_name='Teléfono', accessor="phone_set")
+    #positions = tables.Column(verbose_name='Cargos', accessor="contactposition_set")
     #actions = tables.Column(verbose_name='Acciones', accessor="id")
     actions = tables.TemplateColumn("""
-    <a href='{% url contact_edit record.id %}'><i class='icon-pencil'></i>&nbsp;</a>
-    <a href='{% url contact_unselect record.id %}'><i class='icon-trash'></i>&nbsp;</a>
+    <a href='{% url person_edit record.id %}'><i class='icon-pencil'></i>&nbsp;</a>
     """, verbose_name="Acciones")
 
     #twitter = tables.Column(verbose_name='Twiter')
@@ -212,17 +203,17 @@ class PersonaTable(tables.Table):
             ret += str(section.name) + "</br>"
         return mark_safe(ret)      
     
-    def render_phone(self, value):
-        ret = ""
-        for telf in value.all():
-            ret += str(telf.number) + "</br>"
-        return mark_safe(ret)      
+#    def render_phone(self, value):
+#        ret = ""
+#        for telf in value.all():
+#            ret += str(telf.number) + "</br>"
+#        return mark_safe(ret)      
       
-    def render_positions(self, value):
-        ret = ""
-        for rel in value.all():
-            ret += rel.type.name + " (" + rel.company.name + ")</br>"
-        return mark_safe(ret)
+#    def render_positions(self, value):
+#        ret = ""
+#        for rel in value.all():
+#            ret += rel.type.name + " (" + rel.company.name + ")</br>"
+#        return mark_safe(ret)
     
     def render_medias(self, value):
         ret = ""
@@ -230,8 +221,121 @@ class PersonaTable(tables.Table):
             ret += media.name + "</br>"
         return mark_safe(ret)
     
+class PersonContactDataTable(tables.Table):
+    company = tables.Column()
+    media = tables.Column(default='')
+    position = tables.Column(order_by=("position.name"))
+    address = tables.Column()
+    #packets_address = tables.Column()
+    telf = tables.Column()
+    email  = tables.Column()
+    actions = tables.TemplateColumn("""
+    <a href='/person/{{ record.person.id }}/edit_cd/{{ record.id }}'><i class='icon-pencil'></i>&nbsp;</a>
+    <a href='/person/{{ record.person.id }}/del_cd/{{ record.id }}'><i class='icon-trash'></i>&nbsp;</a>""", orderable=False, verbose_name="Acciones")
+    class Meta:
+        attrs = {"class": "table table-bordered table-condensed table-stripped"}
     
+    def render_address(self, value, record):
+        ret = value
+        if record.city:
+            ret += " (%s)" % record.city
+        return ret
+    
+    def render_telf(self, value, record):
+        ret = ""
+        if record.telf_static:
+            ret += "T: %s</br>" % record.telf_static
+        if record.telf_movile:
+            ret += "M: %s</br>" % record.telf_movile
+        if record.fax:
+            ret += "F: %s</br>" % record.fax 
+        return ret    
+    
+    def render_email(self, value, record):
+        ret = "%s" % record.email
+        if record.email_alt:
+            ret += "</br>%s" % record.email_alt
+        return ret
+    
+class MediaContactDataTable(tables.Table):
+    description = tables.Column(default='')
+    address = tables.Column()
+    #packets_address = tables.Column()
+    telf = tables.Column()
+    email  = tables.Column()
+    actions = tables.TemplateColumn("""
+    <a href='/media/{{ record.media.id }}/edit_cd/{{ record.id }}'><i class='icon-pencil'></i>&nbsp;</a>
+    <a href='/media/{{ record.media.id }}/del_cd/{{ record.id }}'><i class='icon-trash'></i>&nbsp;</a>""", orderable=False, verbose_name="Acciones")
+    class Meta:
+        attrs = {"class": "table table-bordered table-condensed table-stripped"}
+    
+    def render_address(self, value, record):
+        ret = value
+        if record.city:
+            ret += ", %s" % record.city
+        if record.region:
+            ret += " (%s)" % record.region            
+        return ret
+    
+    def render_telf(self, value, record):
+        ret = ""
+        if record.telf_static:
+            ret += "T: %s</br>" % record.telf_static
+        if record.telf_movile:
+            ret += "M: %s</br>" % record.telf_movile
+        if record.fax:
+            ret += "F: %s</br>" % record.fax 
+        return ret    
+    
+    def render_email(self, value, record):
+        ret = "%s" % record.email
+        if record.email_alt:
+            ret += "</br>%s" % record.email_alt
+        return ret
 
-        #order_by = 'name'
-        #model = Person
-        #sequence = ("email", "name", "cognom1", "cognom2", "cargos", "...")
+class CompanyContactDataTable(MediaContactDataTable):
+    actions = tables.TemplateColumn("""
+    <a href='/company/{{ record.company.id }}/edit_cd/{{ record.id }}'><i class='icon-pencil'></i>&nbsp;</a>
+    <a href='/company/{{ record.company.id }}/del_cd/{{ record.id }}'><i class='icon-trash'></i>&nbsp;</a>""", orderable=False, verbose_name="Acciones")
+    class Meta:
+        attrs = {"class": "table table-bordered table-condensed table-stripped"}
+ 
+        
+class ContactTable(tables.Table):
+    person = tables.Column(verbose_name='Nombre', order_by=("person.name", "person.cognoms"))
+    media = tables.Column(verbose_name='Medio', default='', order_by=("media.name"))
+    company = tables.Column(verbose_name='Empresa', default='', order_by=("company.comercial_name"))
+    position = tables.Column(verbose_name='Cargo', order_by=("position.name"))
+    
+    #medias = tables.Column(verbose_name='Medios') 
+    #sections = tables.Column(verbose_name='Secciones')
+    #phone  = tables.Column(verbose_name='Teléfono', accessor="phone_set")
+    #positions = tables.Column(verbose_name='Cargos', accessor="contactposition_set")
+    #twitter = tables.Column(verbose_name='Twiter')
+    #facebook = tables.Column(verbose_name='Facebook')
+    class Meta:
+        attrs = {"class": "table table-bordered table-condensed table-stripped", 'cellspacing': '0'}  
+        orderable = False
+      
+    def render_sections(self, value, record):
+        ret = ""
+        for section in record.person.sections.all():
+            ret += str(section.name) + "</br>"
+        return mark_safe(ret)
+   
+
+class SelectedContactTable(ContactTable):
+    #repetitions = tables.Column(empty_values=(), verbose_name="Repeticiones")
+    rep = tables.Column(verbose_name="Repeticiones", accessor="person.rep")
+    actions = tables.Column(orderable=False)
+    class Meta:
+        attrs = {"class": "table table-bordered table-condensed table-stripped", 'cellspacing': '0'}    
+      
+    def render_actions(self, value, record):
+        ret = "<a href='/contact/unselect/%s'><i class='icon-remove'></i>&nbsp;</a>" % record.id
+        return ret
+
+#    def __init__(self, *args, **kwargs):
+#        super(SelectedContactTable, self).__init__(*args, **kwargs)
+#        self.counter = []
+    

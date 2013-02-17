@@ -3,18 +3,16 @@
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
-from skcrm.models import Person, Sector, Company, Expense, Section, Media, ExpenseItem, Ot, ContactData
-from skcrm.models import IVA_TYPE
-from skcrm.tables import PersonaTable, SectorsTable, CompaniesTable, SectionsTable, MediasTable, OtTable, ExpenseTable, ExpenseItemTable, ResumeTable, ExpenseItemDetailTable, ExpenseDetailTable
-from skcrm.forms import SearchSectionForm, SearchMediaForm, GastosPorOtrForm, GastosPorProveedorForm, SearchExpenseForm, ExpenseForm, ExpenseItemForm, SearchCompanyForm, CompanyForm, OtForm, SearchSectorForm, SearchContactForm, PersonForm, CompanyContactDataForm 
+from skcrm.models import Company, Ot, ContactData
+from skcrm.tables import CompaniesTable, OtTable, CompanyContactDataTable
+from skcrm.forms import SearchCompanyForm, CompanyForm, OtForm, CompanyContactDataForm 
 from django.http import HttpResponseRedirect, HttpResponse
 from django.db.models import Q
-from django.core.urlresolvers import reverse
 from django.contrib import messages
-import datetime
+
 
 @login_required
-def list(request, id=None, ot_id=None):
+def ls(request, id=None, ot_id=None):
     c = Company.objects.all()
     # The form has been used
     search = SearchCompanyForm()
@@ -38,41 +36,24 @@ def edit(request, id=None, ot_id=None):
     else:
         company = Company()
                     
-    i = 0    
-    form = CompanyForm(prefix=str(i), instance=company)
-    
-    form_ext = []
-    for contactdata in company.contactdata_set.all():
-        i+=1
-        form_ext += [CompanyContactDataForm(prefix=str(i), instance=contactdata)]
-    i+=1
-    form_ext += [CompanyContactDataForm(prefix=str(++i))]
+    form = CompanyForm(instance=company)
     
     table = OtTable(company.ot_set.all(), order_by=request.GET.get('sort'))
+    table2 = CompanyContactDataTable(company.contactdata_set.all().filter(type_id=2), order_by=request.GET.get('sort'))
     rel_form = OtForm()
 
     if request.POST:
-        i = 0
-        form = CompanyForm(request.POST, prefix=str(i), instance=company)
-        form_ext = []
-        for contactdata in company.contactdata_set.all():
-            i+=1
-            form_ext += [CompanyContactDataForm(request.POST, prefix=str(i), instance=contactdata)]
-        i+=1
-        form_ext += [CompanyContactDataForm(request.POST, prefix=str(i), instance=ContactData(company=company, type_id=2))]
-                        
+        form = CompanyForm(request.POST, instance=company)
+
         if form.is_valid():
             company = form.save()
-            
-            for f in form_ext:
-                if f.is_valid():
-                    f.save()
+
             
             messages.success(request, "Cambios guardados correctamente.")
             return redirect('company_edit', id=company.id)
         
     return render_to_response('company_edit.html', 
-                              {'form':form, 'form_ext': form_ext, 'rel_form': rel_form, 'table': table, 'obj':company}, 
+                              {'form':form, 'rel_form': rel_form, 'table': table, 'table2': table2, 'obj':company}, 
                               context_instance=RequestContext(request))
 
 @login_required
@@ -99,9 +80,41 @@ def del_ot(request, id=None, ot_id=None):
 @login_required
 def delete(request, id=None, ot_id=None):            
     company = get_object_or_404(Company, pk=id)
-    for cd in company.contactdata_set.all():
+    for cd in company.contactdata_set.all().filter(type_id=2):
         cd.delete()
     for ot in company.ot_set.all():
         ot.delete()
     company.delete()
     return redirect('company_list')
+
+
+@login_required
+def edit_cd(request, id=None, cd_id=None):   
+    company = get_object_or_404(Company, pk=id)
+    
+    if cd_id:
+        cd = get_object_or_404(ContactData, pk=cd_id)
+    else:
+        cd = ContactData(company=company, type_id=2)
+        
+    form = CompanyContactDataForm(instance=cd)
+    
+    if request.POST:
+        form = CompanyContactDataForm(request.POST, instance=cd)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Cambios guardados correctamente.")
+            return redirect('company_edit', id=id)
+        else:
+            messages.error(request, "No se han podido guardar los cambios.")           
+    
+    return render_to_response('company_edit_cd.html', 
+                              {'form':form, 'obj':company}, 
+                              context_instance=RequestContext(request))        
+
+     
+@login_required
+def del_cd(request, id=None, cd_id=None):   
+    contact_data = get_object_or_404(ContactData, pk=cd_id)
+    contact_data.delete()
+    return redirect('company_edit', id=id)  

@@ -10,10 +10,12 @@
 {% else %}
 <h3>Añadir empresa </h3>
 {% endif %}
+<hr class="bs-docs-separator">
 <form method="post" action="">{% csrf_token %}
 <table>
 {{ form.as_table }}
 </table>
+
 
 <div class="form-actions">
     <div class="pull-right">
@@ -42,13 +44,27 @@
     </div>
 </div>
 
+</br>
+<h4>Datos de contacto </h4>
+<hr class="bs-docs-separator">
+{% autoescape off %}
+{% render_table table2 %}
+{% endautoescape %}
 
-<h3>OTs </h3>
+<div class="form-actions">
+    <div class="pull-right">
+        <a href="{% url 'company_edit_cd' obj.id %}" role="button" class="btn btn-primary" data-toggle="modal">Añadir datos de contacto</a>
+        <a href="{% url 'company_list' %}" role="button" class="btn" data-toggle="modal">Volver</a>
+    </div>
+</div>
+</br>
+<h4>OTs </h4>
+<hr class="bs-docs-separator">
 {% autoescape off %}
 {% render_table table %}
 {% endautoescape %}
 
-<h3>Añadir OT </h3>
+<h4>Añadir OT </h4>
 <form method="post" action="{% url 'company_add_ot' obj.id %}">{% csrf_token %}
 <table>
 {{ rel_form.as_table }}

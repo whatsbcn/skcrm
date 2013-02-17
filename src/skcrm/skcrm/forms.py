@@ -64,9 +64,12 @@ class SearchContactForm(forms.Form):
     withmail = forms.BooleanField(required=False, label='Contactos con mail', widget=forms.CheckboxInput)
     sector = forms.IntegerField(required=False, label='Sector del medio de comunicación del contacto', widget=forms.Select(choices=SECTOR_CHOICES))
     tipo_medio = forms.IntegerField(required=False, label='Tipo del medio de comunicación del contacto', widget=forms.Select(choices=TIPO_MEDIOS_CHOICES))
-    ciutat = forms.IntegerField(required=False, label='Ciudad del contacto', widget=forms.Select(choices=CIUTAT_CHOICES))
-    provincia = forms.IntegerField(required=False,  label='Provincia del contacto',widget=forms.Select(choices=PROVINCIA_CHOICES))
+    region = forms.IntegerField(required=False,  label='Provincia del contacto',widget=autocomplete_light.ChoiceWidget('RegionAutocomplete'))    
+    city = forms.IntegerField(required=False, label='Ciudad del contacto', widget=autocomplete_light.ChoiceWidget('CityAutocomplete'))
     section = forms.IntegerField(required=False, label='Sección donde se encuentra el contacto', widget=forms.Select(choices=SECTION_CHOICES))
+    
+class SearchPersonForm(forms.Form):
+    name = forms.CharField(required=False, label='Nombre o apellidos')
 
 class SearchSectorForm(forms.Form):
     name = forms.CharField(required=False, label='Nombre')
@@ -99,8 +102,8 @@ class GastosPorOtrForm(forms.Form):
 class GastosPorProveedorForm(forms.Form):
     fecha_inicio = forms.DateField(required=True, label="Fecha inicio")
     fecha_final = forms.DateField(required=True, label="Fecha final")
-    proveedor = forms.ModelChoiceField(Company.objects.all().filter(types=1),
-                                  widget=autocomplete_light.ChoiceWidget('CompanyAutocomplete'), required=False)
+    proveedor = forms.ModelChoiceField(Company.objects.all().filter(type=1),
+                                  widget=autocomplete_light.ChoiceWidget('CompanyProviderAutocomplete'), required=False)
     estado = forms.ChoiceField(choices=EXPENSE_STATE_AND_EMPTY, required=False)
          
     def __init__(self, *args, **kwargs):
@@ -117,21 +120,72 @@ class AnyMesForm(forms.Form):
 #from autocomplete_light_registry import AutocompleteCity
     
 class CompanyForm(forms.ModelForm):
+    in_group = forms.ModelChoiceField(Company.objects.all().filter(is_group=1),
+                        widget=autocomplete_light.ChoiceWidget('CompanyGroupAutocomplete'), required=False)
     class Meta:
-        widgets = autocomplete_light.get_widgets_dict(Company)
+        #widgets = autocomplete_light.get_widgets_dict(Company)
         #city = forms.ModelChoiceField(City.objects.all(),
         #                              widget=autocomplete_light.ChoiceWidget(AutocompleteCity))
-        fields = ('name', 'comercial_name', 'NIF_CIF', 'address', 'postal_code', 'country', 
-                  'region', 'city', 'website', 'types', 'disabled', 'is_group', 'in_group', 'account_number')
+        fields = ('name', 'comercial_name', 'NIF_CIF', 'website', 'type', 'is_group', 'in_group', 'account_number')
+        # , 'address', 'postal_code', 'country', 'region', 'city',
         model = Company
         exclude = ('relations',)
+
+class MediaForm(forms.ModelForm):
+    company = forms.ModelChoiceField(Company.objects.all(),
+                        widget=autocomplete_light.ChoiceWidget('CompanyAutocomplete'), required=False)    
+    class Meta:
+        model = Media        
+        widgets = autocomplete_light.get_widgets_dict(Media)
+    def __init__(self, *args, **kwargs):
+        super(MediaForm, self).__init__(*args, **kwargs)
+        self.fields['sectors'].help_text = ''
+        
+    def clean_company(self):
+        data = self.cleaned_data['company']
+        if data == None:
+            raise forms.ValidationError("Falta especificar la empresa a la que pertenece.")
+
+        # Always return the cleaned data, whether you have changed it or
+        # not.
+        return data        
+        
+class CompanyContactDataForm(forms.ModelForm):
+    class Meta:
+        model = ContactData        
+        widgets = autocomplete_light.get_widgets_dict(ContactData)
+        exclude = ('person', 'company', 'media', 'position', 'type', 'packets_address', 'country')
+
+class MediaContactDataForm(forms.ModelForm):
+    class Meta:
+        model = ContactData        
+        widgets = autocomplete_light.get_widgets_dict(ContactData)
+        exclude = ('person', 'company', 'media', 'position', 'type', 'packets_address', 'country')
+
+class PersonContactDataForm(forms.ModelForm):
+    
+    class Meta:
+        model = ContactData        
+        widgets = autocomplete_light.get_widgets_dict(ContactData)
+        exclude = ('person', 'type', 'country')
+        
         
 class OtForm(forms.ModelForm):
     class Meta:
         model = Ot   
         exclude = ('company',)
 
+class SectorForm(forms.ModelForm):
+    class Meta:
+        model = Sector
+
+class SectionForm(forms.ModelForm):
+    class Meta:
+        model = Section
+        
 class ExpenseForm(forms.ModelForm):
+    provider = forms.ModelChoiceField(Company.objects.all(),
+                        widget=autocomplete_light.ChoiceWidget('CompanyProviderAutocomplete'), required=False)    
     class Meta:
         widgets = autocomplete_light.get_widgets_dict(Expense)        
         model = Expense   
@@ -158,11 +212,26 @@ class ExpenseItemForm(forms.ModelForm):
 
 class PersonForm(forms.ModelForm):
     class Meta:
-        widgets = autocomplete_light.get_widgets_dict(Expense)        
+        widgets = autocomplete_light.get_widgets_dict(Person)        
         model = Person
-        fields = ['name', 'cognoms', 'surname']
+        #fields = ['name', 'cognoms', 'surname']
+    def __init__(self, *args, **kwargs):
+        super(PersonForm, self).__init__(*args, **kwargs)
+        self.fields['type'].help_text = ''
+        self.fields['sections'].help_text = ''
+        self.fields['born_date'].widget.attrs.update({'class': "datepicker"})        
+#class PhoneForm(forms.ModelForm):
+#    class Meta:
+#        model = Phone
+#        exclude = ('contact_data',)
+#                        
+#class EmailForm(forms.ModelForm):
+#    class Meta:
+#        model = Email
+#        exclude = ('contact_data',)
 #    def __init__(self, *args, **kwargs):
 #        super(ExpenseForm, self).__init__(*args, **kwargs)
 #        self.fields['date'].widget.attrs.update({'class': "input-small datepicker"})
 #        self.fields['payment_date'].widget.attrs.update({'class': "input-small datepicker"})
 #        self.fields['state'].widget.attrs.update({'class': "input-medium"})  
+

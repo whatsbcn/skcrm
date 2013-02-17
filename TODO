@@ -1,74 +1,22 @@
-  Passos proper dia:
-  ==================
-  - Afegir persona
-  - Que funcioni el seleccionar contactes.
-
-
-  Plantilles generals:
-  ====================
-  - En les taules mostrar la quantitat d'entrades mostrades (en el cas de cerca seran les trobades)
-  - Taules de cerca ordenables i maques altre cop
-  - Desplegables mÃ©s petits
-  - Part de audit amb tots els canvis i consultes que es van fent.
-  - Que hi hagi un permÃ­s que sigui donar d'alta cada objecte i un altre que sigui consulta
-  - Formulari calendari obliga a deixar-hi data si hi fem click.
-  - A país provincia ciutat, caldria fer filtre ajax 
-
-  Contactes:
-  ==========
-  - Tot el formulari d'alta i modificaciÃ³ d'un contacte
-  - Alta o baixa de relacions laborals del contacte
-  - Seccions del contacte
-  - Tipus de contacte (Societat, Periodista, Clients, Proveidor). Segons aixÃ² es veuran els contactes als usuaris
-  - A l'entrar les dades, les inicials del nom i de tot word de longitud mÃ©s de 4 chars, sempre amb majÃºscula
-  - Personal assistant (que quedi clar qui Ã©s personal assistant de qui i qui te un personal assistant)
-  - VisiÃ³ dels cÃ rrecs => Mitja (cÃ rrec)
-  - ExportaciÃ³ de la direcciÃ³ postal com a Ãºltim camp
-  - Un contacte tÃ© N direcciÃ³ns de contacte igual que telefons o emails. Una personal, una professional per cada empresa amb quÃ¨ treballi
-  - Al cÃ rrec posar-hi el mail, el telf i la direcciÃ³ postal. Al contacte nomÃ©s les dades personals
-  - Pensar => Al fer exportar, que d'alguna manera l'usuari trii de cada contacte quina adreÃ§a vol fer servir.
-  - Que no deixi exportar si una persona tÃ© cÃ rrecs duplicats.
-  - Alta d'usuari => Nom, cognom, mail, telf, rel_laboral
-  - Utilitzar mÃ²dul audit (registrar qui fa quÃ¨)
-  - A la cerca de contactes, canviar "solo contactos con mail" a un checkbox
-  - A la cerca de contactes, canviar "aceptar mailing" per un checkbox ("no quieres mail", mostrar solo los que si permiten mail)
-  - Al carrito, no tenir contactes sinÃ³ cÃ rrecs. Treure els duplicats de cÃ rrecs per exportar
-  - Pensar => Com permetre contactes de societat (crear els permisos pels usuaris i els tipus de contactes)
-  - A la cerca, poder triar quin tipus de contacte busques, societat o mitja 
-  - Exportacions principalment per sector, seccio i medi
-  - ExportaciÃ³ amb excel: mail, nom, cognoms, cargo, medi, telf, tema, seccio
-  - Pantalla per editar la categoria i la categoria pare.
-  - Permisos per poder treballar amb lo de societat. (si el contacte Ã©s de societat i el grup de l'usuari no te permisos, no veura totes les dades)
-  - Crear rols pels permisos: veure periodistes, veure societat, editar contactes
-
-
-  Empreses:
-  =========
-  - Tot el formulari d'alta i modificaciÃ³
-  - A una empresa tipus grup, que li apareguin les empreses que sÃ³n del grup.
-
-  Sectors i seccions:
-  ===================
-  - Manera Ã gil i intuitiva d'editar-les    
+# coding: utf8
   
-  Mitjans de comunicaciÃ³:
-  =======================
-  - Tot el formulari d'alta i modificaciÃ³
-  
-  Altres manteniments:
-  ====================
-  - Fer pantalles de manteniments senzilles
-  
-  FacturaciÃ³:
+  Feina a fer
   ===========
-  - A cada exportaciÃ³ posar per quin client es fa l'exportaciÃ³ de manera que quedi registrat quan s'ha contactat amb aquella persona?
-  
+  - Formulari calendari obliga a deixar-hi data si hi fem click.
+  - Fer pantalles de manteniments senzilles
+  - Refactoring per aprofitar el mateix template per tots els llistats
+
+
+
+
+
+
+
 
   Mailings:
   =========
   - Enviament de mails directament des de la web sense necessitar l'atomic
   - Especificar adreÃ§a pels mails rebotats
-
 
   Accions:
   ========
@@ -97,12 +45,6 @@
   - Calcul del clipping
   - Clientes: activos, inactivos, potenciales
 
-
-Contrib
-========
-https://github.com/crucialfelix/django-ajax-selects
-https://github.com/alex/django-filter
-https://github.com/bradleyayers/django-tables2
 
 
 Cerques:
