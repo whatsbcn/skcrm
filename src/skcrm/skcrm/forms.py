@@ -84,16 +84,27 @@ class SearchSectionForm(forms.Form):
     name = forms.CharField(required=False, label='Nombre')    
 
 class SearchExpenseForm(forms.Form):
-    num = forms.IntegerField(required=False, label='Numero')    
+    filter = forms.CharField(required=False, label='Numero')    
+
+class SearchExpenseConceptTypeForm(forms.Form):
+    name = forms.CharField(required=False, label='Nombre')    
+
+class SearchExpenseConceptSubTypeForm(forms.Form):
+    name = forms.CharField(required=False, label='Nombre')    
+    
+    
 
 class GastosPorOtrForm(forms.Form):
     fecha_inicio = forms.DateField(required=True, label="Fecha inicio")
     fecha_final = forms.DateField(required=True, label="Fecha final")
     ot = forms.ModelChoiceField(Ot.objects.all(),
                                   widget=autocomplete_light.ChoiceWidget('OtAutocomplete'), required=False)
-    content_type = forms.ModelChoiceField(ExpenseConceptType.objects.all(),
-                                  #widget=autocomplete_light.ChoiceWidget('ExpenseConceptTypeAutocomplete'),
-                                  required=False, label="Concepto")
+#    content_type = forms.ModelChoiceField(ExpenseConceptType.objects.all(),
+#                                  #widget=autocomplete_light.ChoiceWidget('ExpenseConceptTypeAutocomplete'),
+#                                  required=False, label="Concepto")
+    concept_type = forms.ModelChoiceField(ExpenseConceptType.objects.all(), widget=autocomplete_light.ChoiceWidget('ExpenseConceptTypeAutocomplete'), required=False, label="Concepto de gasto")
+    concept_sub_type = forms.ModelChoiceField(ExpenseConceptSubType.objects.all(), widget=autocomplete_light.ChoiceWidget('ExpenseConceptSubTypeAutocomplete'), required=False, label="Subconcepto de gasto")
+     
     def __init__(self, *args, **kwargs):
         super(GastosPorOtrForm, self).__init__(*args, **kwargs)
         self.fields['fecha_inicio'].widget.attrs.update({'class': "input-small datepicker"})
@@ -104,8 +115,7 @@ class GastosPorProveedorForm(forms.Form):
     fecha_final = forms.DateField(required=True, label="Fecha final")
     proveedor = forms.ModelChoiceField(Company.objects.all().filter(type=1),
                                   widget=autocomplete_light.ChoiceWidget('CompanyProviderAutocomplete'), required=False)
-    estado = forms.ChoiceField(choices=EXPENSE_STATE_AND_EMPTY, required=False)
-         
+    estado = forms.ChoiceField(choices=EXPENSE_STATE_AND_EMPTY, required=False)        
     def __init__(self, *args, **kwargs):
         super(GastosPorProveedorForm, self).__init__(*args, **kwargs)
         self.fields['fecha_inicio'].widget.attrs.update({'class': "input-small datepicker"})
@@ -182,6 +192,14 @@ class SectorForm(forms.ModelForm):
 class SectionForm(forms.ModelForm):
     class Meta:
         model = Section
+
+class ExpenseConceptTypeForm(forms.ModelForm):
+    class Meta:
+        model = ExpenseConceptType
+
+class ExpenseConceptSubTypeForm(forms.ModelForm):
+    class Meta:
+        model = ExpenseConceptSubType
         
 class ExpenseForm(forms.ModelForm):
     provider = forms.ModelChoiceField(Company.objects.all(),

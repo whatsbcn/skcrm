@@ -44,7 +44,7 @@
                         </ul>
                     </li>
                 {% endif %}
-                {% if max_perm.id >= 4 %}                    
+                {% if max_perm.id >= 3 %}                    
                      <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                             Mantenimientos
@@ -52,18 +52,25 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li class="nav-header">Medios / empresas</li>
-                                <li><a href="{% url 'sector_list' %}">Sectores</a></li>
-                                <li><a href="#">Periodicidad</a></li>
-                                <li><a href="#">Tipo de medio</a></li>
-                                <li><a href="#">Tipo de empresa</a></li>
-                                <li><a href="#">Tipo de distribución</a></li>
-                                <li><a href="#">Ámbito</a></li>
+                            <li><a href="{% url 'sector_list' %}">Sectores</a></li>
+                            <li><a href="#">Periodicidad</a></li>
+                            <li><a href="#">Tipo de medio</a></li>
+                            <li><a href="#">Tipo de empresa</a></li>
+                            <li><a href="#">Tipo de distribución</a></li>
+                            <li><a href="#">Ámbito</a></li>
                             <li class="divider"></li>
-                            <li class="nav-header">Contactos</li>
-                                <li><a href="{% url 'section_list' %}">Secciones</a></li>
-                                <li><a href="#">Cargos</a></li>
-                                <li><a href="#">Tipo</a></li>
+                            
+                            <li class="nav-header">Personas</li>
+                            <li><a href="{% url 'section_list' %}">Secciones</a></li>
+                            <li><a href="#">Cargos</a></li>
+                            <li><a href="#">Tipo</a></li>
                             <li class="divider"></li>
+                            
+                            <li class="nav-header">Gastos</li>
+                            <li><a href="{% url 'concept_type_list' %}">Concepto de gasto</a></li>
+                            <li><a href="{% url 'sub_concept_type_list' %}">Subconcepto de gasto</a></li>
+                            <li class="divider"></li>                            	
+                            
                             <li class="nav-header">Varios</li>                       
                             <li><a href="#">Ciudades</a></li>
                             <li><a href="#">Paises</a></li>

@@ -1,4 +1,4 @@
-#Sun Feb 17 18:08:56 CET 2013
+#Tue Feb 19 21:08:48 CET 2013
 eclipse.preferences.version=1
 encoding//skcrm/admin.py=utf8
 encoding//skcrm/autocomplete_light_registry.py=utf8
@@ -10,10 +10,12 @@ encoding//skcrm/migrations/0012_auto__del_contactposition__del_field_company_con
 encoding//skcrm/models.py=utf8
 encoding//skcrm/tables.py=utf8
 encoding//skcrm/view/company.py=utf-8
+encoding//skcrm/view/concept_type.py=utf-8
 encoding//skcrm/view/contact.py=utf-8
 encoding//skcrm/view/expense.py=utf-8
 encoding//skcrm/view/media.py=utf-8
 encoding//skcrm/view/person.py=utf-8
 encoding//skcrm/view/section.py=utf-8
 encoding//skcrm/view/sector.py=utf-8
+encoding//skcrm/view/sub_concept_type.py=utf-8
 encoding//skcrm/views.py=utf-8

@@ -19,9 +19,14 @@ def ls(request, id=None, item_id=None):
     if request.method == 'POST':
         search = SearchExpenseForm(request.POST, request.FILES)
         if search.is_valid():
-            num = search.cleaned_data['num']
-            if num != None:
-                e = e.filter(Q(id=num)|Q(doc_num=num))        
+            filter = search.cleaned_data['filter']
+            if filter != None:
+                try:
+                    num = int(filter)
+                    e = e.filter(Q(id=num)|Q(doc_num=num)|Q(provider__name__icontains=filter)|Q(provider__comercial_name__icontains=filter))  
+                except:
+                    e = e.filter(Q(provider__name__icontains=filter)|Q(provider__comercial_name__icontains=filter))
+                    
             
     table = ExpenseTable(e, order_by=request.GET.get('sort'))
     table.paginate(page=request.GET.get('page', 1), per_page=25)

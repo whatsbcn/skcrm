@@ -44,6 +44,14 @@ urlpatterns = patterns('',
     url(r'^section/list/$', 'skcrm.view.section.ls', name='section_list'),
     url(r'^section/edit/(?P<id>\d+)?$', 'skcrm.view.section.edit', name='section_edit'),
     url(r'^section/del/(?P<id>\d+)/$', 'skcrm.view.section.delete', name='section_del'),
+
+    url(r'^concept_type/list/$', 'skcrm.view.concept_type.ls', name='concept_type_list'),
+    url(r'^concept_type/edit/(?P<id>\d+)?$', 'skcrm.view.concept_type.edit', name='concept_type_edit'),
+    url(r'^concept_type/del/(?P<id>\d+)/$', 'skcrm.view.concept_type.delete', name='concept_type_del'),
+
+    url(r'^sub_concept_type/list/$', 'skcrm.view.sub_concept_type.ls', name='sub_concept_type_list'),
+    url(r'^sub_concept_type/edit/(?P<id>\d+)?$', 'skcrm.view.sub_concept_type.edit', name='sub_concept_type_edit'),
+    url(r'^sub_concept_type/del/(?P<id>\d+)/$', 'skcrm.view.sub_concept_type.delete', name='sub_concept_type_del'),
     
     url(r'^media/list/$', 'skcrm.view.media.ls', name='media_list'),
     url(r'^media/edit/(?P<id>\d+)?$', 'skcrm.view.media.edit', name='media_edit'),

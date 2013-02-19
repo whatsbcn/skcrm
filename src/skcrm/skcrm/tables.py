@@ -26,6 +26,21 @@ class MediasTable(tables.Table):
     class Meta:
         attrs = {"class": "table table-bordered table-condensed table-stripped"}
 
+
+class ExpenseConceptTypeTable(tables.Table):
+    name = tables.Column(verbose_name='Concepto de gasto')
+    actions = tables.TemplateColumn("<a href='/contecpt_type/edit/{{ record.id }}'><i class='icon-pencil'></i>&nbsp;</a>", verbose_name="Acciones")
+
+    class Meta:
+        attrs = {"class": "table table-bordered table-condensed table-stripped"}
+
+class ExpenseConceptSubTypeTable(tables.Table):
+    name = tables.Column(verbose_name='Subconcepto de gasto')
+    actions = tables.TemplateColumn("<a href='/sub_concept_type/edit/{{ record.id }}'><i class='icon-pencil'></i>&nbsp;</a>", verbose_name="Acciones")
+
+    class Meta:
+        attrs = {"class": "table table-bordered table-condensed table-stripped"}
+
 class CompaniesTable(tables.Table):
     name = tables.Column(verbose_name='Empresa')
     comercial_name = tables.Column(verbose_name='Nombre comercial')
@@ -71,7 +86,8 @@ class ExpenseTable(tables.Table):
         else:
             return value
     def render_total(self, value):
-        return "%.2f€" % value
+        ret = "%.2f" % value
+        return ret.replace('.', ',')
     
     def render_provider(self, value):
         if not value:
@@ -110,16 +126,20 @@ class ExpenseDetailTable(tables.Table):
         return ret
 
     def render_irpf_value(self, value):
-        return "%.2f€" % value
+        ret = "%.2f" % value
+        return ret.replace('.', ',')
 
     def render_iva_value(self, value):
-        return "%.2f€" % value
+        ret = "%.2f" % value
+        return ret.replace('.', ',')
 
     def render_base(self, value):
-        return "%.2f€" % value
+        ret = "%.2f" % value
+        return ret.replace('.', ',')
     
     def render_total(self, value):
-        return "%.2f€" % value
+        ret = "%.2f" % value
+        return ret.replace('.', ',')
 
 
 class ExpenseItemTable(tables.Table):
@@ -146,10 +166,12 @@ class ExpenseItemDetailTable(tables.Table):
         attrs = {"class": "table table-condensed table-bordered table-stripped"}
 
     def render_base(self, value):
-        return str("%.2f€" % value)
+        ret = "%.2f" % value
+        return ret.replace('.', ',')
 
     def render_total(self, value):
-        return str("%.2f€" % value)
+        ret = "%.2f" % value
+        return ret.replace('.', ',')
     
     def render_payment_date(self, value):
         if not value:
@@ -238,7 +260,7 @@ class PersonContactDataTable(tables.Table):
     def render_address(self, value, record):
         ret = value
         if record.city:
-            ret += " (%s)" % record.city
+            ret += u" (%s)" % record.city
         return ret
     
     def render_telf(self, value, record):
@@ -272,9 +294,9 @@ class MediaContactDataTable(tables.Table):
     def render_address(self, value, record):
         ret = value
         if record.city:
-            ret += ", %s" % record.city
+            ret += u", %s" % record.city
         if record.region:
-            ret += " (%s)" % record.region            
+            ret += u" (%s)" % record.region            
         return ret
     
     def render_telf(self, value, record):
