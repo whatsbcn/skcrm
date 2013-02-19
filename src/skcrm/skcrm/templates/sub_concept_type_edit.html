@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load url from future %}
+{% load render_table from django_tables2 %}
+
+
+{% block content %}
+
+{% if obj.id %}
+<h3>Editar subconcepto de gasto </h3>
+{% else %}
+<h3>Añadir subconcepto de gasto </h3>
+{% endif %}
+<hr class="bs-docs-separator">
+<form method="post" action="">{% csrf_token %}
+<table>
+{{ form.as_table }}
+</table>
+
+<div class="form-actions">
+    <div class="pull-right">
+        <button class="btn btn-primary" type="submit">Guardar</button>
+        {% if obj.id %}
+        <a href="#modal-esborrar" role="button" class="btn btn-danger" data-toggle="modal">Borrar</a>
+        {% endif %}
+        <a href="{% url 'sub_concept_type_list' %}" role="button" class="btn" data-toggle="modal">Volver</a>
+    </div>
+</div>
+</form>
+
+{% if obj.id %}
+<div id="modal-esborrar" class="modal hide " tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h3 id="myModalLabel">Borrar {{form.name.value}}</h3>
+    </div>
+    <div class="modal-body">
+        <p>Está seguro que desea borrar esta entrada?</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
+
+        <a href="{% url 'sub_concept_type_del' obj.id %}" class="btn btn-danger" type="button">Borrar</a>
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}
+
+{% block localjs %}
+    <script type="text/javascript">
+        $('.datepicker').datepicker({weekStart: 1, format: 'yyyy-mm-dd'});
+    </script>
+{% endblock localjs %}
