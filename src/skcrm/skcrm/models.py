@@ -278,6 +278,8 @@ class Person(models.Model):
     #has_personal_assistant = models.ForeignKey('self', null=True, blank=True)
     type = models.ManyToManyField(PersonType, db_table="rel_person_types", null=True, blank=True, verbose_name="Tipo")
     sections = models.ManyToManyField(Section, db_table="rel_person_section", null=True, blank=True, verbose_name="Secciones")
+    info_text = models.TextField(blank=True, verbose_name="Información")
+    warning_text = models.TextField(blank=True, verbose_name="Advertencias")
     #positions = models.ManyToManyField('Company', through='ContactPosition', null=True, blank=True)
     class Meta:
         db_table = u'person'
@@ -469,7 +471,13 @@ class Expense(models.Model):
                 if table_resume_entry['iva'] == item.iva:
                     table_resume_entry['total'] += item.base
             total += item.base + (item.iva * item.base)/100
-        return table_resume_data, total                
+        return table_resume_data, total
+    def sub_concepts(self):
+        items_found = []
+        for item in self.expenseitem_set.all():
+            if item.concept_sub_type and item.concept_sub_type.name not in items_found:
+                items_found.append(item.concept_sub_type.name)
+        return items_found
 
 class ExpenseItem(models.Model):
     id = models.AutoField(primary_key=True)

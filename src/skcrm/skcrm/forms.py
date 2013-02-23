@@ -4,6 +4,7 @@ from django import forms
 from skcrm.models import *
 #from autocomplete_light_registry import AutocompleteOt
 import autocomplete_light
+from django.forms import Textarea
 from skcrm.models import EXPENSE_STATE
 
 EXPENSE_STATE_AND_EMPTY = [('','')] + EXPENSE_STATE
@@ -84,7 +85,7 @@ class SearchSectionForm(forms.Form):
     name = forms.CharField(required=False, label='Nombre')    
 
 class SearchExpenseForm(forms.Form):
-    filter = forms.CharField(required=False, label='Numero')    
+    filter = forms.CharField(required=False, label='Numero/Proveedor')    
 
 class SearchExpenseConceptTypeForm(forms.Form):
     name = forms.CharField(required=False, label='Nombre')    
@@ -237,7 +238,9 @@ class PersonForm(forms.ModelForm):
         super(PersonForm, self).__init__(*args, **kwargs)
         self.fields['type'].help_text = ''
         self.fields['sections'].help_text = ''
-        self.fields['born_date'].widget.attrs.update({'class': "datepicker"})        
+        self.fields['born_date'].widget.attrs.update({'class': "datepicker"})
+        self.fields['info_text'].widget.attrs.update({'rows':4, 'style':'width: 500px'})
+        self.fields['warning_text'].widget.attrs.update({'rows':2, 'style':'width: 300px'})        
 #class PhoneForm(forms.ModelForm):
 #    class Meta:
 #        model = Phone

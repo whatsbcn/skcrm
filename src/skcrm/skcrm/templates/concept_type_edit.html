@@ -6,9 +6,9 @@
 {% block content %}
 
 {% if obj.id %}
-<h3>Editar sector </h3>
+<h3>Editar concepto de gasto </h3>
 {% else %}
-<h3>Añadir sector </h3>
+<h3>Añadir concepto de gasto </h3>
 {% endif %}
 <hr class="bs-docs-separator">
 <form method="post" action="">{% csrf_token %}
@@ -22,7 +22,7 @@
         {% if obj.id %}
         <a href="#modal-esborrar" role="button" class="btn btn-danger" data-toggle="modal">Borrar</a>
         {% endif %}
-        <a href="{% url 'sector_list' %}" role="button" class="btn" data-toggle="modal">Volver</a>
+        <a href="{% url 'concept_type_list' %}" role="button" class="btn" data-toggle="modal">Volver</a>
     </div>
 </div>
 </form>
@@ -39,7 +39,7 @@
     <div class="modal-footer">
         <button class="btn" data-dismiss="modal" aria-hidden="true">Cerrar</button>
 
-        <a href="{% url 'sector_del' obj.id %}" class="btn btn-danger" type="button">Borrar</a>
+        <a href="{% url 'concept_type_del' obj.id %}" class="btn btn-danger" type="button">Borrar</a>
     </div>
 </div>
 

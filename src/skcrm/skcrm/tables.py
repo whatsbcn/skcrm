@@ -29,7 +29,7 @@ class MediasTable(tables.Table):
 
 class ExpenseConceptTypeTable(tables.Table):
     name = tables.Column(verbose_name='Concepto de gasto')
-    actions = tables.TemplateColumn("<a href='/contecpt_type/edit/{{ record.id }}'><i class='icon-pencil'></i>&nbsp;</a>", verbose_name="Acciones")
+    actions = tables.TemplateColumn("<a href='/concept_type/edit/{{ record.id }}'><i class='icon-pencil'></i>&nbsp;</a>", verbose_name="Acciones")
 
     class Meta:
         attrs = {"class": "table table-bordered table-condensed table-stripped"}
@@ -96,6 +96,7 @@ class ExpenseTable(tables.Table):
         return value        
 
 class ExpenseDetailTable(tables.Table):
+    sub_concepts = tables.Column(verbose_name='Subconceptos', default="")
     irpf_value = tables.Column(verbose_name='IRPF', attrs={"td": {"style": "text-align: right"}})
     iva = tables.Column(verbose_name='% IVA', attrs={"td": {"style": "text-align: right"}})
     iva_value = tables.Column(verbose_name='IVA', attrs={"td": {"style": "text-align: right"}})
@@ -104,9 +105,13 @@ class ExpenseDetailTable(tables.Table):
     
     class Meta:
         model = Expense
-        attrs = {"class": "table table-bordered table-condensed table-stripped"}
+        attrs = {"class": "table table-bordered table-condensed table-stripped", "style": "font-size:12px"}
         exclude = ('payment_date',)
-        
+    def render_sub_concepts(self, value):
+        ret = u""
+        for item in value:
+            ret += item + u"</br>"
+        return ret
     def render_payment_date(self, value):
         if not value:
             return ""
@@ -120,7 +125,7 @@ class ExpenseDetailTable(tables.Table):
             return value    
         
     def render_iva(self, value):
-        ret = ""
+        ret = u""
         for item in value:
             ret += str(item) + "% </br>"
         return ret
@@ -199,6 +204,7 @@ class SectorTable(tables.Table):
         return ret
     
 class PersonTable(tables.Table):
+    
     #email = tables.EmailColumn(verbose_name='Email')
     name = tables.Column(verbose_name='Nombre', order_by=("name", "cognom1", "cognom2"))
     cognoms = tables.Column(verbose_name='Primer Apellido')
@@ -220,9 +226,9 @@ class PersonTable(tables.Table):
     class Meta:
         attrs = {"class": "table table-bordered table-condensed table-stripped", 'cellspacing': '0'}    
     def render_sections(self, value):
-        ret = ""
+        ret = u""
         for section in value.all():
-            ret += str(section.name) + "</br>"
+            ret += str(section.name) + u"</br>"
         return mark_safe(ret)      
     
 #    def render_phone(self, value):
@@ -238,13 +244,14 @@ class PersonTable(tables.Table):
 #        return mark_safe(ret)
     
     def render_medias(self, value):
-        ret = ""
+        ret = u""
         for media in value.all():
             ret += media.name + "</br>"
         return mark_safe(ret)
     
 class PersonContactDataTable(tables.Table):
-    company = tables.Column()
+    description = tables.Column(default='')
+    company = tables.Column(default='')
     media = tables.Column(default='')
     position = tables.Column(order_by=("position.name"))
     address = tables.Column()
@@ -264,7 +271,7 @@ class PersonContactDataTable(tables.Table):
         return ret
     
     def render_telf(self, value, record):
-        ret = ""
+        ret = u""
         if record.telf_static:
             ret += "T: %s</br>" % record.telf_static
         if record.telf_movile:
@@ -300,7 +307,7 @@ class MediaContactDataTable(tables.Table):
         return ret
     
     def render_telf(self, value, record):
-        ret = ""
+        ret = u""
         if record.telf_static:
             ret += "T: %s</br>" % record.telf_static
         if record.telf_movile:
@@ -340,7 +347,7 @@ class ContactTable(tables.Table):
         orderable = False
       
     def render_sections(self, value, record):
-        ret = ""
+        ret = u""
         for section in record.person.sections.all():
             ret += str(section.name) + "</br>"
         return mark_safe(ret)

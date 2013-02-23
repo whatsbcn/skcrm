@@ -25,7 +25,7 @@ def ls(request, id=None):
         table = ExpenseConceptSubTypeTable(m, order_by=request.GET.get('sort'))
         table.paginate(page=request.GET.get('page', 1), per_page=25)
             
-        return render_to_response('concept_type_list.html', 
+        return render_to_response('sub_concept_type_list.html', 
                                   {'form':search, 'table':table}, 
                                   context_instance=RequestContext(request)) 
         
@@ -45,9 +45,9 @@ def edit(request, id=None):
             sector = form.save()
             
             messages.success(request, "Cambios guardados correctamente.")
-            return redirect('concept_type_edit', id=concept_type.id)
+            return redirect('sub_concept_type_edit', id=concept_type.id)
         
-    return render_to_response('concept_type_edit.html', 
+    return render_to_response('sub_concept_type_edit.html', 
                               {'form':form, 'obj':concept_type}, 
                               context_instance=RequestContext(request))        
     
@@ -56,4 +56,4 @@ def edit(request, id=None):
 def delete(request, id=None):    
     concept_type = get_object_or_404(ExpenseConceptSubType, pk=id)
     concept_type.delete()
-    return redirect('concept_type_list')
+    return redirect('sub_concept_type_list')
