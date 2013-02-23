@@ -228,7 +228,7 @@ class PersonTable(tables.Table):
     def render_sections(self, value):
         ret = u""
         for section in value.all():
-            ret += str(section.name) + u"</br>"
+            ret += unicode(section.name) + u"</br>"
         return mark_safe(ret)      
     
 #    def render_phone(self, value):
