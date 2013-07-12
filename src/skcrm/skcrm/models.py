@@ -237,23 +237,28 @@ class Sector(models.Model):
         s = Sector.objects.all().filter(parent=self)
         return len(s)
 
+
 class Section(models.Model):
     name = models.CharField(unique=True, max_length=45, blank=False, verbose_name="Nombre")
     parent = models.ForeignKey('self', null=True, blank=True, related_name='child', verbose_name="Sección Padre")
+
     class Meta:
         db_table = u'section'
         ordering = ['parent__parent__name', 'parent__name', 'name']
         verbose_name_plural = "Secciones"
+
     def __unicode__(self):
         ret = ""
         p = self.parent
         while p != None:
             ret += unicode(p) + " - "
-            p = p.parent   
+            p = p.parent
         return ret + self.name
+
     def number_of_childs(self):
         s = Section.objects.all().filter(parent=self)
-        return len(s)        
+        return len(s)
+
 
 class Person(models.Model):
     name = models.CharField(max_length=100, verbose_name="Nombre")
@@ -261,7 +266,6 @@ class Person(models.Model):
     surname = models.CharField(max_length=100, blank=True, verbose_name="Sobrenombre")
     treatment = models.ForeignKey(ContactTreatment, null=True, blank=True, verbose_name="Tratamiento")
     born_date = models.DateField(null=True, blank=True, verbose_name="Fecha nacimiento")
-    
     #email = models.EmailField(max_length=45, blank=True)
     #address = models.CharField(max_length=100, blank=True, verbose_name="Dirección")
     #packets_address = models.CharField(max_length=100, blank=True, verbose_name="Dirección para paquetes")
@@ -281,21 +285,24 @@ class Person(models.Model):
     info_text = models.TextField(blank=True, verbose_name="Información")
     warning_text = models.TextField(blank=True, verbose_name="Advertencias")
     #positions = models.ManyToManyField('Company', through='ContactPosition', null=True, blank=True)
+
     class Meta:
         db_table = u'person'
         ordering = ['name']
         verbose_name_plural = "Personas"
+
     def __unicode__(self):
         return self.name + " " + self.cognoms
+
     def save(self, *args, **kwargs):
         if getattr(self, 'name', True):
             self.name = self.name.title()
         if getattr(self, 'cognoms', True):
-            self.cognoms = self.cognoms.title()            
+            self.cognoms = self.cognoms.title()
         if getattr(self, 'surname', True):
-            self.surname = self.surname.title()   
-        super(Person, self).save(*args, **kwargs)     
-        
+            self.surname = self.surname.title()
+        super(Person, self).save(*args, **kwargs)
+
 #class Contact(models.Model):
 #    id = models.AutoField(primary_key=True)
 #    name = models.CharField(max_length=100, verbose_name="Nombre")
@@ -350,8 +357,9 @@ class Company(models.Model):
             self.name = self.name.title()
         if getattr(self, 'comercial_name', True):
             self.comercial_name = self.comercial_name.title()
-        super(Company, self).save(*args, **kwargs)     
-    
+        super(Company, self).save(*args, **kwargs)
+
+
 class Media(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, verbose_name="Nombre")
@@ -366,18 +374,20 @@ class Media(models.Model):
     ditribution = models.ForeignKey(DistributionType, null=True, blank=True, verbose_name="Distribución")
     periodicity = models.ForeignKey(PeriodicityType, null=True, blank=True, verbose_name="Periodicidad")
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name="Empresa")
+
     class Meta:
         db_table = u'media'
         verbose_name_plural = "Medios"
         ordering = ['name']
+
     def __unicode__(self):
-        return unicode(self.name) 
+        return unicode(self.name)
+
     def save(self, *args, **kwargs):
         if getattr(self, 'name', True):
             self.name = self.name.title()
-        super(Media, self).save(*args, **kwargs)     
-    
-           
+        super(Media, self).save(*args, **kwargs)
+
 
 class ContactData(models.Model):
     id = models.AutoField(primary_key=True)
