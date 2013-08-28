@@ -355,7 +355,7 @@ class ContactTable(tables.Table):
 
 class SelectedContactTable(ContactTable):
     #repetitions = tables.Column(empty_values=(), verbose_name="Repeticiones")
-    rep = tables.Column(verbose_name="Repeticiones", accessor="person.rep")
+    #rep = tables.Column(verbose_name="Repeticiones", accessor="person.rep")
     actions = tables.Column(orderable=False)
     class Meta:
         attrs = {"class": "table table-bordered table-condensed table-stripped", 'cellspacing': '0'}    

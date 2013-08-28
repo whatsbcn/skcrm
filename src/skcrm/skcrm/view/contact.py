@@ -71,7 +71,8 @@ def ls(request, select=False):
                 return redirect('contact_list')                 
   
     return render_to_response('contacts.html', 
-                              {'form':search, 'entires':entries, 'table':people, 'selection': selection}, 
+                              {'form':search, 'table_entries':entries, 'table':people,
+                               'selection': selection, 'selection_entries': len(request.session['selected_contacts'])}, 
                               context_instance=RequestContext(request))
 
 @login_required
