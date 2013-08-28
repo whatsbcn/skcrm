@@ -11,8 +11,9 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'skcrm.settings'
 
 from skcrm.models import Person, Company, Media, Section, PositionTypes, City, ContactTreatment, Region, ContactData, MediaType
 
-fd = open("/Users/whats/Documents/empreses/orbyce/aplicacio/20130702_BDD_ORBYCE_srAB_Dani_medios.csv", 'rb')
-buff = csv.reader(fd, delimiter=',', quotechar='|')
+fd = open("mitjans.csv", 'rb')
+buff = csv.reader(fd, delimiter='\t', quotechar='|')
+
 
 # TODO: Falten les observacions
 
@@ -25,9 +26,11 @@ provincies = []
 medio = []
 empresa = []
 tratamientos = []
+
+
 for nombre, caca_web, tipo_medio, caca_periodicidad, caca_ambito, caca_sec1, caca_sec2, caca_sec3, caca_sec4, caca_sec5, empresa, caca_descri, direccion, cp, provincia, ciudad, telf_fijo, telf_mobil  in buff:
 	secciones = []
-	
+
 	if i < 3:
 		i += 1
 		continue
@@ -51,7 +54,7 @@ for nombre, caca_web, tipo_medio, caca_periodicidad, caca_ambito, caca_sec1, cac
  	s = tipo_medio
 	if s != "":
 		s = unicode(s).strip().title().replace('/A', '/a')
-		select = MediaType.objects.filter(name__icontains=s)
+		select = MediaType.objects.filter(name__iexact=s)
 		if len(select) == 0:
 			if s not in falten_carrecs:
 				falten_carrecs.append(s)
@@ -68,7 +71,7 @@ for nombre, caca_web, tipo_medio, caca_periodicidad, caca_ambito, caca_sec1, cac
  	s = provincia
 	if s != "":
 		s = unicode(s).strip().title().replace('/A', '/a')
-		select = Region.objects.filter(name__icontains=s)
+		select = Region.objects.filter(name__iexact=s)
 		if len(select) == 0:
 			if s not in falten_provincies:
 				falten_provincies.append(s)
@@ -86,7 +89,7 @@ for nombre, caca_web, tipo_medio, caca_periodicidad, caca_ambito, caca_sec1, cac
  	s = ciudad
 	if s != "":
 		s = unicode(s).strip().title().replace('/A', '/a')
-		select = City.objects.filter(name__icontains=s)
+		select = City.objects.filter(name__iexact=s)
 		if len(select) == 0:
 			if s not in falten_ciutats:
 				falten_ciutats.append(s)
@@ -108,7 +111,7 @@ for nombre, caca_web, tipo_medio, caca_periodicidad, caca_ambito, caca_sec1, cac
  	s = empresa
  	if s != "":
 	 	s = unicode(s).strip().title().replace('/A', '/a')
-		select = Company.objects.filter(name__icontains=s)
+		select = Company.objects.filter(name__iexact=s)
 		if len(select) == 0:
 				c = Company(name=s)
 				c.save()
@@ -122,7 +125,7 @@ for nombre, caca_web, tipo_medio, caca_periodicidad, caca_ambito, caca_sec1, cac
  	medios = []
  	s = nombre
 	s = unicode(s).strip().title().replace('/A', '/a')
-	select = Media.objects.filter(name__icontains=s)
+	select = Media.objects.filter(name__iexact=s)
 	if len(select) == 0:
 		if s not in medio:
 			medio.append(s)

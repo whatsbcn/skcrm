@@ -18,9 +18,10 @@ def ls(request, select=False):
     search = SearchContactForm()
     people = ContactTable([])
     selection = SelectedContactTable([])
+    entries = 0
     if 'selected_contacts' in request.session:
         selection = SelectedContactTable(request.session['selected_contacts'], order_by=request.GET.get('sort'))
-        selection.paginate(page=request.GET.get('spage', 1), per_page=25)
+        selection.paginate(page=request.GET.get('page', 1), per_page=25)
 
     if request.method == 'POST':
         search = SearchContactForm(request.POST, request.FILES)
@@ -55,8 +56,9 @@ def ls(request, select=False):
             if search.cleaned_data['mailing']:
                 found_people = found_people.filter(mailing=True)
             
-            people = ContactTable(found_people)  
-            people.paginate(page=request.GET.get('page', 1), per_page=25)
+            entries = len(found_people)
+            people = ContactTable(found_people[:25])
+            #people.paginate(page=request.GET.get('page', 1), per_page=25)
 
             # Add filtered people to the selected list
             if select:
@@ -69,7 +71,7 @@ def ls(request, select=False):
                 return redirect('contact_list')                 
   
     return render_to_response('contacts.html', 
-                              {'form':search, 'table':people, 'selection': selection}, 
+                              {'form':search, 'entires':entries, 'table':people, 'selection': selection}, 
                               context_instance=RequestContext(request))
 
 @login_required

@@ -32,7 +32,7 @@ function submitsearchform()
 </div>
 
 
-<h3>Contactos encontrados</h3>
+<h3>{{entries}} contactos encontrados</h3>
 {% autoescape off %}
 {% render_table table %}
 {% endautoescape %}
@@ -45,7 +45,7 @@ function submitsearchform()
 </div>
 </form>
 
-<h3>Contactos seleccionados</h3>
+<h3>{{selection|length}} contactos seleccionados</h3>
 
 {% autoescape off %}
 {% render_table selection %}

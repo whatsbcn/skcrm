@@ -11,7 +11,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'skcrm.settings'
 
 from skcrm.models import Person, Company, Media, Section, PositionTypes, City, ContactTreatment, Region, ContactData
 
-fd = open("20130702_BDD_ORBYCE_srAB_Dani.csv", 'rb')
+fd = open("periodistes.csv", 'rb')
 buff = csv.reader(fd, delimiter=',', quotechar='|')
 
 # TODO: Falten les observacions
@@ -45,7 +45,7 @@ for sec1, sec2, sec3, sec4, sec5, sec6, sec7, tratamiento, nombre, apellidos, na
 	nombre = unicode(nombre).strip().title()
 	apellidos = unicode(apellidos).strip().title()	
 	tratamiento = unicode(tratamiento).strip()
-	select = ContactTreatment.objects.filter(name__icontains=tratamiento) 
+	select = ContactTreatment.objects.filter(name__iexact=tratamiento) 
 	if len(select) == 0:
 		if tratamiento != "":
 			
@@ -62,7 +62,7 @@ for sec1, sec2, sec3, sec4, sec5, sec6, sec7, tratamiento, nombre, apellidos, na
  	for s in (cargo1, cargo2, cargo3):
  		if s != "":
  			s = unicode(s).strip().title().replace('/A', '/a')
- 			select = PositionTypes.objects.filter(name__icontains=s)
+ 			select = PositionTypes.objects.filter(name__iexact=s)
  			if len(select) == 0:
  				if s not in falten_carrecs:
  					falten_carrecs.append(s)
@@ -79,7 +79,7 @@ for sec1, sec2, sec3, sec4, sec5, sec6, sec7, tratamiento, nombre, apellidos, na
  	for s in (provincia1, provincia2, provincia3):
  		if s != "":
  			s = unicode(s).strip().title().replace('/A', '/a')
- 			select = Region.objects.filter(name__icontains=s)
+ 			select = Region.objects.filter(name__iexact=s)
  			if len(select) == 0:
  				if s not in falten_provincies:
  					falten_provincies.append(s)
@@ -98,7 +98,7 @@ for sec1, sec2, sec3, sec4, sec5, sec6, sec7, tratamiento, nombre, apellidos, na
  	for s in (ciudad1, ciudad2, ciudad3):
  		if s != "":
  			s = unicode(s).strip().title().replace('/A', '/a')
- 			select = City.objects.filter(name__icontains=s)
+ 			select = City.objects.filter(name__iexact=s)
  			if len(select) == 0:
  				if s not in falten_ciutats:
  					try:
@@ -121,7 +121,7 @@ for sec1, sec2, sec3, sec4, sec5, sec6, sec7, tratamiento, nombre, apellidos, na
  	for s in (empresa1, empresa2, empresa3):
  		if s != "":
 			s = unicode(s).strip().title().replace('/A', '/a')
-			select = Company.objects.filter(name__icontains=s)
+			select = Company.objects.filter(name__iexact=s)
  			if len(select) == 0:
  				if s not in empresa:
  					empresa.append(s)
@@ -138,7 +138,7 @@ for sec1, sec2, sec3, sec4, sec5, sec6, sec7, tratamiento, nombre, apellidos, na
  	for s in (medio1, medio2, medio3):
  		if s != "":
  			s = unicode(s).strip().title().replace('/A', '/a')
- 			select = Media.objects.filter(name__icontains=s)
+ 			select = Media.objects.filter(name__iexact=s)
  			if len(select) == 0:
  				if s not in medio:
  					medio.append(s)
@@ -155,7 +155,7 @@ for sec1, sec2, sec3, sec4, sec5, sec6, sec7, tratamiento, nombre, apellidos, na
  	for s in (sec1, sec2, sec3, sec4, sec5, sec6, sec7):
  		if s != "":
  			s = unicode(s).strip().title().replace('/A', '/a')
- 			select = Section.objects.filter(name__icontains=s)
+ 			select = Section.objects.filter(name__iexact=s)
  			if len(select) == 0:
  				if s not in falten_sections:
  					falten_sections.append(s)
@@ -170,7 +170,7 @@ for sec1, sec2, sec3, sec4, sec5, sec6, sec7, tratamiento, nombre, apellidos, na
 	i += 1
 
 
-	select = Person.objects.filter(name__icontains=nombre, cognoms__icontains=apellidos) 
+	select = Person.objects.filter(name__iexact=nombre, cognoms__iexact=apellidos) 
 	if len(select) == 0:
 		if tratamiento != "":
 			p = Person(name=nombre, cognoms=apellidos, info_text=observaciones, warning_text=advertencias, treatment=t)

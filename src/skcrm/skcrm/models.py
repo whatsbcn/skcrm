@@ -392,7 +392,7 @@ class Media(models.Model):
 class ContactData(models.Model):
     id = models.AutoField(primary_key=True)
     person = models.ForeignKey(Person, null=True, blank=False)
-    company = models.ForeignKey(Company, null=True, blank=False, verbose_name="Empresa")
+    company = models.ForeignKey(Company, null=True, blank=True, verbose_name="Empresa")
     media = models.ForeignKey(Media, null=True, blank=True, verbose_name="Medio")
     position = models.ForeignKey(PositionTypes, null=True, blank=False, verbose_name="Cargo")
     type = models.ForeignKey(ContactDataType, null=False, blank=False)

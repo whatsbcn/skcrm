@@ -41,7 +41,7 @@ for nombre_fiscal, nombre_comercial, nif, web, es_grupo, grupo_padre in buff:
 	 	s = grupo_padre
 	 	if s != "":
 		 	s = unicode(s).strip().title().replace('/A', '/a')
-			select = Company.objects.filter(name__icontains=s)
+			select = Company.objects.filter(name__iexact=s)
 			if len(select) == 0:
 					c = Company(name=s)
 					c.save()
@@ -53,7 +53,7 @@ for nombre_fiscal, nombre_comercial, nif, web, es_grupo, grupo_padre in buff:
 			grupo = None
 
 
-	select = Company.objects.filter(name__icontains=nombre_fiscal)
+	select = Company.objects.filter(name__iexact=nombre_fiscal)
 	if len(select) == 0:
 			c = Company(name=s)
 			c.save()
