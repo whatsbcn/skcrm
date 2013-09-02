@@ -18,10 +18,11 @@ def ls(request, select=False):
     search = SearchContactForm()
     people = ContactTable([])
     selection = SelectedContactTable([])
-    entries = 0
+    selection_entries = entries = 0
     if 'selected_contacts' in request.session:
         selection = SelectedContactTable(request.session['selected_contacts'], order_by=request.GET.get('sort'))
         selection.paginate(page=request.GET.get('page', 1), per_page=25)
+        selection_entries = len(request.session['selected_contacts'])
 
     if request.method == 'POST':
         search = SearchContactForm(request.POST, request.FILES)
@@ -30,7 +31,7 @@ def ls(request, select=False):
             found_people = ContactData.objects.select_related().distinct().filter(type_id=1)
             if request.user.groups.filter(name='Sociedad').count() == 0:
                 found_people = found_people.exclude(person__type=2)
-                
+
             if search.cleaned_data['name']:
                 found_people = found_people.filter(person__name__icontains=search.cleaned_data['name'])                
             if search.cleaned_data['company']:
@@ -55,7 +56,7 @@ def ls(request, select=False):
                 found_people = found_people.filter(email__isnull=False, email__contains='@')
             if search.cleaned_data['mailing']:
                 found_people = found_people.filter(mailing=True)
-            
+
             entries = len(found_people)
             people = ContactTable(found_people[:25])
             #people.paginate(page=request.GET.get('page', 1), per_page=25)
@@ -68,26 +69,25 @@ def ls(request, select=False):
                     request.session['selected_contacts'] |= new_people
                 else:
                     request.session['selected_contacts'] = set(list(found_people))
-                return redirect('contact_list')                 
-  
-    return render_to_response('contacts.html', 
-                              {'form':search, 'table_entries':entries, 'table':people,
-                               'selection': selection, 'selection_entries': len(request.session['selected_contacts'])}, 
+                return redirect('contact_list')
+
+    return render_to_response('contacts.html',
+                              {'form': search, 'table_entries': entries, 'table': people,
+                               'selection': selection, 'selection_entries': selection_entries}, 
                               context_instance=RequestContext(request))
 
 @login_required
-def reset(request):      
-    try:  
+def reset(request):
+    try:
         del request.session['selected_contacts']
     except:
         pass
-        
-    return redirect('contact_list')     
-    
-    
+
+    return redirect('contact_list')
+
 
 @login_required
-def export(request):            
+def export(request):
     import xlwt
     export_fields = ["Email", "Nombre", "Apellidos", "Cargos", "Medio (Empresa)", u"Teléfonos", "Secciones", u"Dirección postal"]
     response = HttpResponse(mimetype="application/ms-excel")
