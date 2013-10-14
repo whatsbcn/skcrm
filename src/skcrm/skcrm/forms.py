@@ -174,13 +174,18 @@ class MediaContactDataForm(forms.ModelForm):
         exclude = ('person', 'company', 'media', 'position', 'type', 'packets_address', 'country')
 
 class PersonContactDataForm(forms.ModelForm):
-    
     class Meta:
         model = ContactData        
         widgets = autocomplete_light.get_widgets_dict(ContactData)
-        exclude = ('person', 'type', 'country')
-        
-        
+        exclude = ('person', 'type')
+    def save(self, obj, *args, **kwargs):
+        try:
+            if obj.media != None:
+                obj.company = obj.media.company
+        except:
+            pass
+        super(PersonContactDataForm, self).save(*args, obj, **kwargs)        
+
 class OtForm(forms.ModelForm):
     class Meta:
         model = Ot   

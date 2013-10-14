@@ -3,6 +3,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.core import urlresolvers
+from datetime import datetime
 
 
              
@@ -45,7 +46,16 @@ DEFAULT_COUNTRY_ID = 73
 DEFAULT_REGION_ID = 33
 DEFAULT_CITY_ID = 899
 
-class Country(models.Model):
+class JouModel(models.Model):
+    created_at = models.DateTimeField(blank=True, null=True)
+    updated_at = models.DateTimeField(blank=True, null=True)
+    class Meta:
+        abstract = True
+    def save(self, *args, **kwargs):
+        self.updated_at = datetime.now()
+        super(JouModel, self).save(*args, **kwargs)
+
+class Country(JouModel):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=45, blank=True)
     class Meta:
@@ -57,7 +67,7 @@ class Country(models.Model):
     def get_default(self):
         return Country.objects.get(name='Estaña') 
 
-class Region(models.Model):
+class Region(JouModel):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=45, blank=True)
     class Meta:
@@ -67,7 +77,7 @@ class Region(models.Model):
     def __unicode__(self):
         return self.name        
 
-class City(models.Model):
+class City(JouModel):
     id = models.AutoField(primary_key=True)
     region = models.ForeignKey(Region, null=True, blank=True)
     name = models.CharField(max_length=45, blank=True)
@@ -79,7 +89,7 @@ class City(models.Model):
     def __unicode__(self):
         return self.name        
 
-class ContactTreatment(models.Model):
+class ContactTreatment(JouModel):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=32, blank=True)
     class Meta:
@@ -89,7 +99,7 @@ class ContactTreatment(models.Model):
     def __unicode__(self):
         return self.name        
 
-class MediaType(models.Model):
+class MediaType(JouModel):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=45, blank=True)
     class Meta:
@@ -99,7 +109,7 @@ class MediaType(models.Model):
     def __unicode__(self):
         return self.name     
 
-class PersonType(models.Model):
+class PersonType(JouModel):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=45, blank=True)
     class Meta:
@@ -109,7 +119,7 @@ class PersonType(models.Model):
     def __unicode__(self):
         return self.name     
 
-class CompanyType(models.Model):
+class CompanyType(JouModel):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=45, blank=True)
     class Meta:
@@ -119,7 +129,7 @@ class CompanyType(models.Model):
     def __unicode__(self):
         return self.name 
 
-class ContextType(models.Model):
+class ContextType(JouModel):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=45, blank=True)
     class Meta:
@@ -129,7 +139,7 @@ class ContextType(models.Model):
     def __unicode__(self):
         return self.name 
 
-class DistributionType(models.Model):
+class DistributionType(JouModel):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=45, blank=True)
     class Meta:
@@ -139,7 +149,7 @@ class DistributionType(models.Model):
     def __unicode__(self):
         return self.name
 
-class PeriodicityType(models.Model):
+class PeriodicityType(JouModel):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=45, blank=True)
     class Meta:
@@ -149,7 +159,7 @@ class PeriodicityType(models.Model):
     def __unicode__(self):
         return self.name
        
-class PhoneType(models.Model):
+class PhoneType(JouModel):
     id = models.AutoField(primary_key=True)
     name = models.CharField(unique=True, max_length=144, blank=True)
     class Meta:
@@ -157,17 +167,17 @@ class PhoneType(models.Model):
         verbose_name_plural = "Tipo de teléfono"
     def __unicode__(self):
         return self.name    
+# 
+# class EmailType(JouModel):
+#     id = models.AutoField(primary_key=True)
+#     name = models.CharField(unique=True, max_length=144, blank=True)
+#     class Meta:
+#         db_table = u'contact_email_types'
+#         verbose_name_plural = "Tipo de email"
+#     def __unicode__(self):
+#         return self.name
 
-class EmailType(models.Model):
-    id = models.AutoField(primary_key=True)
-    name = models.CharField(unique=True, max_length=144, blank=True)
-    class Meta:
-        db_table = u'contact_email_types'
-        verbose_name_plural = "Tipo de email"
-    def __unicode__(self):
-        return self.name
-
-class PositionTypes(models.Model):
+class PositionTypes(JouModel):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=45, blank=True)
     class Meta:
@@ -177,7 +187,7 @@ class PositionTypes(models.Model):
     def __unicode__(self):
         return self.name 
 
-class ExpenseDocumentType(models.Model):
+class ExpenseDocumentType(JouModel):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=45, blank=True)
     class Meta:
@@ -187,7 +197,7 @@ class ExpenseDocumentType(models.Model):
     def __unicode__(self):
         return self.name 
     
-class ExpenseConceptType(models.Model):
+class ExpenseConceptType(JouModel):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=45, blank=True)
     class Meta:
@@ -197,7 +207,7 @@ class ExpenseConceptType(models.Model):
     def __unicode__(self):
         return self.name 
         
-class ExpenseConceptSubType(models.Model):
+class ExpenseConceptSubType(JouModel):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=45, blank=True)
     concept_type = models.ForeignKey(ExpenseConceptType, null=False, blank=False, verbose_name="Concepto")
@@ -208,7 +218,7 @@ class ExpenseConceptSubType(models.Model):
     def __unicode__(self):
         return self.name 
     
-class ContactDataType(models.Model):
+class ContactDataType(JouModel):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=45, blank=True)
     class Meta:
@@ -218,7 +228,7 @@ class ContactDataType(models.Model):
     def __unicode__(self):
         return self.name  
                 
-class Sector(models.Model):
+class Sector(JouModel):
     name = models.CharField(unique=True, max_length=45, blank=False, verbose_name="Nombre")
     parent = models.ForeignKey('self', null=True, blank=True, related_name='child', verbose_name="Sector Padre")
     class Meta:
@@ -238,7 +248,7 @@ class Sector(models.Model):
         return len(s)
 
 
-class Section(models.Model):
+class Section(JouModel):
     name = models.CharField(unique=True, max_length=45, blank=False, verbose_name="Nombre")
     parent = models.ForeignKey('self', null=True, blank=True, related_name='child', verbose_name="Sección Padre")
 
@@ -260,7 +270,7 @@ class Section(models.Model):
         return len(s)
 
 
-class Person(models.Model):
+class Person(JouModel):
     name = models.CharField(max_length=100, verbose_name="Nombre")
     cognoms = models.CharField(max_length=200, blank=True, verbose_name="Apellidos")
     surname = models.CharField(max_length=100, blank=True, verbose_name="Sobrenombre")
@@ -303,7 +313,7 @@ class Person(models.Model):
             self.surname = self.surname.title()
         super(Person, self).save(*args, **kwargs)
 
-#class Contact(models.Model):
+#class Contact(JouModel):
 #    id = models.AutoField(primary_key=True)
 #    name = models.CharField(max_length=100, verbose_name="Nombre")
 #    #email = models.EmailField(max_length=45, blank=True)
@@ -326,7 +336,7 @@ class Person(models.Model):
 #    def __unicode__(self):
 #        return self.name
     
-class Company(models.Model):
+class Company(JouModel):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, verbose_name="Nombre")
     comercial_name = models.CharField(max_length=100, null=False, blank=False, verbose_name="Nombre comercial")
@@ -360,7 +370,7 @@ class Company(models.Model):
         super(Company, self).save(*args, **kwargs)
 
 
-class Media(models.Model):
+class Media(JouModel):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, verbose_name="Nombre")
     website = models.URLField(max_length=100, blank=True, verbose_name="Página web")
@@ -389,7 +399,7 @@ class Media(models.Model):
         super(Media, self).save(*args, **kwargs)
 
 
-class ContactData(models.Model):
+class ContactData(JouModel):
     id = models.AutoField(primary_key=True)
     person = models.ForeignKey(Person, null=True, blank=False)
     company = models.ForeignKey(Company, null=True, blank=True, verbose_name="Empresa")
@@ -400,8 +410,8 @@ class ContactData(models.Model):
     address = models.CharField(max_length=100, blank=True, verbose_name="Dirección")
     packets_address = models.CharField(max_length=100, blank=True, verbose_name="Dirección para paquetes")
     postal_code = models.CharField(max_length=32, null=True, blank=True, verbose_name="Código postal")
-    country = models.ForeignKey(Country, null=True, blank=True, verbose_name="País")
-    region = models.ForeignKey(Region, null=True, blank=True, verbose_name="Provincia")
+    country = models.ForeignKey(Country, null=True, blank=True, default=DEFAULT_COUNTRY_ID, verbose_name="País")
+    region = models.ForeignKey(Region, null=True, blank=True, default=DEFAULT_REGION_ID, verbose_name="Provincia")
     city = models.ForeignKey(City, null=True, blank=True, verbose_name="Ciudad")
     telf_static = models.CharField(max_length=100, null=True, blank=True, verbose_name="Telf. fijo")
     telf_movile = models.CharField(max_length=100, null=True, blank=True, verbose_name="Telf. mobil")
@@ -416,7 +426,7 @@ class ContactData(models.Model):
     def __unicode__(self):
         return unicode(self.person) + " - " +  unicode(self.company) + " - " + unicode(self.media)
     
-class Ot(models.Model):
+class Ot(JouModel):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, blank=True, verbose_name="Nombre")
     number = models.IntegerField(unique=True, verbose_name="Número de OT", null=True, blank=True)
@@ -432,7 +442,7 @@ class Ot(models.Model):
             self.number = Ot.objects.all().aggregate(Max('number'))['number__max'] + 1
         super(Ot, self).save(force_insert, force_update)
         
-class Expense(models.Model):
+class Expense(JouModel):
     id = models.AutoField(primary_key=True, verbose_name="#")
     doc_type = models.ForeignKey(ExpenseDocumentType, null=True, blank=True, verbose_name="Tipo")
     doc_num = models.CharField(max_length=64, null=True, blank=True, verbose_name="#Doc.")
@@ -489,7 +499,7 @@ class Expense(models.Model):
                 items_found.append(item.concept_sub_type.name)
         return items_found
 
-class ExpenseItem(models.Model):
+class ExpenseItem(JouModel):
     id = models.AutoField(primary_key=True)
     concept_type = models.ForeignKey(ExpenseConceptType, null=False, blank=False, verbose_name="Concepto")
     concept_sub_type = models.ForeignKey(ExpenseConceptSubType, null=True, blank=True, verbose_name="Subconcepto")    
@@ -507,7 +517,7 @@ class ExpenseItem(models.Model):
     def total(self):
         return self.base + (self.base * self.iva / 100)
                 
-#class Phone(models.Model):
+#class Phone(JouModel):
 #    id = models.AutoField(primary_key=True)
 #    number = models.IntegerField()
 #    type = models.ForeignKey(PhoneType, null=True, blank=True)
@@ -520,7 +530,7 @@ class ExpenseItem(models.Model):
 #    def __unicode__(self):
 #        return unicode(self.number)         
 #                
-#class Email(models.Model):
+#class Email(JouModel):
 #    id = models.AutoField(primary_key=True)
 #    email = models.EmailField(max_length=45, blank=True)
 #    type = models.ForeignKey(EmailType, null=True, blank=True)
@@ -535,7 +545,7 @@ class ExpenseItem(models.Model):
 
 
         
-#class Action(models.Model):
+#class Action(JouModel):
 #    id = models.AutoField(primary_key=True)
 #    name = models.CharField(max_length=256, blank=True)
 #    description = models.TextField(blank=True)
@@ -561,7 +571,7 @@ class ExpenseItem(models.Model):
 # MANY TO MANY RELATIONS
 
 
-#class ContactAnswer(models.Model):
+#class ContactAnswer(JouModel):
 #    id = models.AutoField(primary_key=True)
 #    contact = models.ForeignKey(Person, null=True, blank=True)
 #    action = models.ForeignKey(Action, null=True, blank=True)

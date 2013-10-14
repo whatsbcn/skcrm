@@ -89,7 +89,7 @@ def reset(request):
 @login_required
 def export(request):            
     import xlwt
-    export_fields = ["Email", "Nombre", "Apellidos", "Cargos", "Medio (Empresa)", u"Teléfonos", "Secciones", u"Dirección postal"]
+    export_fields = ["Email", "Nombre", "Apellidos", "Cargos", "Medio", "Empresa", u"Teléfonos", "Secciones", u"Dirección", u"Código postal", "Ciudad", u"País"]
     response = HttpResponse(mimetype="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=export.xls'
     
@@ -125,10 +125,12 @@ def export(request):
             pass
 
         try:
-            list = contact.media.name
-            if contact.company != None:
-                list += " (%s)" % contact.company.name
-            ws.write(i, 4, list)
+            ws.write(i, 4, contact.media.name)
+        except:
+            pass
+
+        try:
+            ws.write(i, 5, contact.company.name)
         except:
             pass
                     
@@ -152,12 +154,25 @@ def export(request):
         except:
             pass 
                 
-        try:
-            list = contact.address + ", (" + contact.postal_code + " " + contact.city.name + ")"  
-            ws.write(i, 7, list)
+        try:  
+            ws.write(i, 7, contact.address)
         except:
             pass
 
+        try:  
+            ws.write(i, 8, contact.postal_code)
+        except:
+            pass
+
+        try:  
+            ws.write(i, 9, contact.city.name)
+        except:
+            pass
+
+        try:  
+            ws.write(i, 10, contact.country.name)
+        except:
+            pass
        
         i += 1
         
