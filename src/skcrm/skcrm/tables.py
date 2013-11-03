@@ -331,7 +331,7 @@ class CompanyContactDataTable(MediaContactDataTable):
  
         
 class ContactTable(tables.Table):
-    person = tables.TemplateColumn("<a href='/person/edit/{{ record.id }}'>{{record.person.cognoms}}, {{record.person.name}}</a>", verbose_name="Nombre", order_by=("person.name", "person.cognoms"))
+    person = tables.TemplateColumn("<a href='/person/edit/{{ record.person.id }}'>{{record.person.cognoms}}, {{record.person.name}}</a>", verbose_name="Nombre", order_by=("person.name", "person.cognoms"))
     #person = tables.Column(verbose_name='Nombre', order_by=("person.name", "person.cognoms"))
     media = tables.Column(verbose_name='Medio', default='', order_by=("media.name"))
     company = tables.Column(verbose_name='Empresa', default='', order_by=("company.comercial_name"))
