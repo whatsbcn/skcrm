@@ -184,7 +184,7 @@ class PersonContactDataForm(forms.ModelForm):
                 obj.company = obj.media.company
         except:
             pass
-        super(PersonContactDataForm, self).save(*args, obj, **kwargs)        
+        super(PersonContactDataForm, self).save(args, obj, kwargs)        
 
 class OtForm(forms.ModelForm):
     class Meta:

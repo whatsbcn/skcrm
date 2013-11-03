@@ -80,6 +80,10 @@ def del_ot(request, id=None, ot_id=None):
 @login_required
 def delete(request, id=None, ot_id=None):            
     company = get_object_or_404(Company, pk=id)
+    if len(company.contactdata_set.all().exclude(type_id=2)) > 0:
+        messages.error(request, "No se puede eliminar porque hay personas asignadas a esta empresa.")
+        return redirect('company_list')
+    
     for cd in company.contactdata_set.all().filter(type_id=2):
         cd.delete()
     for ot in company.ot_set.all():

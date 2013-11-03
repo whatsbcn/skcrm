@@ -72,7 +72,7 @@ class ExpenseTable(tables.Table):
     class Meta:
         model = Expense
         attrs = {"class": "table table-bordered table-condensed table-stripped"}
-        exclude = ('payment_date', 'irpf')
+        exclude = ('payment_date', 'irpf', 'created_at', 'updated_at')
         
     def render_payment_date(self, value):
         if not value:
@@ -106,7 +106,7 @@ class ExpenseDetailTable(tables.Table):
     class Meta:
         model = Expense
         attrs = {"class": "table table-bordered table-condensed table-stripped", "style": "font-size:12px"}
-        exclude = ('payment_date',)
+        exclude = ('payment_date', 'created,at', 'updated_at')
     def render_sub_concepts(self, value):
         ret = u""
         for item in value:
@@ -166,7 +166,7 @@ class ExpenseItemDetailTable(tables.Table):
     
     class Meta:
         model = ExpenseItem
-        exclude = ('ot', 'id', 'concept_sub_type')
+        exclude = ('ot', 'id', 'concept_sub_type', 'updated_at', 'created_at')
         sequence = ('expense', 'doc_num', 'date', 'concept_type', 'description', 'iva', 'base', 'total')
         attrs = {"class": "table table-condensed table-bordered table-stripped"}
 
@@ -331,7 +331,8 @@ class CompanyContactDataTable(MediaContactDataTable):
  
         
 class ContactTable(tables.Table):
-    person = tables.Column(verbose_name='Nombre', order_by=("person.name", "person.cognoms"))
+    person = tables.TemplateColumn("<a href='/person/edit/{{ record.id }}'>{{record.person.cognoms}}, {{record.person.name}}</a>", verbose_name="Nombre", order_by=("person.name", "person.cognoms"))
+    #person = tables.Column(verbose_name='Nombre', order_by=("person.name", "person.cognoms"))
     media = tables.Column(verbose_name='Medio', default='', order_by=("media.name"))
     company = tables.Column(verbose_name='Empresa', default='', order_by=("company.comercial_name"))
     position = tables.Column(verbose_name='Cargo', order_by=("position.name"))

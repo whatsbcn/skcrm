@@ -58,6 +58,10 @@ def edit(request, id=None):
 @login_required
 def delete(request, id=None):    
     media = get_object_or_404(Media, pk=id)
+    if len(media.contactdata_set.all().exclude(type_id=3)) > 0:
+        messages.error(request, "No se puede eliminar porque hay personas asignadas a este medio.")
+        return redirect('media_list')
+
     for cd in media.contactdata_set.all().filter(type_id=3):
         cd.delete()
     media.delete()
