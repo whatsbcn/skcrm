@@ -419,13 +419,16 @@ class ContactData(JouModel):
     email = models.CharField(max_length=100, blank=True, verbose_name="Email")
     email_alt = models.CharField(max_length=100, null=True, blank=True, verbose_name="Email alternativo")
     mailing = models.BooleanField(default=True, verbose_name="Consiente que se le envien emails?")
+
     class Meta:
         db_table = u'contact_data'
         #ordering = ['name']
         verbose_name_plural = "Datos de contacto"
+
     def __unicode__(self):
         return unicode(self.person) + " - " +  unicode(self.company) + " - " + unicode(self.media)
-    
+
+
 class Ot(JouModel):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, blank=True, verbose_name="Nombre")
