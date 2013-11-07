@@ -33,7 +33,7 @@ ANY_CHOICES = (
 class SearchContactForm(forms.Form):
     CARREC_CHOICES = [('', '')]
     CARREC_CHOICES.extend([(c.id, c.name) for c in PositionTypes.objects.all()])
-    
+
     SECTOR_CHOICES = [('', '')]
     for s in Sector.objects.all().order_by("name"):
         if s.parent == None:
@@ -43,7 +43,7 @@ class SearchContactForm(forms.Form):
     CIUTAT_CHOICES.extend([(c.id, c.name) for c in City.objects.all().distinct()])
     PROVINCIA_CHOICES = [('', '')]
     PROVINCIA_CHOICES.extend([(c.id, c.name) for c in Region.objects.all()])
-    
+
     SECTION_CHOICES = [('', '')]
     for s in Section.objects.all().order_by("name"):
         if s.parent == None:
@@ -52,10 +52,8 @@ class SearchContactForm(forms.Form):
 
     TIPO_MEDIOS_CHOICES = [('', '')]
     TIPO_MEDIOS_CHOICES.extend([(c.id, c.name) for c in MediaType.objects.all()])
-        
     #SECTION_CHOICES.extend([(c.id, c.name) 
     #SECTION_CHOICES.extend([(c.id, "--" + c.name) for c in Section.objects.all().order_by("name") if c.parent != None])
-    
 
     name = forms.CharField(required=False, label='Nombre o apellidos')   
     company = forms.CharField(required=False, label='Empresa')
@@ -68,12 +66,15 @@ class SearchContactForm(forms.Form):
     region = forms.IntegerField(required=False,  label='Provincia del contacto',widget=autocomplete_light.ChoiceWidget('RegionAutocomplete'))    
     city = forms.IntegerField(required=False, label='Ciudad del contacto', widget=autocomplete_light.ChoiceWidget('CityAutocomplete'))
     section = forms.IntegerField(required=False, label='Sección donde se encuentra el contacto', widget=forms.Select(choices=SECTION_CHOICES))
-    
+
+
 class SearchPersonForm(forms.Form):
     name = forms.CharField(required=False, label='Nombre o apellidos')
 
+
 class SearchSectorForm(forms.Form):
     name = forms.CharField(required=False, label='Nombre')
+
 
 class SearchCompanyForm(forms.Form):
     name = forms.CharField(required=False, label='Nombre')
@@ -92,8 +93,7 @@ class SearchExpenseConceptTypeForm(forms.Form):
 
 class SearchExpenseConceptSubTypeForm(forms.Form):
     name = forms.CharField(required=False, label='Nombre')    
-    
-    
+
 
 class GastosPorOtrForm(forms.Form):
     fecha_inicio = forms.DateField(required=True, label="Fecha inicio")
@@ -129,7 +129,8 @@ class AnyMesForm(forms.Form):
     any = forms.IntegerField(required=True, widget=forms.Select(choices=ANY_CHOICES))
 
 #from autocomplete_light_registry import AutocompleteCity
-    
+
+
 class CompanyForm(forms.ModelForm):
     in_group = forms.ModelChoiceField(Company.objects.all().filter(is_group=1),
                         widget=autocomplete_light.ChoiceWidget('CompanyGroupAutocomplete'), required=False)
@@ -140,18 +141,22 @@ class CompanyForm(forms.ModelForm):
         fields = ('name', 'comercial_name', 'NIF_CIF', 'website', 'type', 'is_group', 'in_group', 'account_number')
         # , 'address', 'postal_code', 'country', 'region', 'city',
         model = Company
-        exclude = ('relations',)
+        exclude = ('relations', 'created_at', 'updated_at')
+
 
 class MediaForm(forms.ModelForm):
     company = forms.ModelChoiceField(Company.objects.all(),
                         widget=autocomplete_light.ChoiceWidget('CompanyAutocomplete'), required=False)    
+
     class Meta:
         model = Media        
         widgets = autocomplete_light.get_widgets_dict(Media)
+        exclude = ('created_at', 'updated_at')
+
     def __init__(self, *args, **kwargs):
         super(MediaForm, self).__init__(*args, **kwargs)
         self.fields['sectors'].help_text = ''
-        
+
     def clean_company(self):
         data = self.cleaned_data['company']
         if data == None:
@@ -160,40 +165,46 @@ class MediaForm(forms.ModelForm):
         # Always return the cleaned data, whether you have changed it or
         # not.
         return data        
-        
+
+
 class CompanyContactDataForm(forms.ModelForm):
     class Meta:
         model = ContactData        
         widgets = autocomplete_light.get_widgets_dict(ContactData)
-        exclude = ('person', 'company', 'media', 'position', 'type', 'packets_address', 'country')
+        exclude = ('person', 'company', 'media', 'position', 'type', 'packets_address', 'country', 'created_at', 'updated_at')
+
 
 class MediaContactDataForm(forms.ModelForm):
     class Meta:
         model = ContactData        
         widgets = autocomplete_light.get_widgets_dict(ContactData)
-        exclude = ('person', 'company', 'media', 'position', 'type', 'packets_address', 'country')
+        exclude = ('person', 'company', 'media', 'position', 'type', 'packets_address', 'country', 'created_at', 'updated_at')
+
 
 class PersonContactDataForm(forms.ModelForm):
     class Meta:
         model = ContactData        
         widgets = autocomplete_light.get_widgets_dict(ContactData)
-        exclude = ('person', 'type')
-    def save(self, obj, *args, **kwargs):
+        exclude = ('person', 'type', 'created_at', 'updated_at')
+
+    def save(self):
         try:
-            if obj.media != None:
-                obj.company = obj.media.company
+            if self.instance.media != None:
+                self.instance.company = self.instance.media.company
         except:
             pass
-        super(PersonContactDataForm, self).save(args, obj, kwargs)        
+        super(PersonContactDataForm, self).save()
+
 
 class OtForm(forms.ModelForm):
     class Meta:
         model = Ot   
-        exclude = ('company',)
+        exclude = ('company', 'created_at', 'updated_at')
 
 class SectorForm(forms.ModelForm):
     class Meta:
         model = Sector
+        exlude = ('created_at', 'updated_at')
 
 class SectionForm(forms.ModelForm):
     class Meta:
@@ -238,6 +249,7 @@ class PersonForm(forms.ModelForm):
     class Meta:
         widgets = autocomplete_light.get_widgets_dict(Person)        
         model = Person
+        exclude = ('created_at', 'updated_at')
         #fields = ['name', 'cognoms', 'surname']
     def __init__(self, *args, **kwargs):
         super(PersonForm, self).__init__(*args, **kwargs)

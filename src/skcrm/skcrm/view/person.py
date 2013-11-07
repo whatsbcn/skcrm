@@ -40,26 +40,26 @@ def edit(request, id=None):
         person = get_object_or_404(Person, pk=id)
     else:
         person = Person()
-            
+
     form = PersonForm(instance=person)
-    
     table = PersonContactDataTable(person.contactdata_set.all().filter(type_id=1), order_by=request.GET.get('sort'))
 
     if request.POST:
         form = PersonForm(request.POST, instance=person)
-                
+
         if form.is_valid():
             person = form.save()
-            
+
             messages.success(request, "Cambios guardados correctamente.")
             return redirect('person_edit', id=person.id)
-        
+
     return render_to_response('person_edit.html', 
                               {'form':form, 'table':table, 'obj':person}, 
                               context_instance=RequestContext(request))        
-        
+
+
 @login_required
-def delete(request, id=None):             
+def delete(request, id=None):
     person = get_object_or_404(Person, pk=id)
     for cd in person.contactdata_set.all().filter(type_id=1):
         cd.delete()
