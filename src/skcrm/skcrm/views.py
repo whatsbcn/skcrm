@@ -13,7 +13,6 @@ from django.core.urlresolvers import reverse
 from django.contrib import messages
 import datetime
 
-
 @login_required(login_url='/accounts/login/')
 def index(request):        
     return render_to_response('index.html', 

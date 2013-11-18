@@ -40,7 +40,7 @@ function submitsearchform()
 
 <div class="form-actions">
     <div class="pull-right">
-    {% if perms.contact_data.skcrm.export_contactdata %}
+    {% if perms.skcrm.export_contactdata %}
         <button class="btn btn-primary" type="submit" onclick="javascript:document.forms[0].action='{% url 'contact_select_list' %}'">Seleccionar contactos</button>
     {% endif %}
     </div>
@@ -55,7 +55,7 @@ function submitsearchform()
 
 <div class="form-actions">
     <div class="pull-right">
-    	{% if perms.contact_data.skcrm.export_contactdata %}    
+    	{% if perms.skcrm.export_contactdata %}    
         <a href="{% url 'contact_reset' %}" role="button" class="btn btn-danger" data-toggle="modal">Resetear selección</a>
         <a href="{% url 'contact_export' %}" role="button" class="btn btn-primary" data-toggle="modal">Exportar selección</a>
 		{% endif %}

@@ -6,7 +6,8 @@ autocomplete_light.autodiscover()
 from django.contrib import admin
 admin.autodiscover()
 from django.views.generic.simple import redirect_to
-
+from django.views.generic.edit import CreateView
+from skcrm.view.person import PersonCreate, PersonEdit, PersonDetail, PersonList
 
 urlpatterns = patterns('',
                            
@@ -30,7 +31,10 @@ urlpatterns = patterns('',
     url(r'^contact/reset/', 'skcrm.view.contact.reset', name='contact_reset'),
     url(r'^contact/export/', 'skcrm.view.contact.export', name='contact_export'),
 
-
+    #url(r'^person/list/$', PersonList.as_view(), name='person_list'),
+    #url(r'^person/create/$', PersonCreate.as_view(), name='person_create'),
+    url(r'^person/detail/(?P<id>\d+)?$', PersonDetail.as_view(), name='person_detail'),
+    #url(r'^person/edit/(?P<id>\d+)?$', PersonEdit.as_view(), name='person_edit'),
     url(r'^person/list/$', 'skcrm.view.person.ls', name='person_list'),
     url(r'^person/edit/(?P<id>\d+)?$', 'skcrm.view.person.edit', name='person_edit'),
     url(r'^person/del/(?P<id>\d+)/$', 'skcrm.view.person.delete', name='person_del'),

@@ -33,7 +33,38 @@ def ls(request, id=None):
         return render_to_response('person_list.html', 
                                   {'form':search, 'table':table}, 
                                   context_instance=RequestContext(request)) 
-        
+
+
+from django.views.generic import ListView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.detail import DetailView
+from django.core.urlresolvers import reverse_lazy
+
+class PersonCreate(CreateView):
+    model = Person
+    fields = ['updated_at', 'created_at']
+
+class PersonEdit(UpdateView):
+    model = Person
+    fields = ['updated_at', 'created_at']
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(Person, pk=self.kwargs['id'])
+
+class PersonDetail(DetailView):
+    model = Person
+
+    def get_object(self, queryset=None):
+        return get_object_or_404(Person, pk=self.kwargs['id'])
+
+class PersonDelete(DeleteView):
+    model = Person
+    success_url = reverse_lazy('person_list')
+
+class PersonList(ListView):
+    model = Person
+    
+
 @login_required
 def edit(request, id=None):   
     if id:

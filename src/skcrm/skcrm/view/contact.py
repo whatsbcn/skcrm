@@ -11,7 +11,9 @@ from django.db.models import Q
 from django.core.urlresolvers import reverse
 from django.contrib import messages
 import datetime
-
+from django.contrib.admin.models import LogEntry, ADDITION
+from django.contrib.contenttypes.models import ContentType
+from django.utils.encoding import force_unicode
 
 #@login_required
 def ls(request, select=False):   
@@ -178,6 +180,17 @@ def export(request):
         
 
     wb.save(response)
+    
+#     LogEntry.objects.log_action(
+#                                 user_id=request.user.pk, 
+#                                 content_type_id = ContentType.objects.get_for_model(ContactData).pk,
+#                                 object_id       = ContactData.pk,
+#                                 object_repr     = force_unicode(ContactData), 
+#                                 action_flag     = ADDITION,
+#                                 change_message  = "Exportats %d contactes" % len(request.session['selected_contacts'])
+#     )
+
+    
     return response
     
     
