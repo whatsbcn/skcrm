@@ -54,6 +54,8 @@ def ls(request, select=False):
                 found_people = found_people.filter(city__id=search.cleaned_data['city'])
             if search.cleaned_data['region']:
                 found_people = found_people.filter(region__id=search.cleaned_data['region'])  
+            if search.cleaned_data['country']:
+                found_people = found_people.filter(country__id=search.cleaned_data['country'])
             if search.cleaned_data['withmail']:
                 found_people = found_people.filter(email__isnull=False, email__contains='@')
             if search.cleaned_data['mailing']:

@@ -43,7 +43,9 @@ class SearchContactForm(forms.Form):
     CIUTAT_CHOICES.extend([(c.id, c.name) for c in City.objects.all().distinct()])
     PROVINCIA_CHOICES = [('', '')]
     PROVINCIA_CHOICES.extend([(c.id, c.name) for c in Region.objects.all()])
-
+    COUNTRY_CHOICES = [('', '')]
+    COUNTRY_CHOICES.extend([(c.id, c.name) for c in Country.objects.all()])
+    
     SECTION_CHOICES = [('', '')]
     for s in Section.objects.all().order_by("name"):
         if s.parent == None:
@@ -63,6 +65,7 @@ class SearchContactForm(forms.Form):
     withmail = forms.BooleanField(required=False, label='Contactos con mail', widget=forms.CheckboxInput)
     sector = forms.IntegerField(required=False, label='Sector del medio de comunicación del contacto', widget=forms.Select(choices=SECTOR_CHOICES))
     tipo_medio = forms.IntegerField(required=False, label='Tipo del medio de comunicación del contacto', widget=forms.Select(choices=TIPO_MEDIOS_CHOICES))
+    country = forms.IntegerField(required=False,  label='País del contacto', widget=autocomplete_light.ChoiceWidget('CountryAutocomplete'))    
     region = forms.IntegerField(required=False,  label='Provincia del contacto',widget=autocomplete_light.ChoiceWidget('RegionAutocomplete'))    
     city = forms.IntegerField(required=False, label='Ciudad del contacto', widget=autocomplete_light.ChoiceWidget('CityAutocomplete'))
     section = forms.IntegerField(required=False, label='Sección donde se encuentra el contacto', widget=forms.Select(choices=SECTION_CHOICES))
