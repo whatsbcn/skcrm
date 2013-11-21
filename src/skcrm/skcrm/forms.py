@@ -45,7 +45,9 @@ class SearchContactForm(forms.Form):
     PROVINCIA_CHOICES.extend([(c.id, c.name) for c in Region.objects.all()])
     COUNTRY_CHOICES = [('', '')]
     COUNTRY_CHOICES.extend([(c.id, c.name) for c in Country.objects.all()])
-    
+    LANGUAGE_CHOICES = [('', '')]
+    LANGUAGE_CHOICES.extend([(c.id, c.name) for c in PersonLanguage.objects.all()])
+        
     SECTION_CHOICES = [('', '')]
     for s in Section.objects.all().order_by("name"):
         if s.parent == None:
@@ -61,6 +63,8 @@ class SearchContactForm(forms.Form):
     company = forms.CharField(required=False, label='Empresa')
     media = forms.CharField(required=False, label='Medio de comunicación')
     carrec = forms.IntegerField(required=False, label='Cargo', widget=forms.Select(choices=CARREC_CHOICES))
+    language = forms.IntegerField(required=False, label='Idioma',
+                                  widget=forms.Select(choices=LANGUAGE_CHOICES))
     mailing = forms.BooleanField(required=False, label='Contactos que aceptan mailing', widget=forms.CheckboxInput)
     withmail = forms.BooleanField(required=False, label='Contactos con mail', widget=forms.CheckboxInput)
     sector = forms.IntegerField(required=False, label='Sector del medio de comunicación del contacto', widget=forms.Select(choices=SECTOR_CHOICES))

@@ -55,6 +55,7 @@ class JouModel(models.Model):
         self.updated_at = datetime.now()
         super(JouModel, self).save(*args, **kwargs)
 
+
 class Country(JouModel):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=45, blank=True)
@@ -276,6 +277,7 @@ class Person(JouModel):
     surname = models.CharField(max_length=100, blank=True, verbose_name="Sobrenombre")
     treatment = models.ForeignKey(ContactTreatment, null=True, blank=True, verbose_name="Tratamiento")
     born_date = models.DateField(null=True, blank=True, verbose_name="Fecha nacimiento")
+    language = models.ForeignKey('PersonLanguage', null=True, blank=True)
     #email = models.EmailField(max_length=45, blank=True)
     #address = models.CharField(max_length=100, blank=True, verbose_name="Dirección")
     #packets_address = models.CharField(max_length=100, blank=True, verbose_name="Dirección para paquetes")
@@ -312,6 +314,22 @@ class Person(JouModel):
         if getattr(self, 'surname', True):
             self.surname = self.surname.title()
         super(Person, self).save(*args, **kwargs)
+
+
+class PersonLanguage(JouModel):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=100, verbose_name="Idioma")
+
+    class Meta:
+        db_table = u'person_language'
+
+    def __unicode__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if getattr(self, 'name', True):
+            self.name = self.name.title()
+        super(PersonLanguage, self).save(*args, **kwargs)
 
 #class Contact(JouModel):
 #    id = models.AutoField(primary_key=True)

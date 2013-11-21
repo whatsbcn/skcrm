@@ -50,6 +50,8 @@ def ls(request, select=False):
                                                    Q(person__sections__parent__id=search.cleaned_data['section']))                
             if search.cleaned_data['carrec']:
                 found_people = found_people.filter(position__id=search.cleaned_data['carrec'])            
+            if search.cleaned_data['language']:
+                found_people = found_people.filter(person__language__id=search.cleaned_data['language'])
             if search.cleaned_data['city']:
                 found_people = found_people.filter(city__id=search.cleaned_data['city'])
             if search.cleaned_data['region']:
