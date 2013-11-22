@@ -95,7 +95,7 @@ def reset(request):
 @login_required
 def export(request):
     import xlwt
-    export_fields = ["Email", "Nombre", "Apellidos", "Cargos", "Medio", "Empresa", u"Teléfonos", "Secciones", u"Dirección", u"Código postal", "Ciudad", u"País"]
+    export_fields = ["Email", "Nombre", "Apellidos", "Cargos", "Medio", "Empresa", u"Teléfonos", "Secciones", u"Dirección", u"Código postal", "Ciudad", u"País", "Idioma"]
     response = HttpResponse(mimetype="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=export.xls'
     
@@ -175,10 +175,16 @@ def export(request):
         except:
             pass
 
-        try:  
+        try:
             ws.write(i, 10, contact.country.name)
         except:
             pass
+
+        try:
+            ws.write(i, 11, contact.person.language.name)
+        except:
+            pass
+
        
         i += 1
         

@@ -429,7 +429,7 @@ class ContactData(JouModel):
     packets_address = models.CharField(max_length=100, blank=True, verbose_name="Dirección para paquetes")
     postal_code = models.CharField(max_length=32, null=True, blank=True, verbose_name="Código postal")
     country = models.ForeignKey(Country, null=True, blank=True, default=DEFAULT_COUNTRY_ID, verbose_name="País")
-    region = models.ForeignKey(Region, null=True, blank=True, default=DEFAULT_REGION_ID, verbose_name="Provincia")
+    region = models.ForeignKey(Region, null=True, blank=True, verbose_name="Provincia")
     city = models.ForeignKey(City, null=True, blank=True, verbose_name="Ciudad")
     telf_static = models.CharField(max_length=100, null=True, blank=True, verbose_name="Telf. fijo")
     telf_movile = models.CharField(max_length=100, null=True, blank=True, verbose_name="Telf. mobil")
