@@ -113,33 +113,33 @@ def export(request):
         try:
             ws.write(i, 0, contact.email)
         except:
-            pass
+            ws.write(i, 0, "")
         
         try:
             ws.write(i, 1, contact.person.name)
         except:
-            pass
+            ws.write(i, 1, "")
         
         try:
             ws.write(i, 2, contact.person.cognoms)
         except:
-            pass                
-                                
+            ws.write(i, 2, "")
+
         try:
             ws.write(i, 3, contact.position.name)
         except:
-            pass
+            ws.write(i, 3, "")
 
         try:
             ws.write(i, 4, contact.media.name)
         except:
-            pass
+            ws.write(i, 4, "")
 
         try:
             ws.write(i, 5, contact.company.name)
         except:
-            pass
-                    
+            ws.write(i, 5, "")
+
         try:
             list = ""
             if contact.telf_static:
@@ -147,47 +147,46 @@ def export(request):
             if contact.telf_movile:
                 list += "M: %s," % contact.telf_movile
             if contact.fax:
-                list += "F: %s" % contact.fax             
-            ws.write(i, 5, list)
+                list += "F: %s" % contact.fax
+            ws.write(i, 6, list)
         except:
-            pass
+            ws.write(i, 6, "")
 
         try:
             list = ""
             for section in contact.person.sections.all():
                 list = list + section.name + ", "
-            ws.write(i, 6, list)
+            ws.write(i, 7, list)
         except:
-            pass 
-                
-        try:  
-            ws.write(i, 7, contact.address)
-        except:
-            pass
-
-        try:  
-            ws.write(i, 8, contact.postal_code)
-        except:
-            pass
-
-        try:  
-            ws.write(i, 9, contact.city.name)
-        except:
-            pass
+            ws.write(i, 7, "")
 
         try:
-            ws.write(i, 10, contact.country.name)
+            ws.write(i, 8, contact.address)
         except:
-            pass
+            ws.write(i, 8, "")
 
         try:
-            ws.write(i, 11, contact.person.language.name)
+            ws.write(i, 9, contact.postal_code)
         except:
-            pass
+            ws.write(i, 9, "")
 
-       
+        try:
+            ws.write(i, 10, contact.city.name)
+        except:
+            ws.write(i, 10, "")
+
+        try:
+            ws.write(i, 11, contact.country.name)
+        except:
+            ws.write(i, 11, "")
+
+        try:
+            ws.write(i, 12, contact.person.language.name)
+        except:
+            ws.write(i, 12, "")
+
         i += 1
-        
+
 
     wb.save(response)
     
